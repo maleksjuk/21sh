@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/01 11:48:07 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/10 06:51:05 by vdaemoni         ###   ########.fr       */
+/*   Created: 2020/09/10 06:09:29 by vdaemoni          #+#    #+#             */
+/*   Updated: 2020/09/10 06:32:25 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_listener(int sig)
+void	print_prompt(void)
 {
-	if (sig == SIGINT)
-		ft_printf("\n");
+	ft_printf("\033[1;34m---21sh$> \033[0m");
 }
 
-void	main_listener(int sig)
+int		error_message(char *str, char *file)
 {
-	if (sig == SIGINT)
-	{
-		ft_printf("\n");
-		print_prompt();
-	}
-}
-
-void	signals(void)
-{
-	signal(SIGINT, main_listener);
+	ft_printf("21sh: %s: %s\n", str, file);
+	return (0);
 }

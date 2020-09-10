@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:49:17 by pguitar           #+#    #+#             */
-/*   Updated: 2020/09/09 16:20:06 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 06:12:50 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ int					ft_isupper(int c);
 int					ft_islower(int c);
 size_t				ft_strnlen(const char *s, size_t maxlen);
 void				ft_tabfree(char **tab);
+int					ft_isspace(char c);
 
 #endif

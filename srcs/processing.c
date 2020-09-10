@@ -6,17 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 11:20:06 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/09 16:21:12 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 06:35:21 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		error_message(char *str, char *file)
-{
-	ft_printf("21sh: %s: %s\n", str, file);
-	return (0);
-}
 
 int		cmd_more(char *cmd, t_env *env)
 {
@@ -95,18 +89,4 @@ int		cmd_processing(char *cmd, t_env *env)
 	free(str);
 	free(prgm);
 	return (0);
-}
-
-void	cmd_exit(t_env *env)
-{
-	t_env	*next;
-
-	while (env)
-	{
-		next = env->next;
-		free_one_env(env);
-		env = next;
-	}
-	ft_printf("exit\n\033[1;7;32m* * * 21SH [exit] * * *\033[0m\n");
-	exit(0);
 }

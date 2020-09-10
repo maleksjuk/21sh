@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 12:40:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:24:48 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 04:26:56 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ void	cmd_cd(t_env *env, char *path)
 	if (!path)
 		search_path = value_from_env(env, "HOME");
 	else if (ft_strequ(path, "-"))
+	{
 		search_path = value_from_env(env, "OLDPWD");
+		ft_printf("%s\n", search_path);
+	}
 	else if (!(search_path = helper_cd(path, current_path, &flag)))
 		flag = 1;
 	if (!chdir(search_path))

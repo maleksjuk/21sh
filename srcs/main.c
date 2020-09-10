@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:25:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 06:50:24 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,6 @@ char	*get_cmd(int fd)
 	return (bufer);
 }
 
-void	print_prompt(void)
-{
-	ft_printf("\033[1;34m---21sh$> \033[0m");
-}
-
 int		main(int argc, char **argv, char **envp)
 {
 	char	*bufer;
@@ -84,7 +79,7 @@ int		main(int argc, char **argv, char **envp)
 	ft_printf("\033[1;7;32m* * * 21SH [start] * * *\033[0m\n");
 	while (1)
 	{
-		signal(SIGINT, main_listener);
+		signals();
 		print_prompt();
 		bufer = get_cmd(0);
 		if (!ft_strequ(bufer, ""))

@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:22:24 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 06:51:21 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,18 @@ typedef struct		s_env
 **	main.c
 */
 char				*get_cmd(int fd);
-void				print_prompt(void);
 
 /*
 **	main_functions.c
 */
-int					error_message(char *str, char *file);
 int					cmd_more(char *cmd, t_env *env);
 int					cmd_processing(char *cmd, t_env *env);
-void				cmd_exit(t_env *env);
+
+/*
+**	helpers.c
+*/
+int					error_message(char *str, char *file);
+void				print_prompt(void);
 
 /*
 **	lib_minishell.c
@@ -72,6 +75,7 @@ int					cmd_echo(char *str);
 int					cmd_pwd(char *str);
 int					cmd_env(t_env *env);
 void				cmd_unsetenv(char *key, t_env *env);
+void				cmd_exit(t_env *env);
 
 /*
 **  cmd_setenv.c
@@ -106,6 +110,7 @@ char				*sml_tilda(char *cmd, t_env *env, int nbr);
 */
 void				cmd_listener(int sig);
 void				main_listener(int sig);
+void				signals(void);
 
 /*
 **	env.c

@@ -6,18 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 16:55:56 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:24:40 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/10 06:12:22 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		ft_isspace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n')
-		return (1);
-	return (0);
-}
 
 char	*replace_symbols(char *str, char *to_replace, int *i)
 {
