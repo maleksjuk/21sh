@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 15:51:17 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:22:24 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 # include <sys/time.h>
 # include <sys/resource.h>
+# include <sys/ioctl.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <stdio.h>

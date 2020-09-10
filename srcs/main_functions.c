@@ -6,11 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 11:20:06 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 16:07:25 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/09 16:21:12 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int		error_message(char *str, char *file)
 {
@@ -37,10 +37,13 @@ int		cmd_more(char *cmd, t_env *env)
 					free(argv[i]);
 			free(argv);
 		}
-		free(prgm);
 	}
 	else
+	{
 		error_message("command not found", argv[0]);
+		ft_tabfree(argv);
+	}
+	free(prgm);
 	return (0);
 }
 

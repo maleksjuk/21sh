@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_tabfree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/01 11:48:07 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:25:22 by vdaemoni         ###   ########.fr       */
+/*   Created: 2020/09/09 16:18:53 by vdaemoni          #+#    #+#             */
+/*   Updated: 2020/09/09 16:19:36 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/libft.h"
 
-void	cmd_listener(int sig)
+void	ft_tabfree(char **tab)
 {
-	if (sig == SIGINT)
-		ft_printf("\n");
-}
+	int i;
 
-void	main_listener(int sig)
-{
-	if (sig == SIGINT)
-	{
-		ft_printf("\n");
-		print_prompt();
-	}
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+	return ;
 }

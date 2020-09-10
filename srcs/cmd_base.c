@@ -6,11 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 11:08:48 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 16:04:02 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:24:36 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int		cmd_echo(char *str)
 {

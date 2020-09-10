@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_tilda_or_dollar.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 14:53:19 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/30 14:40:20 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:25:03 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*users_tilda(char *str, t_env *env)
 {

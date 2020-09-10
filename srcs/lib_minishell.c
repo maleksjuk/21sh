@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lib_minishell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 09:57:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/29 11:10:28 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:25:06 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	**set_array_2(int len)
 {

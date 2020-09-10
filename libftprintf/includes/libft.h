@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:49:17 by pguitar           #+#    #+#             */
-/*   Updated: 2019/11/22 17:25:20 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/09 16:20:06 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ size_t				ft_max(size_t a, size_t b);
 int					ft_isupper(int c);
 int					ft_islower(int c);
 size_t				ft_strnlen(const char *s, size_t maxlen);
+void				ft_tabfree(char **tab);
 
 #endif

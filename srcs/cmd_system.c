@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_system.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 10:35:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/16 14:29:02 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:24:56 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*cmd_program(char *prgm, char *path_env)
 {

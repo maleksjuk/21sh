@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 12:40:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/30 12:44:19 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:24:48 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*helper_cd(char *path, char *current_path, int *i)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_symbols.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/22 16:55:56 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/30 15:06:54 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:24:40 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int		ft_isspace(char c)
 {

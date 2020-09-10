@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+         #
+#    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/09 13:47:22 by pguitar           #+#    #+#              #
-#    Updated: 2020/01/28 11:51:35 by obanshee         ###   ########.fr        #
+#    Updated: 2020/09/09 16:21:50 by vdaemoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS_NAME = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 			ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c \
 			ft_lstiter.c ft_lstmap.c ft_min.c ft_max.c \
-			ft_isupper.c ft_islower.c ft_strnlen.c \
+			ft_isupper.c ft_islower.c ft_strnlen.c ft_tabfree.c \
 		ft_printf.c format.c pars_1.c pars_2.c size.c ft_c.c \
 		ft_d.c ft_u.c ft_o.c ft_x.c ft_p.c ft_s.c color.c \
 		ft_x_solver.c conversion.c ft_i.c ft_lib_len.c ft_s_adapt.c \

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/30 15:05:58 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/30 15:06:43 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:25:18 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	init_quote(int *quote, int *quote_rec)
 {

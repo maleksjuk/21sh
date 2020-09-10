@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 14:28:32 by obanshee          #+#    #+#             */
-/*   Updated: 2020/08/16 14:29:02 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/09/08 17:24:59 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	**create_env_array(t_env *env)
 {
