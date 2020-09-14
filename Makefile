@@ -6,7 +6,7 @@
 #    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/24 18:49:21 by obanshee          #+#    #+#              #
-#    Updated: 2020/09/10 06:39:08 by vdaemoni         ###   ########.fr        #
+#    Updated: 2020/09/14 15:47:57 by vdaemoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ INC = -I includes/ -I libftprintf/includes/
 
 SRCS_NAME = builtins/cmd_base.c builtins/cmd_cd.c builtins/cmd_setenv.c \
 	cmd_system.c env.c lib_minishell.c main.c processing.c \
-	signal.c get_tilda_or_dollar.c check_symbols.c quotes.c helpers.c
+	signal.c get_tilda_or_dollar.c check_symbols.c quotes.c helpers.c \
+	redirect/redirection.c
 
 SRCS_PATH = srcs/
 OBJ_PATH  = obj/
@@ -39,6 +40,7 @@ $(NAME): $(OBJ)
 $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 	@mkdir -p obj
 	@mkdir -p obj/builtins
+	@mkdir -p obj/redirect
 	@gcc -c $(FLAGS) $(INC) $< -o $@
 	@echo "\033[34m\033[1mCompilation of \033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
 

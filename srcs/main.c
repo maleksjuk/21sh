@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/10 06:50:24 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/14 15:46:39 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	cmd_input(char *bufer, t_env *env, int *exit_flag)
 	{
 		if (!*exit_flag && check_exit(cmd_list[i]))
 			*exit_flag = 1;
-		if (!*exit_flag)
+		if (!*exit_flag && !redirection(cmd_list[i]))
 			cmd_processing(cmd_list[i], env);
 		free(cmd_list[i]);
 		i++;

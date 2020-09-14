@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/10 06:51:21 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/14 16:17:46 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ typedef struct		s_env
 	char			*str;
 	struct s_env	*next;
 }					t_env;
+
+enum				e_replacement
+{
+	S_WORD = -42,
+	S_LINE = -41,
+	R_OUTPUT = -40,
+	R_OUTPUT_APPEND = -39,
+	R_INPUT = -38,
+	R_PIPELINE = -37,
+	R_HERE_DOC = -36,
+	R_DUP_INPUT = -35,
+	R_DUP_OUTPUT = -34
+};
 
 /*
 **	main.c
@@ -140,5 +153,11 @@ char				*quotes_are_over(t_env *env, char *str, int *quote, int *i);
 */
 char				*get_tilda(t_env *env, char *str);
 char				*get_dollar(t_env *env, char *str);
+
+/*
+**	redirection.c
+*/
+int					redirection(char *cmd);
+int					is_re(char *s);
 
 #endif
