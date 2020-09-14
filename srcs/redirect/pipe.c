@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:46:15 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/14 17:03:58 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/14 17:18:22 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 
 static void	fork_here(char **cmd1, char **cmd2)
 {
-	int pipe_fd[2];
+	int		pipe_fd[2];
+	pid_t	pid;
 
 	if (pipe(pipe_fd) < 0)
-		error_message()
+		error_message("Pipe fail", NULL);
+	if ((pid = fork()) < 0)
+		error_message("Fork fail", NULL);
+	else if (!pid)
+		dup_exec(cmd2, pipe_fd, STDIN_FILENO);
+	else
+		dup_exec(cmd1, pipe_fd, STDIN_FILENO);
 }
 
 void		pipeline(char **cmd)
