@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/16 20:05:03 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/16 20:49:33 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		main(int argc, char **argv, char **envp)
 			cmd_input(bufer, env, &exit_flag);
 		free(bufer);
 		if (exit_flag)
-			cmd_exit(env);
+			cmd_exit(bufer, &exit_flag);
 	}
 	return (0);
 	(void)argc;

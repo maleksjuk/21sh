@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 06:09:29 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/16 20:00:30 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/16 20:20:27 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,16 @@ void	update_lvl(void)
 	ft_memdel((void *)&shlvl1);
 	ft_memdel((void *)&tmp);
 	ft_memdel((void *)&shlvl2);
+}
+
+void	ft_free_whole(t_env *env)
+{
+	t_env	*next;
+
+	while (env)
+	{
+		next = env->next;
+		free_one_env(env);
+		env = next;
+	}
 }
