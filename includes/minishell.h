@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/14 16:17:46 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/16 20:00:37 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ enum				e_replacement
 	R_DUP_OUTPUT = -34
 };
 
+t_env				*env;
+
 /*
 **	main.c
 */
@@ -71,6 +73,7 @@ int					cmd_processing(char *cmd, t_env *env);
 */
 int					error_message(char *str, char *file);
 void				print_prompt(void);
+void				update_lvl(void);
 
 /*
 **	lib_minishell.c
@@ -159,5 +162,15 @@ char				*get_dollar(t_env *env, char *str);
 */
 int					redirection(char *cmd);
 int					is_re(char *s);
+
+/*
+**	pipe.c
+*/
+void				pipeline(char **cmd);
+
+/*
+**	dup_fd.c
+*/
+void				dup_exec(char **cmd, int *pipe_fd, int fd_left);
 
 #endif
