@@ -6,11 +6,17 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 06:09:29 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/16 20:20:27 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:47:52 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	double_free(char *str1, char *str2)
+{
+	free(str1);
+	free(str2);
+}
 
 void	print_prompt(void)
 {

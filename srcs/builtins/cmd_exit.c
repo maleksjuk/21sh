@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/18 14:34:09 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:43:00 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int	do_exit(int code)
 {
 	ft_free_whole(env);
-	ft_printf("exit\n\033[1;7;32m* * * 21SH [exit] * * *\033[0m\n");
+	ft_printf("exit code %d\n\033[1;7;32m* * * 21SH [exit] * * *\033[0m\n", \
+		(code >= 0 ? (code % 256) : (256 + (code % 256))));
 	exit(code);
 }
 
@@ -43,20 +44,21 @@ static void	returno(char **av)
 			"exit: badly formed number" : "exit: wrong syntax");
 	else
 	{
+		n = ft_atoi(*av);
 		ft_tabfree(tmp);
-		do_exit(ft_atoi(*av));
+		do_exit(n);
 	}
 	return ;
 }
 
-void		cmd_exit(char *str, int *exit_flag)
+void		cmd_exit(char *str)
 {
 	int		n;
 	char	**av;
 	char	*ex;
 
 	ex = ft_strstr(str, "exit");
-	av = ft_strtok(ex, " \t\n\r\a");
+	av = ft_strtok(str, " \t\n\r\a");
 	n = ft_tablen(av);
 	if (n == 1)
 	{
@@ -68,5 +70,4 @@ void		cmd_exit(char *str, int *exit_flag)
 	else
 		ft_putendl("exit: wrong syntax");
 	ft_tabfree(av);
-	*exit_flag = 0;
 }

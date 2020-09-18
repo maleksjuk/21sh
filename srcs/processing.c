@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_functions.c                                   :+:      :+:    :+:   */
+/*   processing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 11:20:06 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/10 06:35:21 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:47:37 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,10 @@ int		cmd_processing(char *cmd, t_env *env)
 		cmd_setenv(str + 7, env);
 	else if (ft_strequ(prgm, "unsetenv"))
 		cmd_unsetenv(str + 9, env);
+	else if (ft_strequ(prgm, "exit"))
+		cmd_exit(str);
 	else
 		cmd_more(str, env);
-	free(str);
-	free(prgm);
+	double_free(str, prgm);
 	return (0);
 }

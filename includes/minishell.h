@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/16 20:41:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:49:04 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int					error_message(char *str, char *file);
 void				print_prompt(void);
 void				update_lvl(void);
 void				ft_free_whole(t_env *env);
+void				double_free(char *str1, char *str2);
 
 /*
 **	lib_minishell.c
@@ -96,7 +97,7 @@ void				cmd_unsetenv(char *key, t_env *env);
 /*
 **  cmd_exit.c
 */
-void				cmd_exit(char *str, int *exit_flag);
+void				cmd_exit(char *str);
 
 /*
 **  cmd_setenv.c

@@ -6,20 +6,13 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/16 20:49:33 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 18:29:36 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_exit(char *str)
-{
-	while (*str && (*str == ' ' || *str == '\t'))
-		str++;
-	return (ft_strnequ(str, "exit", 4));
-}
-
-void	cmd_input(char *bufer, t_env *env, int *exit_flag)
+void	cmd_input(char *bufer, t_env *env)
 {
 	char	**cmd_list;
 	int		i;
@@ -28,9 +21,7 @@ void	cmd_input(char *bufer, t_env *env, int *exit_flag)
 	i = 0;
 	while (cmd_list[i])
 	{
-		if (!*exit_flag && check_exit(cmd_list[i]))
-			*exit_flag = 1;
-		if (!*exit_flag && !redirection(cmd_list[i]))
+		if (!redirection(cmd_list[i]))
 			cmd_processing(cmd_list[i], env);
 		free(cmd_list[i]);
 		i++;
@@ -69,9 +60,7 @@ char	*get_cmd(int fd)
 int		main(int argc, char **argv, char **envp)
 {
 	char	*bufer;
-	int		exit_flag;
 
-	exit_flag = 0;
 	env = get_env(envp);
 	if (!env)
 		return (error_message("error", "null env"));
@@ -83,10 +72,8 @@ int		main(int argc, char **argv, char **envp)
 		print_prompt();
 		bufer = get_cmd(0);
 		if (!ft_strequ(bufer, ""))
-			cmd_input(bufer, env, &exit_flag);
+			cmd_input(bufer, env);
 		free(bufer);
-		if (exit_flag)
-			cmd_exit(bufer, &exit_flag);
 	}
 	return (0);
 	(void)argc;
