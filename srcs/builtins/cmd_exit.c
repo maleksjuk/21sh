@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/16 21:49:34 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/18 14:34:09 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void		cmd_exit(char *str, int *exit_flag)
 {
 	int		n;
 	char	**av;
+	char	*ex;
 
-	av = ft_strtok(str, " \t\n\r\a");
+	ex = ft_strstr(str, "exit");
+	av = ft_strtok(ex, " \t\n\r\a");
 	n = ft_tablen(av);
 	if (n == 1)
 	{
