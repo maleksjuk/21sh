@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/18 18:49:04 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/19 15:30:11 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ char				*sml_tilda(char *cmd, t_env *env, int nbr);
 **  signal.c
 */
 void				cmd_listener(int sig);
-void				main_listener(int sig);
 void				signals(void);
 
 /*
