@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:49:17 by pguitar           #+#    #+#             */
-/*   Updated: 2020/09/16 20:35:22 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/19 17:22:11 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ void				ft_tabfree(char **tab);
 int					ft_isspace(char c);
 char				**ft_strtok(char *s, char *sep);
 int					ft_tablen(char **str);
+char				*double_to_single(char **s);
 
 #endif
