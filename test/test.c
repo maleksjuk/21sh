@@ -51,6 +51,8 @@ int main(void){
     char line[256];
     int i = 0;
     int j = 0;
+    int k = 0;
+    int curr_len = 0;
     int flag = 0;
 
     char buff[256];
@@ -83,35 +85,63 @@ int main(void){
         escape[1] = escape[2];
         escape[2] = c;
 
-        if (ft_isprint(c))
+        
+        if (ft_isprint(c) && !(escape[0] == 27 || escape[1] == 27 || escape[2] == 27))
+        {
+            if (buff[j] != '\0')
+            {
+                k = curr_len;
+                while (k >= j)
+                {
+                    buff[k + 1] = buff[k];
+                    k--;
+                }
+            }
             buff[j++] = c;
+            curr_len++;
+            write(1, &buff[j], curr_len - j);
+            for (int ii = 0; ii < curr_len - j; ii++)
+                write(1, KEY_L, 3);
+        }
 
 
-        // if (ft_strnequ(escape, KEY_L, 3))
-        // {
-        //     write(1, "<", 1);
-        //     write(1, escape, 3);
-        // }
-        // else if (ft_strnequ(escape, KEY_R, 3))
-        //     // write(1, ">", 1);
-        // else if (ft_strnequ(escape, KEY_UP_, 3))
-        //     // write(1, "^", 1);
-        // else if (ft_strnequ(escape, KEY_DOWN_, 3))
-        //     // write(1, "v", 1);
+        if (ft_strnequ(escape, KEY_L, 3))
+        {
+            if (j > 0)
+                j--;
+            // write(1, "<", 1);
+            // write(1, escape, 3);
+        }
+        else if (ft_strnequ(escape, KEY_R, 3))
+        {
+            if (buff[j] != '\0')
+                j++;
+            else
+                write(1, KEY_L, 3);
+        }
+        else if (ft_strnequ(escape, KEY_UP_, 3))
+        {
+            // if ()
+            write(1, KEY_DOWN_, 3);
+        }
+        else if (ft_strnequ(escape, KEY_DOWN_, 3))
+        {
+            // if ()
+            write(1, KEY_UP_, 3);
+        }
 
         if (c == 127)
         {
             write(1, "\b \b", 3);
             buff[--j] = '\0';
+            curr_len--;
         }
 
         read(fd, &c, 1);
 
     }
 
-    // read(0, buff, 254);
-
-    printf("catch: |%c|\n", c);
+    printf("EOF\n", c);
     printf("buff: |%s|\n", buff);
 
     i = 0;
