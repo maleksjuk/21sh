@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:46:15 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/14 17:18:22 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/22 18:18:26 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void		pipeline(char **cmd)
 	char **new_cmd;
 
 	swap = cmd;
-	while (*(++swap) && !ft_strchr(*swap, R_PIPELINE))
+	while (*(++swap) && !ft_strchr(*swap, '|'))
 		NULL;
 	new_cmd = (char **)malloc(sizeof(char *) * (size_t)(swap - cmd + 1));
 	swap = new_cmd;
-	while (!ft_strchr(*cmd, R_PIPELINE) && (*(swap++) = *(cmd++)))
+	while (!ft_strchr(*cmd, '|') && (*(swap++) = *(cmd++)))
 		NULL;
 	*swap = NULL;
 	fork_here(new_cmd, ++cmd);

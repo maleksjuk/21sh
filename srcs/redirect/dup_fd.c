@@ -6,21 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 18:13:26 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/19 17:26:53 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/20 13:26:52 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void		printo(char **cmd)
-{
-	int i;
-
-	i = -1;
-	while (cmd[++i])
-		ft_putendl(cmd[i]);
-	ft_putchar('\n');
-}
 
 void		dup_exec(char **cmd, int *pipe_fd, int fd_left)
 {
