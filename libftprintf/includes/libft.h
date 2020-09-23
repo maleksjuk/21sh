@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:49:17 by pguitar           #+#    #+#             */
-/*   Updated: 2020/09/19 17:22:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:35:57 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ int					ft_isspace(char c);
 char				**ft_strtok(char *s, char *sep);
 int					ft_tablen(char **str);
 char				*double_to_single(char **s);
+void				ft_arrdelone(char **arr, char *to_del);
 
 #endif

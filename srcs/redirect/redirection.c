@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/22 16:14:05 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/23 15:23:09 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			is_re(char *s)
 			result = 5;
 		if (ft_strstr(s, "<&-"))
 			result = 6;
-		if (ft_strstr(s, ">&-")) 
+		if (ft_strstr(s, ">&-"))
 			result = 7;
 	}
 	return (result);
@@ -93,11 +93,11 @@ int			redirection(char *cmd)
 	char	**cpy;
 	int		index;
 	void	(*const f[])(char **) = {
-			pipeline
-			//output_redirect, // >
-			//output_append_redirect, // >>
-			//input_redirect, // <
-			//here_doc, // <<
+			pipeline,
+			output_redirect,
+			output_append_redirect,
+			input_redirect
+			//here_doc
 			//dup_input, <&-
 			//dup_output // >&-
 	};

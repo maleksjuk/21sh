@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/19 15:30:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/23 16:22:20 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,6 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-enum				e_replacement
-{
-	S_WORD = -42,
-	S_LINE = -41,
-	R_OUTPUT = -40,
-	R_OUTPUT_APPEND = -39,
-	R_INPUT = -38,
-	R_PIPELINE = -37,
-	R_HERE_DOC = -36,
-	R_DUP_INPUT = -35,
-	R_DUP_OUTPUT = -34
-};
-
 t_env				*env;
 
 /*
@@ -87,7 +74,7 @@ char				*ft_strtrim_into(char *cmd);
 char				*get_prgm_path_env(char *prgm, char **path_array);
 
 /*
-**  cmd_base.c
+**  builtins/cmd_base.c
 */
 int					cmd_echo(char *str);
 int					cmd_pwd(char *str);
@@ -95,22 +82,22 @@ int					cmd_env(t_env *env);
 void				cmd_unsetenv(char *key, t_env *env);
 
 /*
-**  cmd_exit.c
+**  builtins/cmd_exit.c
 */
 void				cmd_exit(char *str);
 
 /*
-**  cmd_setenv.c
+**  builtins/cmd_setenv.c
 */
 void				cmd_setenv(char *str, t_env *env);
 
 /*
-**  cmd_cd.c
+**  builtins/cmd_cd.c
 */
 void				cmd_cd(t_env *env, char *path);
 
 /*
-**  cmd_more.c
+**  cmd_system.c
 */
 char				*cmd_program(char *prgm, char *path_env);
 char				**cmd_arguments(char *cmd);
@@ -163,19 +150,36 @@ char				*get_tilda(t_env *env, char *str);
 char				*get_dollar(t_env *env, char *str);
 
 /*
-**	redirection.c
+**	redirect/redirection.c
 */
 int					redirection(char *cmd);
 int					is_re(char *s);
 
 /*
-**	pipe.c
+**	redirect/pipe.c
 */
 void				pipeline(char **cmd);
 
 /*
-**	dup_fd.c
+**	redirect/output_redirect.c
+*/
+void				output_redirect(char **cmd);
+void				output_append_redirect(char **cmd);
+
+/*
+**	redirect/input_redirect.c
+*/
+void				input_redirect(char **cmd);
+
+/*
+**	redirect/dup_fd.c
 */
 void				dup_exec(char **cmd, int *pipe_fd, int fd_left);
+
+/*
+**	redirect/main_redirect.c
+*/
+void				do_redirect(char **cmd, char *sym, int o_flag, \
+							void (*doin)(char **, int, int));
 
 #endif

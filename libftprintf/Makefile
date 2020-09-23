@@ -6,7 +6,7 @@
 #    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/09 13:47:22 by pguitar           #+#    #+#              #
-#    Updated: 2020/09/19 17:22:32 by vdaemoni         ###   ########.fr        #
+#    Updated: 2020/09/23 15:36:26 by vdaemoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,12 @@ SRCS_NAME = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 			ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c \
 			ft_lstiter.c ft_lstmap.c ft_min.c ft_max.c ft_isspace.c \
-			ft_isupper.c ft_islower.c ft_strnlen.c ft_tabfree.c \
+			ft_isupper.c ft_islower.c ft_strnlen.c ft_tabfree.c ft_arrdelone.c \
 		ft_printf.c format.c pars_1.c pars_2.c size.c ft_c.c \
 		ft_d.c ft_u.c ft_o.c ft_x.c ft_p.c ft_s.c color.c \
 		ft_x_solver.c conversion.c ft_i.c ft_lib_len.c ft_s_adapt.c \
 		ft_d_adapt.c floats_left.c floats_right.c floats_flags.c \
-		get_next_line.c ft_strtok.c ft_tablen.c double_to_single.c
+		get_next_line.c ft_strtok.c ft_tablen.c double_to_single.c 
 
 SRCS_PATH = srcs/
 OBJ_PATH  = obj/
