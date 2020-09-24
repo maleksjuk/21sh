@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 15:06:36 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/23 15:38:16 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/09/24 16:19:02 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			get_fd(char *s)
 	return (fcntl(fd, F_GETFD) ? -1 : fd);
 }
 
-void		do_redirect(char **cmd, char *sym, int o_flag, \
+int		do_redirect(char **cmd, char *sym, int o_flag, \
 					void (*main_maker)(char **, int, int))
 {
 	int		fd_left;
@@ -43,7 +43,7 @@ void		do_redirect(char **cmd, char *sym, int o_flag, \
 		*tmp = 0;
 	}
 	if ((fd_right = open(*(++swap), o_flag, 0664)) == -1)
-		error_message("Open failed", *swap);
+		return (error_message("Problem with file", *swap));
 	if (*tmp || tmp == *(swap - 1))
 	{
 		tmp = *swap;
@@ -53,4 +53,5 @@ void		do_redirect(char **cmd, char *sym, int o_flag, \
 	else
 		ft_arrdelone(cmd, *swap);
 	main_maker(cmd, fd_left, fd_right);
+	return (0);
 }
