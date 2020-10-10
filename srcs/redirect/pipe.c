@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 16:46:15 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/10 15:50:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/10 16:29:38 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ void		pipeline(char **cmd)
 		NULL;
 	*swap = NULL;
 	fork_here(new_cmd, ++cmd);
-	ft_tabfree(new_cmd);
+	ft_memdel((void *)&new_cmd);
 }
