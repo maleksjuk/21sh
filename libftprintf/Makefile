@@ -6,7 +6,7 @@
 #    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/09 13:47:22 by pguitar           #+#    #+#              #
-#    Updated: 2020/09/23 15:36:26 by vdaemoni         ###   ########.fr        #
+#    Updated: 2020/10/10 15:06:17 by vdaemoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS_NAME = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 			ft_strjoin.c ft_strsub.c ft_strnequ.c ft_strequ.c ft_strmapi.c \
 			ft_strmap.c ft_striteri.c ft_striter.c ft_strclr.c ft_strdel.c \
 			ft_strnew.c ft_memdel.c ft_memalloc.c ft_putchar_fd.c \
-			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
+			ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c printo.c \
 			ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c \
 			ft_lstiter.c ft_lstmap.c ft_min.c ft_max.c ft_isspace.c \
 			ft_isupper.c ft_islower.c ft_strnlen.c ft_tabfree.c ft_arrdelone.c \

@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 18:13:26 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/20 13:26:52 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/10 14:48:12 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void		dup_exec(char **cmd, int *pipe_fd, int fd_left)
 	dup2(save_fd, fd_left);
 	close(save_fd);
 	fd_left == STDOUT_FILENO ? (void)wait(NULL) : exit(EXIT_SUCCESS);
-	(void)cmd;
 }

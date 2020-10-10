@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 15:06:36 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/24 16:19:02 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/10 15:09:24 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			get_fd(char *s)
 	return (fcntl(fd, F_GETFD) ? -1 : fd);
 }
 
-int		do_redirect(char **cmd, char *sym, int o_flag, \
+int			do_redirect(char **cmd, char *sym, int o_flag, \
 					void (*main_maker)(char **, int, int))
 {
 	int		fd_left;

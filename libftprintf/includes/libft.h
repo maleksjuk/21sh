@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 13:49:17 by pguitar           #+#    #+#             */
-/*   Updated: 2020/09/23 15:35:57 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/10 15:05:53 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int					ft_toupper(int c);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
+void				printo(char **s);
 void				ft_putnbr(int n);
 char				*ft_itoa(intmax_t n);
 char				**ft_strsplit(char const *s, char c);
