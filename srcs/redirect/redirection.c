@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/10 15:25:18 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/13 18:37:32 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ int			is_re(char *s)
 			result = 3;
 		if (ft_strequ(s, "<"))
 			result = 4;
-		if (ft_strequ(s, "<<"))
-			result = 5;
 		if (ft_strstr(s, "<&-"))
-			result = 6;
+			result = 5;
 		if (ft_strstr(s, ">&-"))
+			result = 6;
+		if (ft_strequ(s, "<<"))
 			result = 7;
 	}
 	return (result);
 }
 
-/*static int	pipe_after_dup(char **cmd)
+static int	pipe_after_dup(char **cmd)
 {
 	int got_dup;
 
@@ -49,15 +49,15 @@ int			is_re(char *s)
 			if (got_dup)
 				return (1);
 		}
-			else if ((ft_strequ(*cmd, R_DUP_INPUT) \
-				|| ft_strequ(*cmd, R_DUP_OUTPUT)))
+		else if ((ft_strstr(*cmd, "<&-") \
+				|| ft_strstr(*cmd, ">&-")))
 			got_dup = 1;
 		else if (is_re(*cmd))
 			return (0);
 		cmd++;
 	}
 	return (0);
-}*/
+}
 
 static int	get_index(char **cmd)
 {
@@ -68,8 +68,8 @@ static int	get_index(char **cmd)
 		ft_printf("21sh: Invalid null command\n");
 		return (-1);
 	}
-	//if (pipe_after_dup(cmd))
-	//	return (1);
+	if (pipe_after_dup(cmd))
+		return (-1);
 	while (*(++cmd))
 		if ((result = is_re(*cmd)))
 		{
@@ -96,10 +96,9 @@ int			redirection(char *cmd)
 			pipeline,
 			output_redirect,
 			output_append_redirect,
-			input_redirect
-			//here_doc
-			//dup_input, <&-
-			//dup_output // >&-
+			input_redirect,
+			dup_input,
+			dup_output
 	};
 
 	cpy = ft_strtok(cmd, " \t\n\r\a");

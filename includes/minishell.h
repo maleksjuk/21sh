@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/24 16:14:38 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/13 18:31:28 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,13 @@ void				input_redirect(char **cmd);
 **	redirect/dup_fd.c
 */
 void				dup_exec(char **cmd, int *pipe_fd, int fd_left);
+void				dup_output(char **cmd);
+void				dup_input(char **cmd);
 
 /*
 **	redirect/main_redirect.c
 */
+int					get_fd(char *s);
 int					do_redirect(char **cmd, char *sym, int o_flag, \
 							void (*doin)(char **, int, int));
 
