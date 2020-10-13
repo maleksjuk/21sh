@@ -6,7 +6,7 @@
 #    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/24 18:49:21 by obanshee          #+#    #+#              #
-#    Updated: 2020/09/23 15:18:25 by vdaemoni         ###   ########.fr        #
+#    Updated: 2020/10/13 18:56:55 by vdaemoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS_NAME = builtins/cmd_base.c builtins/cmd_cd.c builtins/cmd_setenv.c \
 	builtins/cmd_exit.c \
 	cmd_system.c env.c lib_minishell.c main.c processing.c \
 	signal.c get_tilda_or_dollar.c check_symbols.c quotes.c helpers.c \
-	redirect/redirection.c redirect/pipe.c redirect/dup_fd.c \
+	redirect/redirection.c redirect/pipe.c redirect/dup_fd.c redirect/here_doc.c \
 	redirect/input_redirect.c redirect/output_redirect.c redirect/main_redirect.c
 
 SRCS_PATH = srcs/

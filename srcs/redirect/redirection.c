@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/13 18:37:32 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/13 18:55:50 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int			redirection(char *cmd)
 			output_append_redirect,
 			input_redirect,
 			dup_input,
-			dup_output
+			dup_output,
+			here_doc
 	};
 
 	cpy = ft_strtok(cmd, " \t\n\r\a");
