@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 14:08:59 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/24 16:30:07 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:20:33 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	dup_fd(char **cmd, int fd_left, int fd_right)
 	re = double_to_single(cmd);
 	fd_save = dup(fd_left);
 	dup2(fd_right, fd_left);
-	cmd_processing(re, env);
+	if (!redirection(re))
+		cmd_processing(re, env);
 	dup2(fd_save, fd_left);
 	free(re);
 	close(fd_right);
