@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/13 18:55:50 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/14 13:18:11 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int			is_re(char *s)
 			result = 3;
 		if (ft_strequ(s, "<"))
 			result = 4;
-		if (ft_strstr(s, "<&-"))
+		if (ft_strstr(s, "<&"))
 			result = 5;
-		if (ft_strstr(s, ">&-"))
+		if (ft_strstr(s, ">&"))
 			result = 6;
 		if (ft_strequ(s, "<<"))
 			result = 7;
@@ -49,8 +49,8 @@ static int	pipe_after_dup(char **cmd)
 			if (got_dup)
 				return (1);
 		}
-		else if ((ft_strstr(*cmd, "<&-") \
-				|| ft_strstr(*cmd, ">&-")))
+		else if ((ft_strstr(*cmd, "<&") \
+				|| ft_strstr(*cmd, ">&")))
 			got_dup = 1;
 		else if (is_re(*cmd))
 			return (0);
