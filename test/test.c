@@ -6,11 +6,16 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <string.h>
+// #include "../libftprintf/includes/libft.h"
+// #include "../includes/minishell.h"
 
 # define KEY_RIGHT_ "\x1b\x5b\x43\x0\x0\x0"
 # define KEY_LEFT_  "\x1b\x5b\x44\x0\x0\x0"
 # define KEY_UP_    "\x1b\x5b\x41\x0\x0\x0"
 # define KEY_DOWN_  "\x1b\x5b\x42\x0\x0\x0"
+
+# define MSH_HISTORY ".msh_history"
+# define HISTORY_LIMIT 50
 
 typedef struct 	s_history
 {
@@ -48,6 +53,20 @@ int		ft_strnequ(char const *s1, char const *s2, size_t n)
 	return (0);
 }
 
+char	*new_str(int len)
+{
+	char	*buff;
+	int		i;
+
+	buff = (char *)malloc(sizeof(char) * (len + 1));
+	if (!buff)
+		return (NULL);
+	i = 0;
+	while (i < len + 1)
+		buff[i++] = '\0';
+	return (buff);
+}
+
 
 int		check_escape_line(char *escape, char *buff, int *i)
 {
@@ -66,46 +85,52 @@ int		check_escape_line(char *escape, char *buff, int *i)
 	return (0);
 }
 
+int	get_max(char *buff, char *hist)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (buff[i])
+		i++;
+	while (buff[j])
+		j++;
+	return (i > j ? i : j);
+}
+
 t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current)
 {
-	if (ft_strnequ(escape, KEY_UP_, 3))
+	if (current && ft_strnequ(escape, KEY_UP_, 3))
 	{
 		if (current->prev)
 			current = current->prev;
-		write(1, " ", len_tmp(buff));
-		write(1, "\r", 1);
-		memset(buff, '\0', len_tmp(buff));
-		buff = strcpy(buff, current->buff);
-		*i = len_tmp(buff);
-		write(1, buff, *i);
+		else
+			return (current);
 	}
-	else if (ft_strnequ(escape, KEY_DOWN_, 3))
+	else if (current && ft_strnequ(escape, KEY_DOWN_, 3))
 	{
 		if (current->next)
 			current = current->next;
 		else
 			return (current);
-		write(1, " ", len_tmp(buff));
-		memset(buff, '\0', len_tmp(buff));
-		buff = strcpy(buff, current->buff);
-		*i = len_tmp(buff);
-		write(1, buff, *i);
 	}
+	else
+		return (current);
+
+	write(1, "\r", 1);
+	*i = -1;
+	while (buff[++(*i)])
+	{
+		write(1, " ", 1);
+		buff[*i] = '\0';
+	}
+	write(1, "\r", 1);
+	strcpy(buff, current->buff);
+	*i = len_tmp(buff);
+	write(1, buff, *i);
+
 	return (current);
-}
-
-char	*new_str(int len)
-{
-	char	*buff;
-	int		i;
-
-	buff = (char *)malloc(sizeof(char) * (len + 1));
-	if (!buff)
-		return (NULL);
-	i = 0;
-	while (i < len + 1)
-		buff[i++] = '\0';
-	return (buff);
 }
 
 void print_bufer_actual(char *buff, int len, int pos)
@@ -143,6 +168,7 @@ t_history	*new_history(t_history *current, char *buff)
 {
 	t_history	*new;
 	int i = -1;
+	int fd;
 
 	if (current)
 		while (current->next)
@@ -160,10 +186,47 @@ t_history	*new_history(t_history *current, char *buff)
 		new->prev = NULL;
 	new->next = NULL;
 
+	fd = open(MSH_HISTORY, O_APPEND | O_RDWR | O_CREAT, 0644);
+	write(fd, "\n", 1);
+	write(fd, new->buff, len_tmp(new->buff));
+	close(fd);
+
 	printf("\nnew history buff: |%s|\n", new->buff);
 	
 	return (new);
 }
+
+// t_history	*init_history()
+// {
+// 	int			fd;
+// 	t_history	*history;
+// 	char		*line;
+// 	char		c;
+// 	int			i;
+
+// 	history = NULL;
+// 	if (access(MSH_HISTORY, F_OK) != -1 )
+// 	{
+// 		line = new_str(255);
+// 		i = 0;
+// 		fd = open(MSH_HISTORY, O_RDONLY);
+// 		while (read(fd, &c, 1) > 0)
+// 		{
+// 			if (c == '\n'
+// 				 && (i = 0)
+// 				)
+// 			{
+// 				history = new_history(history, line);
+// 				free(line);
+// 				line = new_str(255);
+// 				// i = 0;
+// 			}
+// 			else
+// 				line[i++] = c;
+// 		}
+// 	}
+// 	return (history);
+// }
 
 int main(void)
 { 
@@ -184,6 +247,7 @@ int main(void)
 	int len;
 
 	t_history	*history;
+	// history = init_history();
 	history = NULL;
 
 	buff = new_str(255);
@@ -197,6 +261,11 @@ int main(void)
 
 		if (c == '\n')
 		{
+			if (len_tmp(buff) == 0)
+			{
+				write(1, "\n", 1);
+				continue ;
+			}
 			history = new_history(history, buff);
 			free(buff);
 			buff = new_str(255);
@@ -216,7 +285,7 @@ int main(void)
 	printf("\n|-----EOF-----|\n");
 	printf("buff: |%s|\n", buff);
 
-	while (history->prev)
+	while (history && history->prev)
 		history = history->prev;
 	printf("history:\n");
 	while (history->next)
@@ -226,6 +295,7 @@ int main(void)
 		history = history->next;
 		free(history->prev);
 	}
+	printf("|%s|\n", history->buff);
 	free(history->buff);
 	free(history);
 
