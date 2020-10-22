@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 18:13:26 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/14 13:10:38 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/15 13:59:00 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	dup_here(char **cmd, int def_fd)
 	if (fd_left != -1 && fd_right != -1 && fd_left != fd_right)
 		dup_plus(cmd, fd_left, fd_right);
 	else
-		error_message("Invalid file descriptor", NULL);
+		ft_printf("%s: Bad file descriptor\n", *cmd);
 	ft_tabfree(cmd);
 }
 

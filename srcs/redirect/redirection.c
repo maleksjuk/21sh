@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/14 13:18:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/15 14:40:01 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,12 @@ static int	get_index(char **cmd)
 {
 	int result;
 
-	if (is_re(*cmd))
+	if (is_re(*cmd) || pipe_after_dup(cmd))
 	{
-		ft_printf("21sh: Invalid null command\n");
+		is_re(*cmd) ? ft_printf("21sh: Invalid null command\n") : \
+			ft_printf("21sh: parse error near `|'\n");
 		return (-1);
 	}
-	if (pipe_after_dup(cmd))
-		return (-1);
 	while (*(++cmd))
 		if ((result = is_re(*cmd)))
 		{
