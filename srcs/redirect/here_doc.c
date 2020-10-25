@@ -6,17 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:54:56 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/22 12:41:20 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 20:54:30 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	putstr_fd(char const *s, int fd)
-{
-	if (s)
-		write(fd, s, ft_strlen(s));
-}
 
 static char	*get_txt(char *word, int i)
 {
@@ -47,32 +41,40 @@ static char	*get_txt(char *word, int i)
 	return (res);
 }
 
-static void	pognali(int *pipe_fd, char *txt)
+static char *converter_type_out(char *txt)
 {
-	int		save_fd_out;
+	char *res;
+	char *helper;
 
-	save_fd_out = dup(STDOUT_FILENO);
-	close(pipe_fd[0]);
-	putstr_fd(txt, pipe_fd[1]);
-	close(pipe_fd[1]);
-	dup2(save_fd_out, STDOUT_FILENO);
-	close(save_fd_out);
-	wait(NULL);
+	res = ft_strdup("echo ");
+	helper = ft_strjoin(res, txt);
+	free(res);
+	res = ft_strjoin(helper, " > .heredoc\n");
+	free(helper);
+	return(res);
 }
 
-static void	fork_here(char **cmd, char *text)
+static void converter_type_in(char **cmd)
 {
-	pid_t	pid;
-	int		pipe_fd[2];
+	int		i;
+	char	**swap;
+	char	**put_here;
+	char	*re;
 
-	if (pipe(pipe_fd) < 0)
-		ft_printf("21sh: Pipe fail\n");
-	if ((pid = fork()) < 0)
-		ft_printf("21sh: Fork fail\n");
-	else if (!pid)
-		dup_exec(cmd, pipe_fd, STDIN_FILENO);
-	else
-		pognali(pipe_fd, text);
+	i = 0;
+	while (*(++swap) && !(ft_strequ(*swap, "<<")))
+		NULL;
+	put_here = swap - 1;
+	while (cmd[i] && !(ft_strequ(cmd[i], "<<")))
+		i++;
+	free(cmd[i + 1]);
+	cmd[i + 1] = ft_strdup(".heredoc");
+	free(cmd[i])
+	cmd[i] = ft_strdup("<");
+	re = double_to_single(cmd);
+	redirection(re);
+	free(re);
+	cmd_processing("rm -rf .heredoc", env);
 }
 
 void		here_doc(char **cmd)
@@ -80,13 +82,17 @@ void		here_doc(char **cmd)
 	char *word;
 	char **swap;
 	char *text;
+	char *out;
 
 	swap = cmd;
 	while (*(++swap) && !(ft_strequ(*swap, "<<")))
 		NULL;
 	word = ft_strdup(*(swap + 1));
 	text = get_txt(word, 1);
-	fork_here(cmd, text);
+	out = converter_type_out(text);
+	redirection(out);
+	free(out);
+	converter_type_in(cmd);
 	free(text);
 	free(word);
 }
