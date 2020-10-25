@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:54:56 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/25 20:54:30 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 20:57:08 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,14 @@ static char *converter_type_out(char *txt)
 static void converter_type_in(char **cmd)
 {
 	int		i;
-	char	**swap;
-	char	**put_here;
 	char	*re;
 
 	i = 0;
-	while (*(++swap) && !(ft_strequ(*swap, "<<")))
-		NULL;
-	put_here = swap - 1;
 	while (cmd[i] && !(ft_strequ(cmd[i], "<<")))
 		i++;
 	free(cmd[i + 1]);
 	cmd[i + 1] = ft_strdup(".heredoc");
-	free(cmd[i])
+	free(cmd[i]);
 	cmd[i] = ft_strdup("<");
 	re = double_to_single(cmd);
 	redirection(re);
