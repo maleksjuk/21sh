@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/20 13:14:56 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:04:47 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	do_exit(int code)
 	r = (code >= 0 ? (code % 256) : (256 + (code % 256)));
 	if ((r % 256) == 0)
 		r = 0;
-	ft_free_whole(env);
+	ft_free_whole(g_env);
 	ft_printf("exit code %d\n\033[1;7;32m* * * 21SH [exit] * * *\033[0m\n", r);
 	exit(code);
 }

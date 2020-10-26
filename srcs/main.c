@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/10/10 14:44:47 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:10:00 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int		main(int argc, char **argv, char **envp)
 {
 	char	*bufer;
 
-	env = get_env(envp);
-	if (!env)
+	g_env = get_env(envp);
+	if (!g_env)
 		return (error_message("error", "null env"));
 	update_lvl();
 	ft_printf("\033[1;7;32m* * * 21SH [start] * * *\033[0m\n");
@@ -72,7 +72,7 @@ int		main(int argc, char **argv, char **envp)
 		print_prompt();
 		bufer = get_cmd(0);
 		if (!ft_strequ(bufer, ""))
-			cmd_input(bufer, env);
+			cmd_input(bufer, g_env);
 		free(bufer);
 	}
 	return (0);

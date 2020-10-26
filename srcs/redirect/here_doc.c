@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:54:56 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/25 20:57:08 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/26 11:04:31 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static char *converter_type_out(char *txt)
 	char *res;
 	char *helper;
 
-	res = ft_strdup("echo ");
+	res = ft_strdup("echo \"");
 	helper = ft_strjoin(res, txt);
 	free(res);
-	res = ft_strjoin(helper, " > .heredoc\n");
+	res = ft_strjoin(helper, "\" > .heredoc\n");
 	free(helper);
 	return(res);
 }
@@ -69,7 +69,7 @@ static void converter_type_in(char **cmd)
 	re = double_to_single(cmd);
 	redirection(re);
 	free(re);
-	cmd_processing("rm -rf .heredoc", env);
+	cmd_processing("rm -rf .heredoc", g_env);
 }
 
 void		here_doc(char **cmd)

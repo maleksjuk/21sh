@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/10/13 18:56:24 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:15:04 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-t_env				*env;
+t_env				*g_env;
 
 /*
 **	main.c

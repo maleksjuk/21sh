@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 18:13:26 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/15 13:59:00 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:05:37 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		dup_exec(char **cmd, int *pipe_fd, int fd_left)
 	dup2(pipe_fd[fd_left == STDOUT_FILENO ? 1 : 0], fd_left);
 	close(pipe_fd[fd_left == STDOUT_FILENO ? 1 : 0]);
 	if (!redirection(re))
-		cmd_processing(re, env);
+		cmd_processing(re, g_env);
 	free(re);
 	dup2(save_fd, fd_left);
 	close(save_fd);
@@ -39,7 +39,7 @@ static void	dup_plus(char **cmd, int fd_left, int fd_right)
 	fd_save = dup(fd_left);
 	fd_right == -42 ? close(fd_left) : dup2(fd_right, fd_left);
 	if (!redirection(re))
-		cmd_processing(re, env);
+		cmd_processing(re, g_env);
 	free(re);
 	dup2(fd_save, fd_left);
 	close(fd_save);

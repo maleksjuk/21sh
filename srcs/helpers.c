@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 06:09:29 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/09/18 18:47:52 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/25 21:05:12 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	update_lvl(void)
 	char	*shlvl2;
 	char	*tmp;
 
-	if (!(shlvl1 = value_from_env(env, "SHLVL")))
+	if (!(shlvl1 = value_from_env(g_env, "SHLVL")))
 	{
-		cmd_setenv("SHLVL=1", env);
+		cmd_setenv("SHLVL=1", g_env);
 		return ;
 	}
 	tmp = ft_itoa(ft_atoi(shlvl1) + 1);
 	shlvl2 = ft_strjoin("SHLVL=", tmp);
-	cmd_setenv(shlvl2, env);
+	cmd_setenv(shlvl2, g_env);
 	ft_memdel((void *)&shlvl1);
 	ft_memdel((void *)&tmp);
 	ft_memdel((void *)&shlvl2);
