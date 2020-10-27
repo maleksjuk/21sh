@@ -101,8 +101,8 @@ int			redirection(char *cmd)
 			here_doc
 	};
 
-	cpy = hypertok(cmd);
-	//cpy = ft_strtok(cmd, " \t\n\r\a");
+	//cpy = hypertok(cmd);
+	cpy = ft_strtok(cmd, " \t\n\r\a");
 	if ((index = get_index(cpy)))
 	{
 		if (index != -1)
