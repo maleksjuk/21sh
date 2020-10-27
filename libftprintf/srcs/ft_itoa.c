@@ -37,15 +37,10 @@ char			*ft_itoa(intmax_t n)
 {
 	int			len;
 	intmax_t	n_len;
-	int			flag;
 
 	len = 0;
-	flag = 0;
 	if (n < 0)
-	{
 		n = -n;
-		flag = 1;
-	}
 	n_len = n;
 	while (n_len /= 10)
 		len++;

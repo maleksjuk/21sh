@@ -41,7 +41,7 @@ static char	*get_txt(char *word, int i)
 	return (res);
 }
 
-static char *converter_type_out(char *txt)
+static char	*converter_type_out(char *txt)
 {
 	char *res;
 	char *helper;
@@ -49,12 +49,12 @@ static char *converter_type_out(char *txt)
 	res = ft_strdup("echo \"");
 	helper = ft_strjoin(res, txt);
 	free(res);
-	res = ft_strjoin(helper, "\" > .heredoc\n");
+	res = ft_strjoin(helper, "\" > .heredoc");
 	free(helper);
-	return(res);
+	return (res);
 }
 
-static void converter_type_in(char **cmd)
+static void	converter_type_in(char **cmd)
 {
 	int		i;
 	char	*re;

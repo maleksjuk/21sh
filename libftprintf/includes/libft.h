@@ -61,6 +61,7 @@ void				printo(char **s);
 void				ft_putnbr(int n);
 char				*ft_itoa(intmax_t n);
 char				**ft_strsplit(char const *s, char c);
+char				**hypertok(char *s);
 char				*ft_strtrim(char const *s);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
