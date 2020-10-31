@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 23:04:53 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/27 14:35:34 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/31 14:49:15 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char		**hypertok(char *cmd)
 	i = 0;
 	n = 0;
 	words = ft_hm(cmd);
-	tok = (char **)malloc(sizeof(char *) * words);
+	tok = (char **)malloc(sizeof(char *) * (words + 1));
 	while (i < words)
 	{
 		while (is_sep(*cmd) == 3)
