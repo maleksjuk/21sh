@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 15:42:33 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/26 11:06:31 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/10/31 14:54:06 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ int			redirection(char *cmd)
 			here_doc
 	};
 
-	//cpy = hypertok(cmd);
-	cpy = ft_strtok(cmd, " \t\n\r\a");
+	cpy = hypertok(cmd);
+	//cpy = ft_strtok(cmd, " \t\n\r\a");
 	if ((index = get_index(cpy)))
 	{
 		if (index != -1)
