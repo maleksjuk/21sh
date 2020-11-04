@@ -52,6 +52,7 @@ static int	ft_hm(char *s)
 			while (s[i] && !is_sep(s[i]))
 				i++;
 			res++;
+			i--;
 		}
 	}
 	return (res);
