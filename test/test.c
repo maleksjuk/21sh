@@ -133,13 +133,32 @@ t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *cur
 	return (current);
 }
 
-void print_bufer_actual(char *buff, int len, int pos)
+void	clear_line(int pos, int len)
 {
 	int	i;
 
+	i = pos;
+	write(1, KEY_LEFT_, 3);
+	while (i++ <= len)
+		write(1, " ", 1);
+	write(1, "\r", 1);
+	i = 0;
+	while (++i < pos)
+		write(1, " ", 1);
+}
+
+void print_buffer_actual(char *buff, int len, int pos)
+{
+	int	i;
+
+	clear_line(pos, len + 1);
+
 	i = pos - 2;
 	while (++i < len)
-		write(1, &buff[i], 1);
+		if (buff[i])
+			write(1, &buff[i], 1);
+		else
+			write(1, " ", 1);
 	write(1, "\r", 1);
 	i = -1;
 	while (++i < pos)
@@ -228,6 +247,19 @@ t_history	*new_history(t_history *current, char *buff)
 // 	return (history);
 // }
 
+void	backspace(char *buff, int *pos, int *len)
+{
+	int	i;
+
+	if (*pos == 0)
+		return ;
+	i = *pos - 1;
+	while (++i <= *len)
+		buff[i - 1] = buff[i];
+	buff[--(*len)] = '\0';
+	(*pos)--;
+}
+
 int main(void)
 { 
 	static struct termios oldt;
@@ -245,6 +277,7 @@ int main(void)
 	char *reserve;
 	int pos;
 	int len;
+	int i;
 
 	t_history	*history;
 	// history = init_history();
@@ -257,8 +290,6 @@ int main(void)
 	pos = 0;
 	while (read(1, &c, 1) > 0 && len < 255 && c != '\t')
 	{
-		update_escape(c, escape);
-
 		if (c == '\n')
 		{
 			if (len_tmp(buff) == 0)
@@ -271,13 +302,21 @@ int main(void)
 			buff = new_str(255);
 			pos = 0;
 		}
-		else if (!(escape[0] == 27 || escape[1] == 27 || escape[2] == 27))
+		else if (c == 127)
+		{
+			backspace(buff, &pos, &len);
+			print_buffer_actual(buff, len, pos);
+		}
+		else if (c != 27)
 		{
 			update_buffer(c, buff, &pos, &len);
-			print_bufer_actual(buff, len, pos);
+			print_buffer_actual(buff, len, pos);
 		}
 		else
 		{
+			escape[0] = c;
+			read(1, &escape[1], 1);
+			read(1, &escape[2], 1);
 			if (!check_escape_line(escape, buff, &pos))
 				history = check_escape_history(escape, buff, &pos, history);
 		}
@@ -288,16 +327,19 @@ int main(void)
 	while (history && history->prev)
 		history = history->prev;
 	printf("history:\n");
-	while (history->next)
+	while (history && history->next)
 	{
 		printf("|%s|\n", history->buff);
 		free(history->buff);
 		history = history->next;
 		free(history->prev);
 	}
-	printf("|%s|\n", history->buff);
-	free(history->buff);
-	free(history);
+	if (history)
+	{
+		printf("|%s|\n", history->buff);
+		free(history->buff);
+		free(history);
+	}
 
 	free(buff);
 	
