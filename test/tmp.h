@@ -18,9 +18,12 @@
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
 
+# define BUFF_LEN 1024
+
 typedef struct 	s_history
 {
-	char		*buff;
+	char				*buff;
+	char				*save;
 	struct s_history	*next;
 	struct s_history	*prev;
 }				t_history;

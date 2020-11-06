@@ -6,8 +6,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <string.h>
-// #include "../libftprintf/includes/libft.h"
-// #include "../includes/minishell.h"
 
 #include "tmp.h"
 
@@ -33,14 +31,10 @@ t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *cur
 	write(1, "\r", 1);
 	*i = -1;
 	while (buff[++(*i)])
-	{
 		write(1, " ", 1);
-		buff[*i] = '\0';
-	}
 	write(1, "\r", 1);
-	strcpy(buff, current->buff);
-	*i = len_tmp(buff);
-	write(1, buff, *i);
+	*i = len_tmp(current->buff);
+	write(1, current->buff, *i);
 
 	return (current);
 }
@@ -77,26 +71,40 @@ t_history	*new_history(t_history *current, char *buff)
 	return (new);
 }
 
-t_history	*history_line(t_history *current)
+t_history	*history_line(t_history *current, t_history *last)
 {
 	t_history	*new;
-	int i = -1;
 	int fd;
+
+	if (last)
+	{
+		last->save = new_str(len_tmp(current->buff) + 1);
+		strcpy(last->save, current->buff);
+
+		if (last != current)
+		{
+			last->buff = new_str(BUFF_LEN);
+			strcpy(last->buff, current->buff);
+		}
+	}
 
 	if (current)
 	{
 		fd = open(MSH_HISTORY, O_APPEND | O_RDWR | O_CREAT, 0644);
-		write(fd, new->buff, len_tmp(new->buff));
+		write(fd, current->buff, len_tmp(current->buff));
 		write(fd, "\n", 1);
 		close(fd);
 
-		printf("\nwrite to history: |%s|\n", current->buff);
+		printf("write to history: |%s|\n", current->buff);
 
 		while (current->next)
 			current = current->next;
 	}
+
 	new = (t_history *)malloc(sizeof(t_history));
-	new->buff = new_str(1024);
+	new->buff = new_str(BUFF_LEN);
+	new->save = NULL;
+
 	if (current)
 	{
 		new->prev = current;
@@ -120,7 +128,7 @@ t_history	*history_line(t_history *current)
 // 	history = NULL;
 // 	if (access(MSH_HISTORY, F_OK) != -1 )
 // 	{
-// 		line = new_str(255);
+// 		line = new_str(BUFF_LEN);
 // 		i = 0;
 // 		fd = open(MSH_HISTORY, O_RDONLY);
 // 		while (read(fd, &c, 1) > 0)
@@ -131,7 +139,7 @@ t_history	*history_line(t_history *current)
 // 			{
 // 				history = new_history(history, line);
 // 				free(line);
-// 				line = new_str(255);
+// 				line = new_str(BUFF_LEN);
 // 				// i = 0;
 // 			}
 // 			else
@@ -140,6 +148,19 @@ t_history	*history_line(t_history *current)
 // 	}
 // 	return (history);
 // }
+
+void	update_history(t_history *history)
+{
+	int	i;
+
+	while (history)
+	{
+		free(history->buff);
+		history->buff = new_str(BUFF_LEN);
+		strcpy(history->buff, history->save);
+		history = history->prev;
+	}
+}
 
 int main(void)
 { 
@@ -159,31 +180,31 @@ int main(void)
 	int len;
 	int i;
 
-	t_history	*history;
-	// history = init_history();
-
-	// buff = new_str(255);
 	escape = new_str(3);
 
-	// history = new_history(NULL, buff);
-	history = history_line(NULL);
-	buff = history->buff;
+	t_history	*current;
+	t_history	*last;
+
+	// last = init_history();
+
+	last = history_line(NULL, NULL);
+	current = last;
+	buff = current->buff;
 
 	pos = 0;
-	while (read(1, &c, 1) > 0 && len < 255 && c != '\t')
+	while (read(1, &c, 1) > 0 && len < BUFF_LEN - 1 && c != '\t')
 	{
 		if (c == '\n')
 		{
+			write(1, "\n", 1);
 			if (len_tmp(buff) == 0)
-			{
-				write(1, "\n", 1);
 				continue ;
-			}
-			// buff = new_str(255);
-			// history = new_history(history, buff);
-			history = history_line(history);
-			buff = history->buff;
-			// free(buff);
+			
+			last = history_line(current, last);
+			buff = last->buff;
+
+			update_history(last->prev);
+			current = last;
 			
 			pos = 0;
 		}
@@ -203,30 +224,38 @@ int main(void)
 			read(1, &escape[1], 1);
 			read(1, &escape[2], 1);
 			if (!check_escape_line(escape, buff, &pos))
-				history = check_escape_history(escape, buff, &pos, history);
+				current = check_escape_history(escape, buff, &pos, current);
+			buff = current->buff;
 		}
 	}
 	printf("\n|-----EOF-----|\n");
 	printf("buff: |%s|\n", buff);
 
-	while (history && history->prev)
-		history = history->prev;
+	while (current && current->prev)
+		current = current->prev;
 	printf("history:\n");
-	while (history && history->next)
+	while (current && current->next)
 	{
-		printf("|%s|\n", history->buff);
-		free(history->buff);
-		history = history->next;
-		free(history->prev);
+		if (current->save)
+		{
+			printf("|%s|\n", current->save);
+			free(current->save);
+		}
+		free(current->buff);
+		current = current->next;
+		free(current->prev);
 	}
-	if (history)
+	if (current)
 	{
-		printf("|%s|\n", history->buff);
-		free(history->buff);
-		free(history);
+		if (current->save)
+		{
+			printf("|%s|\n", current->save);
+			free(current->save);
+		}
+		free(current->buff);
+		free(current);
 	}
 
-	// free(buff);
 	free(escape);
 	
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
