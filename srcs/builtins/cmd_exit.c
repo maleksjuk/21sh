@@ -66,7 +66,7 @@ void		cmd_exit(char *str)
 	if (n == 1)
 	{
 		ft_tabfree(av);
-		do_exit(ft_atoi(*av));
+		do_exit(0);
 	}
 	else if (n == 2)
 		returno(av);
