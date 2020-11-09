@@ -26,6 +26,7 @@ typedef struct 	s_history
 	char				*save;
 	struct s_history	*next;
 	struct s_history	*prev;
+	char				count;
 }				t_history;
 
 
@@ -33,11 +34,13 @@ typedef struct 	s_history
 **  ready.c
 */
 int		check_escape_line(char *escape, char *buff, int *i);
+t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
 void	clear_line(int pos, int len);
 void    print_buffer_actual(char *buff, int len, int pos);
 void	update_buffer(char c, char *buff, int *pos, int *len);
 void	update_escape(char c, char *escape);
 void	backspace(char *buff, int *pos, int *len);
+void	reset_history(t_history *hist);
 
 /*
 **  tmp_lib.c

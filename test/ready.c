@@ -17,6 +17,36 @@ int		check_escape_line(char *escape, char *buff, int *i)
 	return (0);
 }
 
+t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current)
+{
+	if (current && ft_strnequ(escape, KEY_UP_, 3))
+	{
+		if (current->prev)
+			current = current->prev;
+		else
+			return (current);
+	}
+	else if (current && ft_strnequ(escape, KEY_DOWN_, 3))
+	{
+		if (current->next)
+			current = current->next;
+		else
+			return (current);
+	}
+	else
+		return (current);
+
+	write(1, "\r", 1);
+	*i = -1;
+	while (buff[++(*i)])
+		write(1, " ", 1);
+	write(1, "\r", 1);
+	*i = len_tmp(current->buff);
+	write(1, current->buff, *i);
+
+	return (current);
+}
+
 void	clear_line(int pos, int len)
 {
 	int	i;
@@ -46,6 +76,20 @@ void print_buffer_actual(char *buff, int len, int pos)
 	while (++i < pos)
 		write(1, &buff[i], 1);
 }
+
+void	reset_history(t_history *hist)
+{
+	int	i;
+
+	while (hist)
+	{
+		free(hist->buff);
+		hist->buff = new_str(BUFF_LEN * hist->count);
+		strcpy(hist->buff, hist->save);
+		hist = hist->prev;
+	}
+}
+
 
 void	update_buffer(char c, char *buff, int *pos, int *len)
 {
