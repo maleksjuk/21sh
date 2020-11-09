@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 23:04:53 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/09 18:05:25 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/09 18:24:33 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,20 @@ static int	is_sep(char c)
 	return (0);
 }
 
-static int	ft_hm(char *s)
+static int	ft_hm(char *s, int n, int i)
 {
-	int i;
 	int res;
 
 	res = 0;
-	i = -1;
 	while (s[++i])
 	{
-		if (is_sep(s[i]))
+		n = is_sep(s[i]);
+		if (n)
 		{
-			if (is_sep(s[i]) == 1)
+			if (n == 1 || n == 2)
 			{
 				res++;
-				while (s[++i] && is_sep(s[i]) != 1)
-					NULL;
-			}
-			else if (is_sep(s[i]) == 2)
-			{
-				res++;
-				while (s[++i] && is_sep(s[i]) != 2)
+				while (s[++i] && is_sep(s[i]) != n)
 					NULL;
 			}
 		}
@@ -114,7 +107,7 @@ char		**hypertok(char *cmd)
 	char	**tok;
 
 	i = -1;
-	words = ft_hm(cmd);
+	words = ft_hm(cmd, 0, -1);
 	tok = (char **)malloc(sizeof(char *) * (words + 1));
 	cycle(cmd, words, i, tok);
 	tok[words] = NULL;
