@@ -69,7 +69,7 @@ static int	get_index(char **cmd)
 		return (-1);
 	}
 	if (pipe_after_dup(cmd))
-		return(1);
+		return (1);
 	while (*(++cmd))
 		if ((result = is_re(*cmd)))
 		{
@@ -117,13 +117,8 @@ int			redirection(char *cmd)
 	char	*duper;
 	int		index;
 	void	(*const f[])(char **) = {
-			pipeline,
-			output_redirect,
-			output_append_redirect,
-			input_redirect,
-			dup_input,
-			dup_output,
-			here_doc
+			pipeline, output_redirect, output_append_redirect,
+			input_redirect, dup_input, dup_output, here_doc
 	};
 
 	index = is_re(cmd);

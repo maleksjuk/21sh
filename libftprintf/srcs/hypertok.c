@@ -85,7 +85,7 @@ char		**hypertok(char *cmd)
 	int		words;
 	char	**tok;
 	int		n;
-	
+
 	j = -1;
 	i = 0;
 	n = 0;
