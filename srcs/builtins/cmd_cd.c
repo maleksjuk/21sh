@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 12:40:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/10 04:26:56 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/09 20:41:45 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	cd_change_env(t_env *env, char *old_dir)
 
 	new_dir = ft_strnew(LEN_PATH);
 	new_dir = getcwd(new_dir, LEN_PATH);
+	cmd_setenv("PWD=tmp", env);
+	cmd_setenv("OLDPWD=tmp", env);
 	while (env)
 	{
 		if (ft_strequ(env->key, "PWD"))
@@ -84,7 +86,8 @@ void	cmd_cd(t_env *env, char *path)
 	else if (ft_strequ(path, "-"))
 	{
 		search_path = value_from_env(env, "OLDPWD");
-		ft_printf("%s\n", search_path);
+		search_path ? ft_printf("%s\n", search_path) : \
+			ft_printf("21sh: cd: OLDPWD not set\n");
 	}
 	else if (!(search_path = helper_cd(path, current_path, &flag)))
 		flag = 1;
