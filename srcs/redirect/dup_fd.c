@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 18:13:26 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/25 21:05:37 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/08 23:05:29 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ static void	dup_here(char **cmd, int def_fd)
 			fd_left = def_fd;
 		ft_arrdelone(cmd, *swap);
 		fd_right = get_fd(*swap);
-		if (fd_right == -1 && !ft_strcmp(*swap, "-") && fd_left != -1)
+		if (ft_strequ(*swap, "-"))
 			fd_right = -42;
 		ft_arrdelone(cmd, *swap);
 	}
-	if (fd_left != -1 && fd_right != -1 && fd_left != fd_right)
+	if (fd_left != -1 && fd_right != -1)
 		dup_plus(cmd, fd_left, fd_right);
 	else
 		ft_printf("%s: Bad file descriptor\n", *cmd);
