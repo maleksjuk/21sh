@@ -39,37 +39,37 @@ t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *cur
 	return (current);
 }
 
-t_history	*new_history(t_history *current, char *buff)
-{
-	t_history	*new;
-	int i = -1;
-	int fd;
+// t_history	*new_history(t_history *current, char *buff)
+// {
+// 	t_history	*new;
+// 	int i = -1;
+// 	int fd;
 
-	if (current)
-		while (current->next)
-			current = current->next;
-	new = (t_history *)malloc(sizeof(t_history));
-	new->buff = new_str(len_tmp(buff));
-	while (buff[++i])
-		new->buff[i] = buff[i];
-	if (current)
-	{
-		new->prev = current;
-		current->next = new;
-	}
-	else
-		new->prev = NULL;
-	new->next = NULL;
+// 	if (current)
+// 		while (current->next)
+// 			current = current->next;
+// 	new = (t_history *)malloc(sizeof(t_history));
+// 	new->buff = new_str(len_tmp(buff));
+// 	while (buff[++i])
+// 		new->buff[i] = buff[i];
+// 	if (current)
+// 	{
+// 		new->prev = current;
+// 		current->next = new;
+// 	}
+// 	else
+// 		new->prev = NULL;
+// 	new->next = NULL;
 
-	fd = open(MSH_HISTORY, O_APPEND | O_RDWR | O_CREAT, 0644);
-	write(fd, "\n", 1);
-	write(fd, new->buff, len_tmp(new->buff));
-	close(fd);
+// 	fd = open(MSH_HISTORY, O_APPEND | O_RDWR | O_CREAT, 0644);
+// 	write(fd, "\n", 1);
+// 	write(fd, new->buff, len_tmp(new->buff));
+// 	close(fd);
 
-	printf("\nnew history buff: |%s|\n", new->buff);
+// 	printf("\nnew history buff: |%s|\n", new->buff);
 	
-	return (new);
-}
+// 	return (new);
+// }
 
 t_history	*history_line(t_history *current, t_history *last)
 {
@@ -117,37 +117,36 @@ t_history	*history_line(t_history *current, t_history *last)
 	return (new);
 }
 
-// t_history	*init_history()
-// {
-// 	int			fd;
-// 	t_history	*history;
-// 	char		*line;
-// 	char		c;
-// 	int			i;
+t_history	*init_history()
+{
+	int			fd;
+	t_history	*hist;
+	char		*line;
+	char		c;
+	int			i;
 
-// 	history = NULL;
-// 	if (access(MSH_HISTORY, F_OK) != -1 )
-// 	{
-// 		line = new_str(BUFF_LEN);
-// 		i = 0;
-// 		fd = open(MSH_HISTORY, O_RDONLY);
-// 		while (read(fd, &c, 1) > 0)
-// 		{
-// 			if (c == '\n'
-// 				 && (i = 0)
-// 				)
-// 			{
-// 				history = new_history(history, line);
-// 				free(line);
-// 				line = new_str(BUFF_LEN);
-// 				// i = 0;
-// 			}
-// 			else
-// 				line[i++] = c;
-// 		}
-// 	}
-// 	return (history);
-// }
+	hist = NULL;
+	if (access(MSH_HISTORY, F_OK) != -1 )
+	{
+		line = new_str(BUFF_LEN);
+		i = 0;
+		fd = open(MSH_HISTORY, O_RDONLY);
+		while (read(fd, &c, 1) > 0)
+		{
+			if (c == '\n')
+			{
+				// hist = new_history(hist, line);
+				hist = history_line(hist, NULL);
+				free(line);
+				line = new_str(BUFF_LEN);
+				i = 0;
+			}
+			else
+				line[i++] = c;
+		}
+	}
+	return (hist);
+}
 
 void	update_history(t_history *history)
 {
