@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 23:04:53 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/31 14:49:15 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/09 18:05:25 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,14 @@ static int	before_len(char *s, int sep)
 	}
 }
 
-char		**hypertok(char *cmd)
+static void	cycle(char *cmd, int words, int i, char **tok)
 {
-	int		i;
-	int		j;
-	int		words;
-	char	**tok;
-	int		n;
+	int j;
+	int n;
 
-	j = -1;
-	i = 0;
 	n = 0;
-	words = ft_hm(cmd);
-	tok = (char **)malloc(sizeof(char *) * (words + 1));
-	while (i < words)
+	j = -1;
+	while (++i < words)
 	{
 		while (is_sep(*cmd) == 3)
 			cmd++;
@@ -110,8 +104,19 @@ char		**hypertok(char *cmd)
 			while (j--)
 				cmd++;
 		}
-		i++;
 	}
-	tok[i] = NULL;
+}
+
+char		**hypertok(char *cmd)
+{
+	int		i;
+	int		words;
+	char	**tok;
+
+	i = -1;
+	words = ft_hm(cmd);
+	tok = (char **)malloc(sizeof(char *) * (words + 1));
+	cycle(cmd, words, i, tok);
+	tok[words] = NULL;
 	return (tok);
 }
