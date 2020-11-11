@@ -6,40 +6,11 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:54:56 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/10/26 11:04:31 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/11 19:54:30 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*get_txt(char *word, int i)
-{
-	char	*bufer;
-	char	*res;
-	char	*help;
-
-	res = ft_strnew(1);
-	help = ft_strnew(1);
-	while (1)
-	{
-		ft_printf("\033[31mheredoc> \033[0m");
-		bufer = get_cmd(0);
-		if (ft_strequ(bufer, word))
-		{
-			free(bufer);
-			break ;
-		}
-		if (i == 0)
-			help = ft_strjoin(res, "\n");
-		else
-			i = 0;
-		free(res);
-		res = ft_strjoin(help, bufer);
-		free(help);
-		free(bufer);
-	}
-	return (res);
-}
 
 static char	*converter_type_out(char *txt)
 {

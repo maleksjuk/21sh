@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/10/25 21:10:00 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/11 20:20:11 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	cmd_input(char *bufer, t_env *env)
 	free(cmd_list);
 }
 
-char	*get_cmd_2(int fd)
+char	*get_cmd(int fd)
 {
 	char	*bufer;
 	int		buf_size;
@@ -59,7 +59,7 @@ char	*get_cmd_2(int fd)
 }
 
 
-char	*get_cmd(int fd)
+char	*get_cmd_2(int fd)
 { 
 	static struct termios oldt;
 	static struct termios newt;
