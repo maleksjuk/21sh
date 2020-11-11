@@ -12,7 +12,7 @@
 
 NAME = 21sh
 
-FLAGS = -Wall -Wextra -Werror -g3
+FLAGS = #-Wall -Wextra -Werror -g3
 
 LIBFTPRINTF_PATH = libftprintf/
 LIBFTPRINTF = libftprintf/libftprintf.a
@@ -24,7 +24,8 @@ SRCS_NAME = builtins/cmd_base.c builtins/cmd_cd.c builtins/cmd_setenv.c \
 	cmd_system.c env.c lib_minishell.c main.c processing.c \
 	signal.c get_tilda_or_dollar.c check_symbols.c quotes.c helpers.c \
 	redirect/redirection.c redirect/pipe.c redirect/dup_fd.c redirect/here_doc.c \
-	redirect/input_redirect.c redirect/output_redirect.c redirect/main_redirect.c
+	redirect/input_redirect.c redirect/output_redirect.c redirect/main_redirect.c \
+	editor/history.c editor/tmp_lib.c editor/update.c
 
 SRCS_PATH = srcs/
 OBJ_PATH  = obj/
@@ -43,6 +44,7 @@ $(OBJ_PATH)%.o: $(SRCS_PATH)%.c
 	@mkdir -p obj
 	@mkdir -p obj/builtins
 	@mkdir -p obj/redirect
+	@mkdir -p obj/editor
 	@gcc -c $(FLAGS) $(INC) $< -o $@
 	@echo "\033[34m\033[1mCompilation of \033[0m\033[36m$(notdir $<)\033[1m\033[34m done.\033[0m"
 

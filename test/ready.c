@@ -41,6 +41,7 @@ t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *cur
 	while (buff[++(*i)])
 		write(1, " ", 1);
 	write(1, "\r", 1);
+	write(1, "--> ", 4);
 	*i = len_tmp(current->buff);
 	write(1, current->buff, *i);
 
@@ -55,10 +56,10 @@ void	clear_line(int pos, int len)
 	write(1, KEY_LEFT_, 3);
 	while (i++ <= len)
 		write(1, " ", 1);
-	write(1, "\r", 1);
-	i = 0;
-	while (++i < pos)
-		write(1, " ", 1);
+	write(1, "\r--> ", 5);
+	// i = 0;
+	// while (++i < pos)
+	// 	write(1, " ", 1);
 }
 
 void print_buffer_actual(char *buff, int len, int pos)
@@ -67,14 +68,21 @@ void print_buffer_actual(char *buff, int len, int pos)
 
 	clear_line(pos, len + 1);
 
-	i = pos - 2;
-	while (++i < len)
-		if (buff[i])
-			write(1, &buff[i], 1);
-	write(1, "\r", 1);
-	i = -1;
-	while (++i < pos)
-		write(1, &buff[i], 1);
+	i = len_tmp(buff);
+	write(1, buff, i);
+	while (--i > pos - 1)
+		write(1, KEY_LEFT_, 3);
+
+	// i = pos - 2;
+	// while (++i < len)
+	// 	if (buff[i])
+	// 		write(1, &buff[i], 1);
+	// write(1, "\r", 1);
+	// // write(1, "--> ", 4);
+	// i = -1;
+	// while (++i < pos)
+	// 	// write(1, KEY_RIGHT_, 3);
+	// 	write(1, &buff[i], 1);
 }
 
 void	reset_history(t_history *hist)

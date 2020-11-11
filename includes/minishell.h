@@ -16,6 +16,7 @@
 # include "../libftprintf/includes/ft_printf.h"
 # include "../libftprintf/includes/get_next_line.h"
 # include "../libftprintf/includes/libft.h"
+# include "editor.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <dirent.h>

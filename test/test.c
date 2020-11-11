@@ -79,6 +79,8 @@ int main(void)
 	buff = current->buff;
 
 	pos = 0;
+
+	write(1, "--> ", 4);
 	while (read(1, &c, 1) > 0 && len < BUFF_LEN - 1 && c != '\t')
 	{
 		if (c == '\n')
@@ -94,6 +96,7 @@ int main(void)
 			current = last;
 			
 			pos = 0;
+			write(1, "--> ", 4);
 		}
 		else if (c == 127)
 		{

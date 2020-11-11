@@ -50,6 +50,12 @@ void	update_buffer(char c, char *buff, int *pos, int *len);
 void	reset_history(t_history *hist);
 
 /*
+**  history.c
+*/
+t_history	*new_history(t_history *current, t_history *last);
+void	check_length_buffer(t_history *hist);
+
+/*
 **  ready.c
 */
 int		check_escape_line(char *escape, char *buff, int *i);

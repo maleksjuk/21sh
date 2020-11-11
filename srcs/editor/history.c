@@ -10,113 +10,115 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "editor.h"
 
-int main(void)
+int		check_escape_line(char *escape, char *buff, int *i)
 {
-	static struct termios oldt;
-	static struct termios newt;
-	
-	tcgetattr(STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~(ICANON | ECHOCTL | ECHO);
-	newt.c_cc[VMIN] = 1;
-	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-
-	char c;
-	char *escape;
-	char *buff;
-	int pos;
-	int len;
-	int i;
-
-	escape = new_str(3);
-
-	t_history	*current;
-	t_history	*last;
-
-	last = new_history(NULL, NULL);
-	current = last;
-	buff = current->buff;
-
-	pos = 0;
-	while (read(1, &c, 1) > 0 && len < BUFF_LEN - 1 && c != '\t')
+	if (ft_strnequ(escape, KEY_LEFT_, 3) && *i > 0)
 	{
-		if (c == '\n')
-		{
-			write(1, "\n", 1);
-			if (len_tmp(buff) == 0)
-				continue ;
-			
-			last = new_history(current, last);
-			buff = last->buff;
+		(*i)--;
+		write(1, KEY_LEFT_, 3);
+		return (1);
+	}
+	else if (ft_strnequ(escape, KEY_RIGHT_, 3) && buff[*i] != '\0')
+	{
+		(*i)++;
+		write(1, KEY_RIGHT_, 3);
+		return (1);
+	}
+	return (0);
+}
 
-			reset_history(last->prev);
-			current = last;
-			
-			pos = 0;
-		}
-		else if (c == 127)
-		{
-			backspace(buff, &pos, &len);
-			print_buffer_actual(buff, len, pos);
-		}
-		else if (c == 27)
-		{
-			escape[0] = c;
-			read(1, &escape[1], 1);
-			read(1, &escape[2], 1);
-			if (!check_escape_line(escape, buff, &pos))
-				current = check_escape_history(escape, buff, &pos, current);
-			buff = current->buff;
-		}
+t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current)
+{
+	if (current && ft_strnequ(escape, KEY_UP_, 3))
+	{
+		if (current->prev)
+			current = current->prev;
 		else
-		{
-			update_buffer(c, buff, &pos, &len);
-			print_buffer_actual(buff, len, pos);
-		}
-		check_length_buffer(current);
+			return (current);
 	}
-	printf("\n|-----EOF-----|\n");
-	printf("buff: |%s|\n", buff);
-
-	while (current && current->prev)
-		current = current->prev;
-	printf("history:\n");
-	while (current && current->next)
+	else if (current && ft_strnequ(escape, KEY_DOWN_, 3))
 	{
-		if (current->save)
-		{
-			printf("|%s|", current->save);
-			free(current->save);
-		}
-		if (current->buff)
-		{
-			printf("--|%s|", current->buff);
-			free(current->buff);
-		}
-		printf("\n");
-		current = current->next;
-		free(current->prev);
+		if (current->next)
+			current = current->next;
+		else
+			return (current);
 	}
+	else
+		return (current);
+
+	write(1, "\r", 1);
+	*i = -1;
+	while (buff[++(*i)])
+		write(1, " ", 1);
+	write(1, "\r", 1);
+	*i = len_tmp(current->buff);
+	write(1, current->buff, *i);
+
+	return (current);
+}
+
+void	backspace(char *buff, int *pos, int *len)
+{
+	int	i;
+
+	if (*pos == 0)
+		return ;
+	i = *pos - 1;
+	while (++i <= *len)
+		buff[i - 1] = buff[i];
+	buff[--(*len)] = '\0';
+	(*pos)--;
+}
+
+t_history	*new_history(t_history *current, t_history *last)
+{
+	t_history	*new;
+
+	if (last)
+	{
+		last->save = new_str(len_tmp(current->buff) + 1);
+		strcpy(last->save, current->buff);
+
+		if (last != current)
+		{
+			last->buff = new_str(BUFF_LEN);
+			strcpy(last->buff, current->buff);
+		}
+	}
+
+	// if (current)
+	//	printf("write to history: |%s|\n", current->buff);
+	while (current && current->next)
+		current = current->next;
+
+	new = (t_history *)malloc(sizeof(t_history));
+	new->count = 1;
+	new->buff = new_str(BUFF_LEN);
+	new->save = NULL;
+
 	if (current)
 	{
-		if (current->save)
-		{
-			printf("|%s|\n", current->save);
-			free(current->save);
-		}
-		if (current->buff)
-		{
-			printf("--|%s|", current->buff);
-			free(current->buff);
-		}
-		printf("\n");
-		free(current);
+		new->prev = current;
+		current->next = new;
 	}
-
-	free(escape);
+	else
+		new->prev = NULL;
+	new->next = NULL;
 	
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return 0;
+	return (new);
+}
+
+void	check_length_buffer(t_history *hist)
+{
+	char	*tmp;
+
+	if (hist->count * BUFF_LEN - len_tmp(hist->buff) > 3)
+		return ;
+	hist->count++;
+	tmp = new_str(BUFF_LEN * hist->count);
+	strcpy(tmp, hist->buff);
+	free(hist->buff);
+	hist->buff = tmp;
 }
