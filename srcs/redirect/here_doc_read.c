@@ -6,7 +6,7 @@
 /*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/11 19:54:14 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/11 21:08:25 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ static int	iseof_in_line(char *line)
 		++line;
 	}
 	return (0);
+}
+
+static char	*tweak(int i, char *bufer, int buf_size)
+{
+	char *overflow;
+
+	overflow = ft_strnew(buf_size);
+	ft_strncpy(overflow, bufer, i);
+	free(bufer);
+	return (overflow);
 }
 
 static char	*get_cm(int fd, int i, int n, int buf_size)
@@ -45,9 +55,7 @@ static char	*get_cm(int fd, int i, int n, int buf_size)
 		if (i == buf_size)
 		{
 			buf_size *= 2;
-			overflow = ft_strnew(buf_size);
-			ft_strncpy(overflow, bufer, i);
-			free(bufer);
+			overflow = tweak(i, bufer, buf_size);
 			bufer = overflow;
 		}
 	}
