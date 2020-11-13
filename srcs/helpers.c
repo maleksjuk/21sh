@@ -20,7 +20,7 @@ void	double_free(char *str1, char *str2)
 
 void	print_prompt(void)
 {
-	ft_printf("\033[1;34m---21sh$> \033[0m");
+	ft_printf("\033[1;34m21sh$> \033[0m");
 }
 
 int		error_message(char *str, char *file)

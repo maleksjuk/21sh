@@ -28,9 +28,19 @@
 # define KEY_UP_    "\x1b\x5b\x41\x0\x0\x0"
 # define KEY_DOWN_  "\x1b\x5b\x42\x0\x0\x0"
 
+# define ESC_RIGHT "[C"
+# define ESC_LEFT  "[D"
+# define ESC_UP    "[A"
+# define ESC_DOWN  "[B"
+
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
-# define BUFF_LEN 1024
+# define BUFF_LEN 256
+
+# define DEL 127
+# define ESC 27
+
+# define DEBUG 0
 
 typedef struct 	s_history
 {
@@ -40,6 +50,8 @@ typedef struct 	s_history
 	struct s_history	*prev;
 	char				count;
 }				t_history;
+
+t_history	*g_hist;
 
 /*
 **  update.c

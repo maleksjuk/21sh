@@ -20,7 +20,8 @@ void	clear_line(int pos, int len)
 	write(1, KEY_LEFT_, 3);
 	while (i++ <= len)
 		write(1, " ", 1);
-	write(1, "\r", 1);
+	ft_printf("\r");
+	print_prompt();
 	i = 0;
 	while (++i < pos)
 		write(1, " ", 1);
@@ -32,35 +33,38 @@ void    print_buffer_actual(char *buff, int len, int pos)
 
 	clear_line(pos, len + 1);
 	i = pos - 2;
-	while (++i < len)
-		if (buff[i])
-			write(1, &buff[i], 1);
-	write(1, "\r", 1);
+	while (++i < len && buff[i])
+		write(1, &buff[i], 1);
+	// ft_printf("%s", &buff[i]);
+	ft_printf("\r");
 	i = -1;
+	print_prompt();
+	// ft_printf("%s", buff);
 	while (++i < pos)
 		write(1, &buff[i], 1);
-}
-
-void	reset_history(t_history *hist)
-{
-	int i;
-
-	while (hist)
-	{
-		free(hist->buff);
-		hist->buff = new_str(BUFF_LEN * hist->count);
-		strcpy(hist->buff, hist->save);
-		hist = hist->prev;
-	}
+	// while (--len > pos)
+	// 	write(1, KEY_LEFT_, 3);
 }
 
 void	update_buffer(char c, char *buff, int *pos, int *len)
 {
 	int i;
 
-	i = *len + 1;
+	i = ++(*len);
 	while (--i > *pos)
 		buff[i] = buff[i - 1];
 	buff[(*pos)++] = c;
-	(*len)++;
+}
+
+void	backspace(char *buff, int *pos, int *len)
+{
+	int	i;
+
+	if (*pos == 0)
+		return ;
+	i = *pos - 1;
+	while (++i <= *len)
+		buff[i - 1] = buff[i];
+	buff[--(*len)] = '\0';
+	(*pos)--;
 }
