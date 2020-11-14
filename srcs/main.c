@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/11 20:20:11 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/14 15:53:38 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,16 @@ char	*get_cmd(int fd)
 			{
 				g_hist = new_history(current, g_hist);
 
-				// while (current->prev)
-				// 	current = current->prev;
-				// while (current)
-				// {
-				// 	ft_printf("\n### |%s|", current->buff);
-				// 	current = current->next;
-				// }
+				while (current->prev)
+					current = current->prev;
+				while (current)
+				{
+					ft_printf("\n%s####: |[%p] - [%s]|%s", CLR_YELLOW, current->buff, current->buff, CLR_RESET);
+					current = current->next;
+				}
 
 				buff = g_hist->prev->buff;
-				reset_history(g_hist->prev);
+				reset_history(current);
 			}
 			break ;
 		}
@@ -127,14 +127,14 @@ int		main(int argc, char **argv, char **envp)
 		return (error_message("error", "null env"));
 	g_hist = NULL;
 	update_lvl();
-	ft_printf("\033[1;7;32m* * * 21SH [start] * * *\033[0m\n");
+	ft_printf("%s%s%s* * * 21SH [start] * * *%s\n", CLR_BOLD, CLR_GREEN, CLR_INVERSE, CLR_RESET);
 	while (21)
 	{
 		signals();
 		print_prompt();
 		buff = get_cmd(0);
 
-		ft_printf("MAIN: |%s|\n", buff);
+		ft_printf("%sMAIN: |[%p] - [%s]|%s\n", CLR_RED, buff, buff, CLR_RESET);
 		
 		if (!ft_strequ(buff, ""))
 			cmd_input(buff, g_env);

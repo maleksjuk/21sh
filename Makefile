@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+         #
+#    By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/24 18:49:21 by obanshee          #+#    #+#              #
-#    Updated: 2020/11/11 20:18:21 by vdaemoni         ###   ########.fr        #
+#    Updated: 2020/11/14 15:55:03 by obanshee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-FLAGS = #-Wall -Wextra -Werror -g3
+FLAGS = -g3 #-Wall -Wextra -Werror -g3
 
 LIBFTPRINTF_PATH = libftprintf/
 LIBFTPRINTF = libftprintf/libftprintf.a

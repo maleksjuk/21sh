@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/09 22:00:15 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 15:45:19 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # define ESC_UP    "[A"
 # define ESC_DOWN  "[B"
 
+// # define ESC_RIGHT "\033[C"
+// # define ESC_LEFT  "\033[D"
+// # define ESC_UP    "\033[A"
+// # define ESC_DOWN  "\033[B"
+
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
 # define BUFF_LEN 256
@@ -40,7 +45,19 @@
 # define DEL 127
 # define ESC 27
 
-# define DEBUG 0
+# define DEBUG 1
+
+# define CLR_RESET   "\033[0m"
+# define CLR_BOLD    "\033[1m"
+# define CLR_INVERSE "\033[7m"
+
+# define CLR_RED     "\033[31m"
+# define CLR_GREEN   "\033[32m"
+# define CLR_YELLOW  "\033[33m"
+# define CLR_BLUE    "\033[34m"
+# define CLR_MAGENTA "\033[35m"
+# define CLR_CYAN    "\033[36m"
+
 
 typedef struct 	s_history
 {

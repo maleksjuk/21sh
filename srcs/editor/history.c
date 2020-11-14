@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/09 21:56:52 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 15:57:33 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ t_history	*new_history(t_history *current, t_history *last)
 	if (last)
 	{
 		last->save = ft_strnew(ft_strlen(current->buff) + 1);
-		strcpy(last->save, current->buff);
+		ft_strcpy(last->save, current->buff);
 
 		if (last != current)
 		{
 			last->buff = ft_strnew(BUFF_LEN);
-			strcpy(last->buff, current->buff);
+			ft_strcpy(last->buff, current->buff);
 		}
 	}
 
 	if (DEBUG && current)
-		ft_printf("\nwrite to history: |%s|", current->buff);
+		ft_printf("\n%swrite to history: |%s|%s", CLR_CYAN, current->buff, CLR_RESET);
 	while (current && current->next)
 		current = current->next;
 
@@ -114,13 +114,24 @@ void	check_length_buffer(t_history *hist)
 
 void	reset_history(t_history *hist)
 {
-	return ;
+	// return ;
 
-	while (hist)
+	// while (hist)
+	// {
+	// 	free(hist->buff);
+	// 	hist->buff = ft_strnew(BUFF_LEN * hist->count);
+	// 	ft_strcpy(hist->buff, hist->save);
+	// 	hist = hist->prev;
+	// }
+
+	while (hist && hist->prev)
+		hist = hist->prev;
+	while (hist && hist->next)
 	{
-		free(hist->buff);
+		if (hist->buff)
+			free(hist->buff);
 		hist->buff = ft_strnew(BUFF_LEN * hist->count);
 		ft_strcpy(hist->buff, hist->save);
-		hist = hist->prev;
+		hist = hist->next;
 	}
 }
