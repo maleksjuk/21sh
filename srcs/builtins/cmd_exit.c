@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/08 20:59:21 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/14 20:33:50 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,33 @@ static void	returno(char **av)
 	return ;
 }
 
+void		free_history()
+{
+	while (g_hist->prev)
+		g_hist = g_hist->prev;
+	while (g_hist)
+	{
+		if (g_hist->prev)
+			free(g_hist->prev);
+		free(g_hist->buff);
+		free(g_hist->save);
+		if (g_hist->next)
+			g_hist = g_hist->next;
+		else
+		{
+			free(g_hist);
+			g_hist = NULL;
+		}
+		
+	}
+}
+
 void		cmd_exit(char *str)
 {
 	int		n;
 	char	**av;
 
+	free_history();
 	av = ft_strtok(str, " \t\n\r\a");
 	n = ft_tablen(av);
 	if (n == 1)

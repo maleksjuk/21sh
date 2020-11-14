@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 18:14:05 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 19:51:20 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,10 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-# define KEY_RIGHT_ "\x1b\x5b\x43\x0\x0\x0"
-# define KEY_LEFT_  "\x1b\x5b\x44\x0\x0\x0"
-# define KEY_UP_    "\x1b\x5b\x41\x0\x0\x0"
-# define KEY_DOWN_  "\x1b\x5b\x42\x0\x0\x0"
-
-# define ESC_RIGHT "[C"
-# define ESC_LEFT  "[D"
-# define ESC_UP    "[A"
-# define ESC_DOWN  "[B"
-
-# define ESC_RIGHT_ "\033[C"
-# define ESC_LEFT_  "\033[D"
-# define ESC_UP_    "\033[A"
-# define ESC_DOWN_  "\033[B"
+# define ESC_RIGHT "\033[C"
+# define ESC_LEFT  "\033[D"
+# define ESC_UP    "\033[A"
+# define ESC_DOWN  "\033[B"
 
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50

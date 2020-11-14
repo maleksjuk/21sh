@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 18:19:08 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 20:49:10 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ char	*get_cmd(int fd)
 	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
 	char c;
-	char esc[2];
+	char esc[3];
 	char *buff;
 	int pos;
 	int len;
-	int	n;
 
 	t_history	*current;
 
@@ -58,35 +57,17 @@ char	*get_cmd(int fd)
 
 	pos = 0;
 	len = 0;
+	esc[0] = ESC;
 
-	n = 1;
 	while (read(fd, &c, 1) > 0)
 	{
-		// n = read(fd, &c, 1);
-		if (c == 4)
-		{
-			if (ft_strlen(buff) != 0)
-			{
-				n = 1;
-				continue ;
-			}
-			else
-				return ("\x04");
-		}
-		if (c == '\n')
+		if (c == 4 && ft_strlen(buff) == 0)
+			return ("\x04");
+		else if (c == '\n')
 		{
 			if (ft_strlen(buff) != 0)
 			{
 				g_hist = new_history(current, g_hist);
-
-				while (current->prev)
-					current = current->prev;
-				while (current)
-				{
-					ft_printf("\n%s####: |[%p] - [%s]|%s", CLR_YELLOW, current->buff, current->buff, CLR_RESET);
-					current = current->next;
-				}
-
 				buff = g_hist->prev->buff;
 				reset_history(current);
 			}
@@ -95,23 +76,16 @@ char	*get_cmd(int fd)
 		else if (c == DEL)
 		{
 			backspace(buff, &pos, &len);
-			
-			// ft_printf("%s", KEY_DOWN_);
-			// ft_printf("(%2i)", pos);
-			// ft_printf("%s", KEY_UP_);
-			// for (int j = 0; j < 3; j++)
-			// 	ft_printf("%s", KEY_LEFT_);
-
 			print_buffer_actual(buff, len, pos);
 		}
 		else if (c == ESC)
 		{
-			n = read(1, esc, 2);
+			read(1, &esc[1], 2);
 			if (!check_escape_line(esc, buff, &pos))
 				current = check_escape_history(esc, buff, &pos, current);
 			buff = current->buff;
 		}
-		else
+		else if (ft_isprint(c))
 		{
 			update_buffer(c, buff, &pos, &len);
 			print_buffer_actual(buff, len, pos);
@@ -122,8 +96,18 @@ char	*get_cmd(int fd)
 				exit(1);
 	}
 
-	write(1, "\n", 1);
-	// ft_printf("check\n");
+	if (DEBUG)
+	{
+		while (current->prev)
+			current = current->prev;
+		while (current->next)
+		{
+			ft_printf("\n%sHIST: |[%p] - b[%s] - s[%s]|%s", CLR_YELLOW, current->buff, current->buff, current->save, CLR_RESET);
+			current = current->next;
+		}
+	}
+
+	ft_printf("\n");
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	return (buff);
 }
@@ -146,7 +130,9 @@ int		main(int argc, char **argv, char **envp)
 		buff = get_cmd(0);
 		if (ft_strequ(buff, "\x04"))
 			cmd_exit("exit 0");
-		ft_printf("%sMAIN: |[%p] - [%s]|%s\n", CLR_RED, buff, buff, CLR_RESET);
+		
+		if (DEBUG)
+			ft_printf("%sMAIN: |[%p] - [%s]|%s\n", CLR_RED, buff, buff, CLR_RESET);
 		
 		if (!ft_strequ(buff, ""))
 			cmd_input(buff, g_env);

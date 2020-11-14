@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/09 21:58:31 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 19:52:07 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	clear_line(int pos, int len)
 	int	i;
 
 	i = pos;
-	write(1, KEY_LEFT_, 3);
+	ft_printf("%s", ESC_LEFT);
 	while (i++ <= len)
 		write(1, " ", 1);
 	ft_printf("\r");

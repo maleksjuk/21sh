@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_base.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 11:08:48 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/16 20:12:34 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/14 21:06:23 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,19 @@ int		cmd_echo(char *str)
 		ft_printf("%s\n", str);
 	else
 		ft_printf("\n");
+
+	// ----------- DELETE --------------
+	ft_printf("%s", CLR_INVERSE);
+	for (int i = 0; i < ft_strlen(str); i++)
+	{
+		if (ft_isprint(str[i]))
+			ft_printf("%c", str[i]);
+		else
+			ft_printf("{%d}", (unsigned char)str[i]);
+	}
+	ft_printf("%s\n", CLR_RESET);
+	// ----------- DELETE --------------
+
 	return (0);
 }
 
