@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 20:49:10 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 21:59:11 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,30 @@ void	cmd_input(char *bufer, t_env *env)
 	free(cmd_list);
 }
 
+void	init_term(struct termios *oldt)
+{
+	struct termios	*newt;
+
+	tcgetattr(STDIN_FILENO, oldt);
+	newt = oldt;
+	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO);
+	newt->c_cc[VMIN] = 1;
+	tcsetattr(STDIN_FILENO, TCSANOW, newt);
+}
+
 
 char	*get_cmd(int fd)
 {
 	static struct termios oldt;
-	static struct termios newt;
+	// static struct termios newt;
 	
-	tcgetattr(STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~(ICANON | ECHOCTL | ECHO);
-	newt.c_cc[VMIN] = 1;
-	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	// tcgetattr(STDIN_FILENO, &oldt);
+	// newt = oldt;
+	// newt.c_lflag &= ~(ICANON | ECHOCTL | ECHO);
+	// newt.c_cc[VMIN] = 1;
+	// tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+	init_term(&oldt);
 
 	char c;
 	char esc[3];
@@ -63,6 +76,12 @@ char	*get_cmd(int fd)
 	{
 		if (c == 4 && ft_strlen(buff) == 0)
 			return ("\x04");
+		// else if (c == 3)
+		// {
+		// 	reset_history(current);
+		// 	ft_strclr(g_hist->buff);
+		// 	return (g_hist->buff);
+		// }
 		else if (c == '\n')
 		{
 			if (ft_strlen(buff) != 0)
@@ -106,6 +125,10 @@ char	*get_cmd(int fd)
 			current = current->next;
 		}
 	}
+
+	// for (int i = 0; i < ft_strlen(buff); i++)
+	// 	if (buff[i] == '\\')
+	// 		buff[i] = '\020';
 
 	ft_printf("\n");
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);

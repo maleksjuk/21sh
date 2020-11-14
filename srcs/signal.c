@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 11:48:07 by obanshee          #+#    #+#             */
-/*   Updated: 2020/10/25 20:55:40 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/14 21:48:07 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	main_listener(int sig)
 	{
 		ft_putchar('\n');
 		print_prompt();
+		ft_strclr(g_hist->buff);
 	}
 }
 
