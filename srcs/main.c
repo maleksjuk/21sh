@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 15:53:38 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 18:19:08 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*get_cmd(int fd)
 	char *buff;
 	int pos;
 	int len;
+	int	n;
 
 	t_history	*current;
 
@@ -58,8 +59,20 @@ char	*get_cmd(int fd)
 	pos = 0;
 	len = 0;
 
+	n = 1;
 	while (read(fd, &c, 1) > 0)
 	{
+		// n = read(fd, &c, 1);
+		if (c == 4)
+		{
+			if (ft_strlen(buff) != 0)
+			{
+				n = 1;
+				continue ;
+			}
+			else
+				return ("\x04");
+		}
 		if (c == '\n')
 		{
 			if (ft_strlen(buff) != 0)
@@ -93,7 +106,7 @@ char	*get_cmd(int fd)
 		}
 		else if (c == ESC)
 		{
-			read(1, esc, 2);
+			n = read(1, esc, 2);
 			if (!check_escape_line(esc, buff, &pos))
 				current = check_escape_history(esc, buff, &pos, current);
 			buff = current->buff;
@@ -112,8 +125,6 @@ char	*get_cmd(int fd)
 	write(1, "\n", 1);
 	// ft_printf("check\n");
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	if (c == '\t')
-		exit(1);
 	return (buff);
 }
 
@@ -133,7 +144,8 @@ int		main(int argc, char **argv, char **envp)
 		signals();
 		print_prompt();
 		buff = get_cmd(0);
-
+		if (ft_strequ(buff, "\x04"))
+			cmd_exit("exit 0");
 		ft_printf("%sMAIN: |[%p] - [%s]|%s\n", CLR_RED, buff, buff, CLR_RESET);
 		
 		if (!ft_strequ(buff, ""))

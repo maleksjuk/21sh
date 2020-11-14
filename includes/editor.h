@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 15:45:19 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/14 18:14:05 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 # define ESC_UP    "[A"
 # define ESC_DOWN  "[B"
 
-// # define ESC_RIGHT "\033[C"
-// # define ESC_LEFT  "\033[D"
-// # define ESC_UP    "\033[A"
-// # define ESC_DOWN  "\033[B"
+# define ESC_RIGHT_ "\033[C"
+# define ESC_LEFT_  "\033[D"
+# define ESC_UP_    "\033[A"
+# define ESC_DOWN_  "\033[B"
 
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
