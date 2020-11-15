@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 21:42:01 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/15 17:42:26 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_history	*new_history(t_history *current, t_history *last)
 
 		if (last != current)
 		{
-			last->buff = ft_strnew((size_t)sizeof(current->buff));
+			last->buff = ft_strnew(ft_strlen(current->buff) + 10);
 			ft_strcpy(last->buff, current->buff);
 		}
 	}
@@ -75,7 +75,7 @@ t_history	*new_history(t_history *current, t_history *last)
 
 	new = (t_history *)malloc(sizeof(t_history));
 	new->count = 1;
-	new->buff = ft_strnew(BUFF_LEN);
+	new->buff = ft_strnew(HIST_BUFF_LEN);
 	new->save = NULL;
 
 	if (current)
@@ -91,14 +91,17 @@ t_history	*new_history(t_history *current, t_history *last)
 }
 
 void	check_length_buffer(t_history *hist)
+// , struct winsize *ws_curr)
 {
 	char	*tmp;
 
-	if (hist->count * BUFF_LEN - ft_strlen(hist->buff) > 3)
+	// ws_curr->ws_col = ft_strlen(hist->)
+
+	if (hist->count * HIST_BUFF_LEN - ft_strlen(hist->buff) > 10)
 		return ;
 	hist->count++;
-	tmp = ft_strnew(BUFF_LEN * hist->count);
-	strcpy(tmp, hist->buff);
+	tmp = ft_strnew(HIST_BUFF_LEN * hist->count);
+	ft_strcpy(tmp, hist->buff);
 	free(hist->buff);
 	hist->buff = tmp;
 }
@@ -113,9 +116,9 @@ void	reset_history(t_history *hist)
 		{
 			if (hist->buff)
 				free(hist->buff);
-			hist->buff = ft_strnew(BUFF_LEN * hist->count);
+			hist->buff = ft_strnew(HIST_BUFF_LEN * hist->count);
 			// if (!hist->buff)
-			// 	hist->buff = ft_strnew(BUFF_LEN * hist->count);
+			// 	hist->buff = ft_strnew(HIST_BUFF_LEN * hist->count);
 			// ft_memset(hist->buff, 0, sizeof(hist->buff));
 			ft_strcpy(hist->buff, hist->save);
 		}

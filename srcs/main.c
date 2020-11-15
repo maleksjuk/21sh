@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 21:59:11 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/15 19:20:20 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,25 @@ void	init_term(struct termios *oldt)
 
 	tcgetattr(STDIN_FILENO, oldt);
 	newt = oldt;
-	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO);
+	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
 	newt->c_cc[VMIN] = 1;
 	tcsetattr(STDIN_FILENO, TCSANOW, newt);
 }
 
+int		ft_myputchar(int c)
+{
+	return (write(2, &c, 1));
+}
+
+// void		check_escape_ctrl(char *esc)
+// {
+// 	if (ft_strnequ(esc, K_CTRL_UP, 3))
+// 		ft_printf("\r");
+// }
 
 char	*get_cmd(int fd)
 {
 	static struct termios oldt;
-	// static struct termios newt;
-	
-	// tcgetattr(STDIN_FILENO, &oldt);
-	// newt = oldt;
-	// newt.c_lflag &= ~(ICANON | ECHOCTL | ECHO);
-	// newt.c_cc[VMIN] = 1;
-	// tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
 	init_term(&oldt);
 
@@ -60,6 +63,13 @@ char	*get_cmd(int fd)
 	char *buff;
 	int pos;
 	int len;
+
+	struct winsize ws;
+	struct winsize ws_curr;
+	ioctl(1, TIOCGSIZE, &ws);
+
+	ws_curr.ws_col = 0;
+	ws_curr.ws_row = 0;
 
 	t_history	*current;
 
@@ -72,16 +82,23 @@ char	*get_cmd(int fd)
 	len = 0;
 	esc[0] = ESC;
 
+	// tputs(tgetstr("se", NULL), 1, ft_myputchar);
+	// ft_printf("[%i/%i]", ws.ws_col, ws.ws_row);
+
 	while (read(fd, &c, 1) > 0)
 	{
 		if (c == 4 && ft_strlen(buff) == 0)
-			return ("\x04");
-		// else if (c == 3)
-		// {
-		// 	reset_history(current);
-		// 	ft_strclr(g_hist->buff);
-		// 	return (g_hist->buff);
-		// }
+		{
+			buff = "\x04";
+			break ;
+		}
+		else if (c == 3)
+		{
+			reset_history(current);
+			ft_strclr(g_hist->buff);
+			buff = g_hist->buff;
+			break ;
+		}
 		else if (c == '\n')
 		{
 			if (ft_strlen(buff) != 0)
@@ -95,21 +112,26 @@ char	*get_cmd(int fd)
 		else if (c == DEL)
 		{
 			backspace(buff, &pos, &len);
-			print_buffer_actual(buff, len, pos);
+			print_buffer_actual(buff, len, pos, &ws);
 		}
 		else if (c == ESC)
 		{
 			read(1, &esc[1], 2);
+			// check_escape_ctrl(esc);
 			if (!check_escape_line(esc, buff, &pos))
 				current = check_escape_history(esc, buff, &pos, current);
 			buff = current->buff;
+
 		}
 		else if (ft_isprint(c))
 		{
 			update_buffer(c, buff, &pos, &len);
-			print_buffer_actual(buff, len, pos);
+			print_buffer_actual(buff, len, pos, &ws);
 		}
 		check_length_buffer(current);
+		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
+			ft_printf("\n");
+		buff = current->buff;
 		if (DEBUG)
 			if (c == '\t')
 				exit(1);
@@ -139,6 +161,8 @@ char	*get_cmd(int fd)
 int		main(int argc, char **argv, char **envp)
 {
 	char	*buff;
+
+	// tputs(tgetstr("se", NULL), 1, ft_myputchar);
 
 	g_env = get_env(envp);
 	if (!g_env)

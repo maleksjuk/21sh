@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 19:51:20 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/15 19:55:00 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,16 @@
 # define ESC_UP    "\033[A"
 # define ESC_DOWN  "\033[B"
 
+// # define K_CTRL_UP		"\x1b\x5b\x31\x3b\x35\x41"
+// # define K_UP			"\x1b\x5b\x41\x0\x0\x0"
+
+// # define K_CTRL_DOWN	"\x1b\x5b\x31\x3b\x35\x42"
+// # define K_CTRL_RIGHT	"\x1b\x5b\x31\x3b\x35\x43"
+// # define K_CTRL_LEFT	"\x1b\x5b\x31\x3b\x35\x44"
+
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
-# define BUFF_LEN 256
+# define HIST_BUFF_LEN 256
 
 # define DEL 127
 # define ESC 27
@@ -63,8 +70,8 @@ t_history	*g_hist;
 /*
 **  update.c
 */
-void	clear_line(int pos, int len);
-void    print_buffer_actual(char *buff, int len, int pos);
+void	clear_line(int pos, size_t len, struct winsize *ws);
+void    print_buffer_actual(char *buff, size_t len, int pos, struct winsize *ws);
 void	update_buffer(char c, char *buff, int *pos, int *len);
 void	reset_history(t_history *hist);
 
@@ -81,12 +88,6 @@ int		check_escape_line(char *escape, char *buff, int *i);
 t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
 void	backspace(char *buff, int *pos, int *len);
 
-/*
-**  tmp_lib.c
-*/
-int	    len_tmp(char *str);
-int		ft_strnequ(char const *s1, char const *s2, size_t n);
-char	*new_str(int len);
-int	    get_max(char *buff, char *hist);
+void	init_term(struct termios *oldt);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 11:48:07 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/14 21:48:07 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/15 19:19:07 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	main_listener(int sig)
 	{
 		ft_putchar('\n');
 		print_prompt();
-		ft_strclr(g_hist->buff);
 	}
 }
 

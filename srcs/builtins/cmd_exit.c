@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/14 20:33:50 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/15 15:17:53 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ void		free_history()
 	{
 		if (g_hist->prev)
 			free(g_hist->prev);
-		free(g_hist->buff);
-		free(g_hist->save);
+		if (g_hist->buff)
+			free(g_hist->buff);
+		if (g_hist->save)
+			free(g_hist->save);
 		if (g_hist->next)
 			g_hist = g_hist->next;
 		else
