@@ -18,6 +18,16 @@ void	cmd_listener(int sig)
 		ft_printf("\n");
 }
 
+void	cmd_listener_chld(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_printf("");
+		ft_printf("\n");
+		signal(SIGINT, SIG_DFL);
+	}
+}
+
 void	main_listener(int sig)
 {
 	if (sig == SIGINT)

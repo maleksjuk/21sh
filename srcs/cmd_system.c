@@ -117,7 +117,6 @@ int		cmd_system(char *prgm, char **argv, t_env *env)
 	char	**envp;
 
 	pid = fork();
-	signal(SIGINT, cmd_listener);
 	if (pid == -1)
 	{
 		error_message("fork fail", prgm);
@@ -125,11 +124,13 @@ int		cmd_system(char *prgm, char **argv, t_env *env)
 	}
 	else if (pid == 0)
 	{
+		signal(SIGINT, cmd_listener_chld);
 		envp = create_env_array(env);
 		execve(prgm, argv, envp);
 		delete_env_array(envp);
 		exit(-1);
 	}
+	signal(SIGINT, cmd_listener);
 	if (waitpid(pid, &status, 0))
 		return (-1);
 	else if (WIFEXITED(status))

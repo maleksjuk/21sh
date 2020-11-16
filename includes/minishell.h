@@ -119,6 +119,7 @@ char				*sml_tilda(char *cmd, t_env *env, int nbr);
 **  signal.c
 */
 void				cmd_listener(int sig);
+void				cmd_listener_chld(int sig);
 void				signals(void);
 
 /*

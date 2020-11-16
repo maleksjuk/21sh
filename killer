@@ -1,0 +1,1 @@
+kill $(ps aux | awk '{if ($11 == "./21sh") {print $2}}') 

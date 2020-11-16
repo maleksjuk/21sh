@@ -65,6 +65,94 @@ static char	*get_cm(int fd, int i, int n, int buf_size)
 
 
 
+// void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
+// {
+// 	ssize_t	i;
+
+// 	move_cursor(ws, len - 2);
+
+// 	// i = 9;
+// 	// while (i--)
+// 	// 	ft_printf("%s", ESC_RIGHT);
+// 	i = pos;
+// 	ft_printf("%s", ESC_LEFT);
+// 	while (i++ <= len)
+// 		write(1, " ", 1);
+// 	ft_printf("\r");
+// 	i = 9;
+// 	while (i--)
+// 		ft_printf("%s", ESC_RIGHT);
+// 	i = -1;
+// 	while (++i < pos)
+// 		write(1, " ", 1);
+
+// 	move_cursor(ws, len - 3);
+// 	// i = 9;
+// 	// while (i--)
+// 	// 	ft_printf("%s", ESC_RIGHT);
+// }
+
+
+void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
+{
+	ssize_t	i;
+
+	move_cursor(ws, len - 2);
+
+	// i = pos;
+	// ft_printf("%s", ESC_LEFT);
+	// while (i++ <= len)
+	// 	write(1, " ", 1);
+	ft_printf("\r");
+	i = 9;
+	while (i--)
+		ft_printf("%s", ESC_RIGHT);
+	i = -1;
+	while (++i < len)
+		write(1, " ", 1);
+
+	move_cursor(ws, len - 3);
+}
+
+
+
+// void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
+// {
+// 	ssize_t	i;
+	
+// 	clear_line_2(pos, len + 1, ws);
+
+// 	i = pos - 2;
+// 	while (++i < len && buff[i])
+// 		ft_printf("%c", buff[i]);
+// 	ft_printf("\r");
+// 	i = 9;
+// 	while (i--)
+// 		ft_printf("%s", ESC_RIGHT);
+// 	i = -1;
+// 	while (++i < pos)
+// 		ft_printf("%c", buff[i]);
+// }
+
+void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
+{
+	ssize_t	i;
+	
+	clear_line_2(pos, len + 1, ws);
+
+	// i = pos - 2;
+	// while (++i < len && buff[i])
+	// 	ft_printf("%c", buff[i]);
+	ft_printf("\r");
+	i = -1;
+	i = 9;
+	while (i--)
+		ft_printf("%s", ESC_RIGHT);
+	while (++i < len)
+		ft_printf("%c", buff[i]);
+	while (--len >= pos && len >= 0)
+		ft_printf("%s", ESC_LEFT);
+}
 
 
 
@@ -80,21 +168,12 @@ char	*get_cmd_2(int fd)
 	char esc[3];
 	char *buff;
 	int pos;
-	int len;
+	ssize_t len;
 
 	struct winsize ws;
-	struct winsize ws_curr;
 	ioctl(1, TIOCGSIZE, &ws);
 
-	ws_curr.ws_col = 0;
-	ws_curr.ws_row = 0;
-
-	t_history	*current;
-
-	if (!g_hist)
-		g_hist = new_history(NULL, NULL);
-	current = g_hist;
-	buff = current->buff;
+	buff = ft_strnew(HIST_BUFF_LEN);
 
 	pos = 0;
 	len = 0;
@@ -104,57 +183,42 @@ char	*get_cmd_2(int fd)
 	{
 		if (c == 4 && ft_strlen(buff) == 0)
 		{
-			buff = "\x04";
-			break ;
-		}
-		else if (c == 3)
-		{
-			reset_history(current);
-			ft_strclr(g_hist->buff);
-			buff = g_hist->buff;
+			buff[0] = '\x04';
+			buff[1] = '\0';
 			break ;
 		}
 		else if (c == '\n')
 		{
-			if (ft_strlen(buff) != 0)
-			{
-				// g_hist = new_history(current, g_hist);
-				buff = g_hist->prev->buff;
-				reset_history(current);
-			}
+			ft_printf("\n");
 			break ;
 		}
 		else if (c == DEL)
 		{
 			backspace(buff, &pos, &len);
-			print_buffer_actual(buff, len, pos, &ws);
+			print_buffer_actual_2(buff, len, pos, &ws);
 		}
 		else if (c == ESC)
 		{
 			read(1, &esc[1], 2);
 			// check_escape_ctrl(esc);
-			if (!check_escape_line(esc, buff, &pos))
-				current = check_escape_history(esc, buff, &pos, current);
-			buff = current->buff;
-
+			check_escape_line(esc, buff, &pos);
 		}
 		else if (ft_isprint(c))
 		{
 			update_buffer(c, buff, &pos, &len);
-			print_buffer_actual(buff, len, pos, &ws);
+			print_buffer_actual_2(buff, len, pos, &ws);
 		}
-		check_length_buffer(current);
+		// check_length_buffer(current);
 		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
 			ft_printf("\n");
-		buff = current->buff;
 		if (DEBUG)
 			if (c == '\t')
 				exit(1);
 	}
 
-	ft_printf("\n");
+	
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	return (ft_strdup(buff));
+	return (buff);
 }
 
 
@@ -174,7 +238,7 @@ char		*get_txt(char *word, int i)
 	help = ft_strnew(1);
 	while (1)
 	{
-		ft_printf("\033[31mheredoc> \033[0m");
+		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
 		bufer = get_cmd_2(0);
 		// bufer = get_cm(0, 0, 1, 1024);
 		if (ft_strequ(bufer, word) || iseof_in_line(bufer))

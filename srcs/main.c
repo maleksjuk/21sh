@@ -62,14 +62,10 @@ char	*get_cmd(int fd)
 	char esc[3];
 	char *buff;
 	int pos;
-	int len;
+	ssize_t len;
 
 	struct winsize ws;
-	struct winsize ws_curr;
 	ioctl(1, TIOCGSIZE, &ws);
-
-	ws_curr.ws_col = 0;
-	ws_curr.ws_row = 0;
 
 	t_history	*current;
 

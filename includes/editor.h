@@ -70,9 +70,10 @@ t_history	*g_hist;
 /*
 **  update.c
 */
-void	clear_line(int pos, size_t len, struct winsize *ws);
-void    print_buffer_actual(char *buff, size_t len, int pos, struct winsize *ws);
-void	update_buffer(char c, char *buff, int *pos, int *len);
+void	move_cursor(struct winsize *ws, ssize_t len);
+void	clear_line(int pos, ssize_t len, struct winsize *ws);
+void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws);
+void	update_buffer(char c, char *buff, int *pos, ssize_t *len);
 void	reset_history(t_history *hist);
 
 /*
@@ -86,7 +87,7 @@ void	check_length_buffer(t_history *hist);
 */
 int		check_escape_line(char *escape, char *buff, int *i);
 t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
-void	backspace(char *buff, int *pos, int *len);
+void	backspace(char *buff, int *pos, ssize_t *len);
 
 void	init_term(struct termios *oldt);
 
