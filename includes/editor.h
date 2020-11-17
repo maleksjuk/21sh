@@ -100,6 +100,7 @@ void	check_length_buffer(t_history *hist);
 /*
 **  ready.c
 */
+int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
 int		check_escape_line(char *escape, char *buff, int *i);
 t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
 void	backspace(char *buff, int *pos, ssize_t *len);

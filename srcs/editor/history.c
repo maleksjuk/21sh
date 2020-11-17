@@ -12,80 +12,98 @@
 
 #include "editor.h"
 
-int		check_escape_ctrl(char *escape, char *buff, int *i)
+int		check_escape_ctrl_horizont(char *escape, char *buff, int *i)
 {
-	char	esc[6];
-
-	ft_memset(esc, 0, 8);
-	ft_strncpy(esc, escape, 3);
-
-	if (ft_strnequ(esc, ESC_CTRL_UP, 3))
+	if (ft_strnequ(escape, ESC_CTRL_LEFT, 6))
 	{
-		read(0, &esc[3], 3);
-		if (ft_strnequ(esc, ESC_CTRL_LEFT, 6))
+		while (buff && *i > 0)
+		{	
+			(*i)--;
+			ft_printf("%s", ESC_LEFT);
+			if (!(*i == ft_strlen(buff) || buff[*i] != ' '))
+				break ;
+		}
+		return (1);
+	}
+	else if (ft_strnequ(escape, ESC_CTRL_RIGHT, 6))
+	{
+		while (buff && *i < ft_strlen(buff))
 		{
-			// ft_printf("%s", ESC_LEFT);
-			// ft_printf("%s", ESC_LEFT);
-			while (buff && buff[*i] && *i > 0 && buff[*i] != ' ')
+			(*i)++;
+			ft_printf("%s", ESC_RIGHT);
+			if (!buff[*i] || buff[*i] == ' ')
+				break ;
+		}
+		return (1);
+	}
+	return (0);
+}
+
+int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize *ws)
+{
+	int	height;
+	int	swap;
+	int	pos;
+
+	height = (ft_strlen(buff) + 7) / ws->ws_col;
+	pos = (*i + 7) / ws->ws_col;
+	swap = 0;
+	if (ft_strnequ(escape, ESC_CTRL_UP, 6))
+	{
+		if (height > 0 && pos > 0)
+		{
+			while (*i > 0 && swap < ws->ws_col)
+			{
+				swap++;
+				(*i)--;
+			}
+			ft_printf("%s", ESC_UP);
+		}
+		else
+		{
+			while (*i > 0)
 			{
 				(*i)--;
 				ft_printf("%s", ESC_LEFT);
 			}
 		}
-		else if (ft_strnequ(esc, ESC_CTRL_RIGHT, 6))
+		return (1);
+	}
+	else if (ft_strnequ(escape, ESC_CTRL_DOWN, 6))
+	{
+		if (height > 0 && pos < height)
 		{
-			// ft_printf("%s", ESC_RIGHT);
-			// ft_printf("%s", ESC_RIGHT);
-			while (buff && buff[*i] && buff[*i] != ' ')
+			while (buff[*i] && swap < ws->ws_col)
+			{
+				swap++;
+				(*i)++;
+			}
+			ft_printf("%s", ESC_DOWN);
+		}
+		else
+		{
+			while (buff[*i])
 			{
 				(*i)++;
 				ft_printf("%s", ESC_RIGHT);
 			}
 		}
-		if (ft_strnequ(esc, ESC_CTRL_UP, 6))
-			ft_printf("UP");
-		else if (ft_strnequ(esc, ESC_CTRL_DOWN, 6))
-			ft_printf("DOWN");
-		else
-			return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
+}
 
-
-	// if (esc[2] == '[')
-	// {
-	// 	read(0, &esc[3], 1);
-	// 	if (esc[3] == 'A' || esc[3] == 'B')
-	// 	{
-	// 		if (ft_strnequ(esc, ESC_CTRL_UP, 4))
-	// 			ft_printf("UP");
-	// 		else if (ft_strnequ(esc, ESC_CTRL_DOWN, 4))
-	// 			ft_printf("DOWN");
-	// 	}
-	// }
-	// else if (esc[2] == '1')
-	// {
-	// 	read(0, &esc[3], 3);
-	// 	if (ft_strnequ(esc, ESC_CTRL_LEFT, 6))
-	// 	{
-	// 		ft_printf("LEFT");
-	// 		return (1);
-	// 	}
-	// 	else if (ft_strnequ(esc, ESC_CTRL_RIGHT, 6))
-	// 	{
-	// 		ft_printf("RIGHT");
-	// 		return (1);
-	// 	}
-	// }
-	
-
+int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws)
+{
+	if (check_escape_ctrl_horizont(escape, buff, i))
+		return (1);
+	if (check_escape_ctrl_vertical(escape, buff, i, ws))
+		return (1);
 	return (0);
 }
 
 int		check_escape_line(char *escape, char *buff, int *i)
 {
-	if (check_escape_ctrl(escape, buff, i))
-		return (1);
 	if (ft_strnequ(escape, ESC_LEFT, 3) && *i > 0)
 	{
 		(*i)--;

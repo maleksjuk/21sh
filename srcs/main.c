@@ -59,10 +59,11 @@ char	*get_cmd(int fd)
 	init_term(&oldt);
 
 	char c;
-	char esc[3];
+	char esc[8];
 	char *buff;
 	int pos;
 	ssize_t len;
+	int i;
 
 	struct winsize ws;
 	ioctl(1, TIOCGSIZE, &ws);
@@ -112,10 +113,13 @@ char	*get_cmd(int fd)
 		}
 		else if (c == ESC)
 		{
-			read(fd, &esc[1], 2);
-			// check_escape_ctrl(esc);
-			if (!check_escape_line(esc, buff, &pos))
-				current = check_escape_history(esc, buff, &pos, current);
+			i = 1;
+			while (!ft_isalpha(esc[i - 1]))
+				read(fd, &esc[i++], 1);
+			esc[i] = '\0';
+			if (!check_escape_ctrl(esc, buff, &pos, &ws))
+				if (!check_escape_line(esc, buff, &pos))
+					current = check_escape_history(esc, buff, &pos, current);
 			buff = current->buff;
 
 		}
