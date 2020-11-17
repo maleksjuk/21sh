@@ -112,7 +112,7 @@ char	*get_cmd(int fd)
 		}
 		else if (c == ESC)
 		{
-			read(1, &esc[1], 2);
+			read(fd, &esc[1], 2);
 			// check_escape_ctrl(esc);
 			if (!check_escape_line(esc, buff, &pos))
 				current = check_escape_history(esc, buff, &pos, current);

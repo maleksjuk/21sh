@@ -15,10 +15,10 @@
 int		cmd_echo(char *str)
 {
 	if (str)
-		ft_printf("%s\n", str);
-	else
+		ft_printf("%s", str);
+	// else
 	// {
-		ft_printf("\n");
+	ft_printf("\n");
 		// return (0);
 	// }
 

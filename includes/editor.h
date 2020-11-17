@@ -28,12 +28,27 @@
 # define ESC_UP    "\033[A"
 # define ESC_DOWN  "\033[B"
 
-// # define K_CTRL_UP		"\x1b\x5b\x31\x3b\x35\x41"
-// # define K_UP			"\x1b\x5b\x41\x0\x0\x0"
+# define ESC_CTRL_RIGHT "\033[1;5C"
+# define ESC_CTRL_LEFT  "\033[1;5D"
+# define ESC_CTRL_UP    "\033[1;5A"
+# define ESC_CTRL_DOWN  "\033[1;5B"
 
-// # define K_CTRL_DOWN	"\x1b\x5b\x31\x3b\x35\x42"
-// # define K_CTRL_RIGHT	"\x1b\x5b\x31\x3b\x35\x43"
-// # define K_CTRL_LEFT	"\x1b\x5b\x31\x3b\x35\x44"
+// # define ESC_CTRL_UP    "\033[[A"
+// # define ESC_CTRL_DOWN  "\033[[B"
+
+# define K_CTRL_U		"\x15\x0\x0\x0\x0\x0"
+
+// # define K_CTRL_UP		"\x1b\x5b\x31\x3b\x35\x41"
+
+// # define K_CTRL_UP		"\x1b\x5b\x38\x3b\x35\x41"
+// # define K_CTRL_DOWN		"\x1b\x5b\x38\x3b\x35\x42"
+// # define K_CTRL_RIGHT	"\x1b\x5b\x38\x3b\x35\x43"
+// # define K_CTRL_LEFT		"\x1b\x5b\x38\x3b\x35\x44"
+
+// # define K_UP			"\x1b\x5b\x41\x0\x0\x0"
+// # define K_DOWN			"\x1b\x5b\x42\x0\x0\x0"
+// # define K_RIGHT			"\x1b\x5b\x43\x0\x0\x0"
+// # define K_LEFT			"\x1b\x5b\x44\x0\x0\x0"
 
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
