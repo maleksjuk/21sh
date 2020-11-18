@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/15 19:59:08 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 14:21:01 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,36 +63,6 @@ static char	*get_cm(int fd, int i, int n, int buf_size)
 	return (bufer);
 }
 
-
-
-// void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
-// {
-// 	ssize_t	i;
-
-// 	move_cursor(ws, len - 2);
-
-// 	// i = 9;
-// 	// while (i--)
-// 	// 	ft_printf("%s", ESC_RIGHT);
-// 	i = pos;
-// 	ft_printf("%s", ESC_LEFT);
-// 	while (i++ <= len)
-// 		write(1, " ", 1);
-// 	ft_printf("\r");
-// 	i = 9;
-// 	while (i--)
-// 		ft_printf("%s", ESC_RIGHT);
-// 	i = -1;
-// 	while (++i < pos)
-// 		write(1, " ", 1);
-
-// 	move_cursor(ws, len - 3);
-// 	// i = 9;
-// 	// while (i--)
-// 	// 	ft_printf("%s", ESC_RIGHT);
-// }
-
-
 void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
 {
 	ssize_t	i;
@@ -114,26 +84,6 @@ void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
 	move_cursor(ws, len - 3);
 }
 
-
-
-// void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
-// {
-// 	ssize_t	i;
-	
-// 	clear_line_2(pos, len + 1, ws);
-
-// 	i = pos - 2;
-// 	while (++i < len && buff[i])
-// 		ft_printf("%c", buff[i]);
-// 	ft_printf("\r");
-// 	i = 9;
-// 	while (i--)
-// 		ft_printf("%s", ESC_RIGHT);
-// 	i = -1;
-// 	while (++i < pos)
-// 		ft_printf("%c", buff[i]);
-// }
-
 void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
 {
 	ssize_t	i;
@@ -153,10 +103,6 @@ void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *
 	while (--len >= pos && len >= 0)
 		ft_printf("%s", ESC_LEFT);
 }
-
-
-
-
 
 char	*get_cmd_2(int fd)
 {
@@ -201,7 +147,7 @@ char	*get_cmd_2(int fd)
 		{
 			read(1, &esc[1], 2);
 			// check_escape_ctrl(esc);
-			check_escape_line(esc, buff, &pos);
+			check_escape_line(esc, buff, &pos, &ws);
 		}
 		else if (ft_isprint(c))
 		{
@@ -220,13 +166,6 @@ char	*get_cmd_2(int fd)
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	return (buff);
 }
-
-
-
-
-
-
-
 
 char		*get_txt(char *word, int i)
 {

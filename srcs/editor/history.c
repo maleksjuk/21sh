@@ -6,20 +6,38 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/15 17:42:26 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 15:44:43 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "editor.h"
 
-int		check_escape_ctrl_horizont(char *escape, char *buff, int *i)
+int		check_escape_ctrl_horizont(char *escape, char *buff, int *i, struct winsize *ws)
 {
+	int	height;
+	int	pos[2];
+
+	height = (ft_strlen(buff) + 7) / ws->ws_col;
+	pos[0] = (*i + 7) % ws->ws_col;
+	pos[1] = (*i + 7) / ws->ws_col;
 	if (ft_strnequ(escape, ESC_CTRL_LEFT, 6))
 	{
 		while (buff && *i > 0)
 		{	
 			(*i)--;
+			pos[0]--;
 			ft_printf("%s", ESC_LEFT);
+			
+			if (pos[0] < 0 && pos[1] > 0)
+			{
+				// ft_printf("%s", ESC_UP);
+				while (pos[0] < ws->ws_col - 1)
+				{
+					pos[0]++;
+					ft_printf("%s", ESC_RIGHT);
+				}
+				pos[1]--;
+			}
 			if (!(*i == ft_strlen(buff) || buff[*i] != ' '))
 				break ;
 		}
@@ -31,6 +49,12 @@ int		check_escape_ctrl_horizont(char *escape, char *buff, int *i)
 		{
 			(*i)++;
 			ft_printf("%s", ESC_RIGHT);
+			if (pos[0] == ws->ws_col - 1 && pos[1] < height)
+			{
+				ft_printf("%s\r", ESC_DOWN);
+				pos[1]++;
+			}
+			pos[0]++;
 			if (!buff[*i] || buff[*i] == ' ')
 				break ;
 		}
@@ -43,14 +67,15 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 {
 	int	height;
 	int	swap;
-	int	pos;
+	int	pos[2];
 
 	height = (ft_strlen(buff) + 7) / ws->ws_col;
-	pos = (*i + 7) / ws->ws_col;
+	pos[0] = (*i + 7) % ws->ws_col;
+	pos[1] = (*i + 7) / ws->ws_col;
 	swap = 0;
 	if (ft_strnequ(escape, ESC_CTRL_UP, 6))
 	{
-		if (height > 0 && pos > 0)
+		if (height > 0 && pos[1] > 0)
 		{
 			while (*i > 0 && swap < ws->ws_col)
 			{
@@ -71,7 +96,7 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 	}
 	else if (ft_strnequ(escape, ESC_CTRL_DOWN, 6))
 	{
-		if (height > 0 && pos < height)
+		if (height > 0 && pos[1] < height)
 		{
 			while (buff[*i] && swap < ws->ws_col)
 			{
@@ -95,15 +120,21 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 
 int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws)
 {
-	if (check_escape_ctrl_horizont(escape, buff, i))
+	if (check_escape_ctrl_horizont(escape, buff, i, ws))
 		return (1);
 	if (check_escape_ctrl_vertical(escape, buff, i, ws))
 		return (1);
 	return (0);
 }
 
-int		check_escape_line(char *escape, char *buff, int *i)
+int		check_escape_line(char *escape, char *buff, int *i, struct winsize *ws)
 {
+	int	height;
+	int	pos[2];
+
+	height = (ft_strlen(buff) + 7) / ws->ws_col;
+	pos[0] = (*i + 7) % ws->ws_col;
+	// pos[1] = (*i + 7) / ws->ws_col;
 	if (ft_strnequ(escape, ESC_LEFT, 3) && *i > 0)
 	{
 		(*i)--;
@@ -113,7 +144,10 @@ int		check_escape_line(char *escape, char *buff, int *i)
 	else if (ft_strnequ(escape, ESC_RIGHT, 3) && buff[*i] != '\0')
 	{
 		(*i)++;
-		ft_printf("%s", ESC_RIGHT);
+		if (pos[0] == ws->ws_col - 1)
+			ft_printf("%s\r", ESC_DOWN);
+		else
+			ft_printf("%s", ESC_RIGHT);
 		return (1);
 	}
 	return (0);

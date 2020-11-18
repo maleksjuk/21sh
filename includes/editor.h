@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/15 19:55:00 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 14:12:42 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 # define DEL 127
 # define ESC 27
 
-# define DEBUG 1
+# define DEBUG 0
 
 # define CLR_RESET   "\033[0m"
 # define CLR_BOLD    "\033[1m"
@@ -101,7 +101,7 @@ void	check_length_buffer(t_history *hist);
 **  ready.c
 */
 int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
-int		check_escape_line(char *escape, char *buff, int *i);
+int		check_escape_line(char *escape, char *buff, int *i, struct winsize *ws);
 t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
 void	backspace(char *buff, int *pos, ssize_t *len);
 

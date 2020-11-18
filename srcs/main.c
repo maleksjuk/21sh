@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/15 19:20:20 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 14:17:37 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,6 @@ void	init_term(struct termios *oldt)
 	tcsetattr(STDIN_FILENO, TCSANOW, newt);
 }
 
-int		ft_myputchar(int c)
-{
-	return (write(2, &c, 1));
-}
-
-// void		check_escape_ctrl(char *esc)
-// {
-// 	if (ft_strnequ(esc, K_CTRL_UP, 3))
-// 		ft_printf("\r");
-// }
-
 char	*get_cmd(int fd)
 {
 	static struct termios oldt;
@@ -59,7 +48,7 @@ char	*get_cmd(int fd)
 	init_term(&oldt);
 
 	char c;
-	char esc[8];
+	char esc[32];
 	char *buff;
 	int pos;
 	ssize_t len;
@@ -78,9 +67,6 @@ char	*get_cmd(int fd)
 	pos = 0;
 	len = 0;
 	esc[0] = ESC;
-
-	// tputs(tgetstr("se", NULL), 1, ft_myputchar);
-	// ft_printf("[%i/%i]", ws.ws_col, ws.ws_row);
 
 	while (read(fd, &c, 1) > 0)
 	{
@@ -118,7 +104,7 @@ char	*get_cmd(int fd)
 				read(fd, &esc[i++], 1);
 			esc[i] = '\0';
 			if (!check_escape_ctrl(esc, buff, &pos, &ws))
-				if (!check_escape_line(esc, buff, &pos))
+				if (!check_escape_line(esc, buff, &pos, &ws))
 					current = check_escape_history(esc, buff, &pos, current);
 			buff = current->buff;
 
