@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_system.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 10:35:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/09/08 17:24:56 by vdaemoni         ###   ########.fr       */
+/*   Updated: 2020/11/18 19:53:55 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,26 +112,28 @@ char	**cmd_arguments(char *cmd)
 
 int		cmd_system(char *prgm, char **argv, t_env *env)
 {
-	pid_t	pid;
+	// pid_t	pid;
 	int		status;
 	char	**envp;
 
-	pid = fork();
-	if (pid == -1)
+	// g_pid = 0;
+	g_pid = fork();
+	signal(SIGINT, cmd_listener);
+	if (g_pid == -1)
 	{
 		error_message("fork fail", prgm);
 		return (-1);
 	}
-	else if (pid == 0)
+	else if (g_pid == 0)
 	{
-		signal(SIGINT, cmd_listener_chld);
+		// kill(g_pid, SIGINT);
 		envp = create_env_array(env);
 		execve(prgm, argv, envp);
 		delete_env_array(envp);
 		exit(-1);
 	}
-	signal(SIGINT, cmd_listener);
-	if (waitpid(pid, &status, 0))
+	// signal(SIGINT, cmd_listener);
+	if (waitpid(g_pid, &status, 0))
 		return (-1);
 	else if (WIFEXITED(status))
 		return (WIFEXITED(status));

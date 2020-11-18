@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 16:37:03 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 19:57:42 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,53 @@ void	init_term(struct termios *oldt)
 	tcsetattr(STDIN_FILENO, TCSANOW, newt);
 }
 
+struct termios	init_term_2(struct termios *oldt)
+{
+	struct termios	*newt;
+
+	tcgetattr(STDIN_FILENO, oldt);
+	// newt = oldt;
+	ft_memcpy(&newt, &oldt, sizeof(oldt));
+	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
+	newt->c_cc[VMIN] = 1;
+	tcsetattr(STDIN_FILENO, TCSANOW, newt);
+	return (*newt);
+}
+
 char	*get_cmd(int fd)
 {
-	static struct termios oldt;
+	// static 
+	struct termios oldt;
+	// static 
+	struct termios tmp;
 
-	init_term(&oldt);
+	struct termios	newt;
+
+	tcgetattr(STDIN_FILENO, &oldt);
+
+
+	ft_printf("First state\n1. [%#x]\n", oldt.c_iflag);
+		ft_printf("2. [%#x]\n", oldt.c_oflag);
+		ft_printf("3. [%#x]\n", oldt.c_cflag);
+		ft_printf("4. [%#x]\n", oldt.c_lflag);
+	// i = 1;
+	// ft_printf("5. ");
+	// while (++i < NCCS)
+	// 	if (oldt.c_cc[i] != tmp.c_cc[i])
+	// 		ft_printf("(%d)[%d / %d] ", i, oldt.c_cc[i], tmp.c_cc[i]);
+		ft_printf("6. [%#x]\n", oldt.c_ispeed);
+		ft_printf("7. [%#x]\n", oldt.c_ospeed);
+
+	
+	// newt = oldt;
+	ft_memcpy(&newt, &oldt, sizeof(oldt));
+	newt.c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
+	newt.c_cc[VMIN] = 1;
+	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	// return (*newt);
+	tmp = newt;
+
+	// tmp = init_term_2(&oldt);
 
 	char c;
 	char esc[32];
@@ -156,6 +198,40 @@ char	*get_cmd(int fd)
 
 	ft_printf("\n");
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	
+	// if (oldt.c_iflag != tmp.c_iflag)
+	// 	ft_printf("1. [%d]\n[%d]", oldt.c_iflag, tmp.c_iflag);
+	// if (oldt.c_oflag != tmp.c_oflag)
+	// 	ft_printf("2. [%d]\n[%d]", oldt.c_oflag, tmp.c_oflag);
+	// if (oldt.c_cflag != tmp.c_cflag)
+	// 	ft_printf("3. [%d]\n[%d]", oldt.c_cflag, tmp.c_cflag);
+	// if (oldt.c_lflag != tmp.c_lflag)
+	// 	ft_printf("4. [%#x]\n[%#x]", oldt.c_lflag, tmp.c_lflag);
+	// i = 1;
+	// ft_printf("5. ");
+	// while (++i < NCCS)
+	// 	if (oldt.c_cc[i] != tmp.c_cc[i])
+	// 		ft_printf("(%d)[%d / %d] ", i, oldt.c_cc[i], tmp.c_cc[i]);
+	// if (oldt.c_ispeed != tmp.c_ispeed)
+	// 	ft_printf("6. [%d]\n[%d]", oldt.c_ispeed, tmp.c_ispeed);
+	// if (oldt.c_ospeed != tmp.c_ospeed)
+	// 	ft_printf("7. [%d]\n[%d]", oldt.c_ospeed, tmp.c_ospeed);
+
+
+	ft_printf("%sTERM%s\n", CLR_MAGENTA, CLR_RESET);
+	ft_printf("Return state\n1. [%#x]\n", oldt.c_iflag);
+		ft_printf("2. [%#x]\n", oldt.c_oflag);
+		ft_printf("3. [%#x]\n", oldt.c_cflag);
+		ft_printf("4. [%#x]\n", oldt.c_lflag);
+	// i = 1;
+	// ft_printf("5. ");
+	// while (++i < NCCS)
+	// 	if (oldt.c_cc[i] != tmp.c_cc[i])
+	// 		ft_printf("(%d)[%d / %d] ", i, oldt.c_cc[i], tmp.c_cc[i]);
+		ft_printf("6. [%#x]\n", oldt.c_ispeed);
+		ft_printf("7. [%#x]\n", oldt.c_ospeed);
+	// if (tcsetattr(STDIN_FILENO, TCSANOW, &oldt) == -1)
+	// 	ft_printf("[ERROR\a]");
 	return (buff);
 }
 
