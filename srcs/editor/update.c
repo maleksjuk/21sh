@@ -6,30 +6,23 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/15 19:42:11 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 17:56:48 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/editor.h"
 
-void	move_cursor(struct winsize *ws, ssize_t len)
+void	move_cursor(struct winsize *ws, int pos)
 {
 	int	i;
 
-	// ft_printf("\033[0;0H");
-
 	if (!ws->ws_col)
 		return ;
-	i = (len + 7) / ws->ws_col;
+	i = (pos + 7) / ws->ws_col;
 	if (!i)
 		return ;
-	// while (i - 1 > ws->ws_col)
-	// i = 0;
-	while (i > 0)
-	{
+	while (i-- > 0)
 		ft_printf("%s", ESC_UP);
-		i--;
-	}
 	ft_printf("\r");
 }
 
@@ -38,6 +31,7 @@ void	clear_line(int pos, ssize_t len, struct winsize *ws)
 	ssize_t	i;
 
 	move_cursor(ws, len - 2);
+	// move_cursor(ws, pos - 1);
 
 	// i = pos;
 	// ft_printf("%s", ESC_LEFT);
@@ -50,6 +44,7 @@ void	clear_line(int pos, ssize_t len, struct winsize *ws)
 		write(1, " ", 1);
 
 	move_cursor(ws, len - 2);
+	// move_cursor(ws, pos);
 }
 
 void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws)

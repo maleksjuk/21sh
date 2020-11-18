@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 14:12:42 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 16:53:00 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@
 # define ESC_CTRL_LEFT  "\033[1;5D"
 # define ESC_CTRL_UP    "\033[1;5A"
 # define ESC_CTRL_DOWN  "\033[1;5B"
+
+# define ESC_HOME "\033[H"
+# define ESC_END  "\033[F"
 
 // # define ESC_CTRL_UP    "\033[[A"
 // # define ESC_CTRL_DOWN  "\033[[B"
@@ -85,7 +88,7 @@ t_history	*g_hist;
 /*
 **  update.c
 */
-void	move_cursor(struct winsize *ws, ssize_t len);
+void	move_cursor(struct winsize *ws, int pos);
 void	clear_line(int pos, ssize_t len, struct winsize *ws);
 void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws);
 void	update_buffer(char c, char *buff, int *pos, ssize_t *len);

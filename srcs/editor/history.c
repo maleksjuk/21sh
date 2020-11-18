@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 15:44:43 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 16:43:17 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 				ft_printf("%s", ESC_LEFT);
 			}
 		}
+		if (pos[1] == 0 || pos[1] == 1)
+		{
+			ft_printf("\r");
+			print_prompt();
+		}
 		return (1);
 	}
 	else if (ft_strnequ(escape, ESC_CTRL_DOWN, 6))
@@ -112,6 +117,13 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 				(*i)++;
 				ft_printf("%s", ESC_RIGHT);
 			}
+		}
+		if (pos[1] == height - 1 || pos[1] == height)
+		{
+			ft_printf("\r");
+			pos[0] = (ft_strlen(buff) + 7) % ws->ws_col;
+			while (pos[0]--)
+				ft_printf("%s", ESC_RIGHT);
 		}
 		return (1);
 	}

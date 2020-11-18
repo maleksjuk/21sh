@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 14:17:37 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/18 16:37:03 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ char	*get_cmd(int fd)
 			while (!ft_isalpha(esc[i - 1]))
 				read(fd, &esc[i++], 1);
 			esc[i] = '\0';
+			if (ft_strnequ(esc, ESC_HOME, 3))
+				c = 1;
+			if (ft_strnequ(esc, ESC_END, 3))
+				c = 5;
 			if (!check_escape_ctrl(esc, buff, &pos, &ws))
 				if (!check_escape_line(esc, buff, &pos, &ws))
 					current = check_escape_history(esc, buff, &pos, current);
@@ -113,6 +117,18 @@ char	*get_cmd(int fd)
 		{
 			update_buffer(c, buff, &pos, &len);
 			print_buffer_actual(buff, len, pos, &ws);
+		}
+		if (c == 1)
+		{
+			i = len / ws.ws_col + 1;
+			while (i--)
+				check_escape_ctrl(ESC_CTRL_UP, buff, &pos, &ws);
+		}
+		else if (c == 5)
+		{
+			i = len / ws.ws_col + 1;
+			while (i--)
+				check_escape_ctrl(ESC_CTRL_DOWN, buff, &pos, &ws);
 		}
 		check_length_buffer(current);
 		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
