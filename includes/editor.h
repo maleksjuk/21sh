@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 12:59:27 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 13:43:12 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ t_history	*check_escape_history(t_reader *rdr, t_history *current);
 void	backspace(t_reader *rdr);
 // void	backspace(char *buff, int *pos, ssize_t *len);
 
-void	init_term(struct termios *oldt);
-struct termios	init_term_2(struct termios *oldt);
+// void	init_term(struct termios *oldt);
+// struct termios	init_term_2(struct termios *oldt);
 
 #endif

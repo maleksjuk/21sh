@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/21 11:33:00 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 13:43:42 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,68 +104,68 @@ void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *
 		ft_printf("%s", ESC_LEFT);
 }
 
-char	*get_cmd_2(int fd)
-{
-	static struct termios oldt;
+// char	*get_cmd_2(int fd)
+// {
+// 	static struct termios oldt;
 
-	init_term(&oldt);
+// 	init_term(&oldt);
 
-	char c;
-	char esc[3];
-	char *buff;
-	int pos;
-	ssize_t len;
+// 	char c;
+// 	char esc[3];
+// 	char *buff;
+// 	int pos;
+// 	ssize_t len;
 
-	struct winsize ws;
-	ioctl(1, TIOCGSIZE, &ws);
+// 	struct winsize ws;
+// 	ioctl(1, TIOCGSIZE, &ws);
 
-	buff = ft_strnew(HIST_BUFF_LEN);
+// 	buff = ft_strnew(HIST_BUFF_LEN);
 
-	pos = 0;
-	len = 0;
-	esc[0] = ESC;
+// 	pos = 0;
+// 	len = 0;
+// 	esc[0] = ESC;
 
-	while (read(fd, &c, 1) > 0)
-	{
-		if (c == 4 && ft_strlen(buff) == 0)
-		{
-			buff[0] = '\x04';
-			buff[1] = '\0';
-			break ;
-		}
-		else if (c == '\n')
-		{
-			ft_printf("\n");
-			break ;
-		}
-		// else if (c == DEL)
-		// {
-		// 	backspace(buff, &pos, &len);
-		// 	print_buffer_actual_2(buff, len, pos, &ws);
-		// }
-		// else if (c == ESC)
-		// {
-		// 	read(1, &esc[1], 2);
-		// 	// check_escape_ctrl(esc);
-		// 	check_escape_line(esc, buff, &pos, &ws);
-		// }
-		// else if (ft_isprint(c))
-		// {
-		// 	update_buffer(c, buff, &pos, &len);
-		// 	print_buffer_actual_2(buff, len, pos, &ws);
-		// }
-		// check_length_buffer(current);
-		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
-			ft_printf("\n");
-		if (DEBUG)
-			if (c == '\t')
-				exit(1);
-	}
+// 	while (read(fd, &c, 1) > 0)
+// 	{
+// 		if (c == 4 && ft_strlen(buff) == 0)
+// 		{
+// 			buff[0] = '\x04';
+// 			buff[1] = '\0';
+// 			break ;
+// 		}
+// 		else if (c == '\n')
+// 		{
+// 			ft_printf("\n");
+// 			break ;
+// 		}
+// 		// else if (c == DEL)
+// 		// {
+// 		// 	backspace(buff, &pos, &len);
+// 		// 	print_buffer_actual_2(buff, len, pos, &ws);
+// 		// }
+// 		// else if (c == ESC)
+// 		// {
+// 		// 	read(1, &esc[1], 2);
+// 		// 	// check_escape_ctrl(esc);
+// 		// 	check_escape_line(esc, buff, &pos, &ws);
+// 		// }
+// 		// else if (ft_isprint(c))
+// 		// {
+// 		// 	update_buffer(c, buff, &pos, &len);
+// 		// 	print_buffer_actual_2(buff, len, pos, &ws);
+// 		// }
+// 		// check_length_buffer(current);
+// 		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
+// 			ft_printf("\n");
+// 		if (DEBUG)
+// 			if (c == '\t')
+// 				exit(1);
+// 	}
 
 	
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	return (buff);
-}
+// 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+// 	return (buff);
+// }
 
 char		*get_txt(char *word, int i)
 {

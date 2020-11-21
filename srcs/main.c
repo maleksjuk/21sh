@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 12:58:13 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 14:12:29 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,29 @@ void	cmd_input(char *bufer, t_env *env)
 	free(cmd_list);
 }
 
-void	init_term(struct termios *oldt)
-{
-	struct termios	*newt;
+// void	init_term(struct termios *oldt)
+// {
+// 	struct termios	*newt;
 
-	tcgetattr(STDIN_FILENO, oldt);
-	newt = oldt;
-	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
-	newt->c_cc[VMIN] = 1;
-	tcsetattr(STDIN_FILENO, TCSANOW, newt);
-}
+// 	tcgetattr(STDIN_FILENO, oldt);
+// 	newt = oldt;
+// 	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
+// 	newt->c_cc[VMIN] = 1;
+// 	tcsetattr(STDIN_FILENO, TCSANOW, newt);
+// }
 
-struct termios	init_term_2(struct termios *oldt)
-{
-	struct termios	*newt;
+// struct termios	init_term_2(struct termios *oldt)
+// {
+// 	struct termios	*newt;
 
-	tcgetattr(STDIN_FILENO, oldt);
-	// newt = oldt;
-	ft_memcpy(&newt, &oldt, sizeof(oldt));
-	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
-	newt->c_cc[VMIN] = 1;
-	tcsetattr(STDIN_FILENO, TCSANOW, newt);
-	return (*newt);
-}
+// 	tcgetattr(STDIN_FILENO, oldt);
+// 	// newt = oldt;
+// 	ft_memcpy(&newt, &oldt, sizeof(oldt));
+// 	newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
+// 	newt->c_cc[VMIN] = 1;
+// 	tcsetattr(STDIN_FILENO, TCSANOW, newt);
+// 	return (*newt);
+// }
 
 t_reader	*set_reader()
 {
@@ -62,12 +62,12 @@ t_reader	*set_reader()
 	rdr->oldt = (struct termios *)malloc(sizeof(struct termios));
 	rdr->newt = (struct termios *)malloc(sizeof(struct termios));
 	tcgetattr(STDIN_FILENO, rdr->oldt);
-	ft_printf("%sFirst state [%#x]", CLR_MAGENTA, rdr->oldt->c_lflag);
+	// ft_printf("%sFirst state [%#x]", CLR_MAGENTA, rdr->oldt->c_lflag);
 	*(rdr->newt) = *(rdr->oldt);
 	rdr->newt->c_lflag &= ~(ICANON | ECHOCTL | ECHO | ISIG);
 	rdr->newt->c_cc[VMIN] = 1;
 	tcsetattr(STDIN_FILENO, TCSANOW, rdr->newt);
-	ft_printf("->[%#x]%s\n", rdr->newt->c_lflag, CLR_RESET);
+	// ft_printf("->[%#x]%s\n", rdr->newt->c_lflag, CLR_RESET);
 	ioctl(1, TIOCGSIZE, &rdr->ws);
 	rdr->pos = 0;
 	rdr->len = 0;
@@ -82,7 +82,7 @@ char	*unset_reader(t_reader *rdr)
 	buff = rdr->buff;
 	rdr->oldt->c_lflag &= 0x200005cb;
 	tcsetattr(STDIN_FILENO, TCSANOW, rdr->oldt);
-	ft_printf("%sReturn state [%#x]%s\n", CLR_MAGENTA, rdr->oldt->c_lflag, CLR_RESET);
+	// ft_printf("%sReturn state [%#x]%s\n", CLR_MAGENTA, rdr->oldt->c_lflag, CLR_RESET);
 	free(rdr->oldt);
 	free(rdr->newt);
 	free(rdr);
@@ -108,11 +108,8 @@ t_history	*check_escape_main(t_reader *rdr, t_history *current)
 	return (current);
 }
 
-int		spec_symbol(t_reader *rdr, t_history *current)
+int		spec_symbol(t_reader *rdr, t_history *current, int i)
 {
-	int	i;
-
-	i = 1;
 	if (rdr->c == CTRL_D && ft_strlen(rdr->buff) == 0)
 		rdr->buff = "\x04";
 	else if (rdr->c == CTRL_C)
@@ -165,11 +162,6 @@ char	*get_cmd(int fd)
 			}
 			break ;
 		}
-		// else if (rdr->c == DEL)
-		// {
-		// 	backspace(rdr);
-		// 	print_buffer_actual(rdr);
-		// }
 		else if (rdr->c == ESC)
 			current = check_escape_main(rdr, current);
 		else if (ft_isprint(rdr->c))
@@ -177,7 +169,7 @@ char	*get_cmd(int fd)
 			update_buffer(rdr);
 			print_buffer_actual(rdr);
 		}
-		if (spec_symbol(rdr, current) > 0)
+		if (spec_symbol(rdr, current, 1) > 0)
 			break ;
 		check_length_buffer(current);
 		if ((ft_strlen(rdr->buff) + 7) % rdr->ws.ws_col == 0)

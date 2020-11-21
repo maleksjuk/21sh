@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 11:27:46 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 14:05:45 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	clear_line(int pos, ssize_t len, struct winsize *ws)
 	ft_printf("\r");
 	print_prompt();
 	i = 0;
-	while (++i <= len)
+	while (++i < len)
 		write(1, " ", 1);
 
 	move_cursor(ws, len - 2);
