@@ -49,12 +49,14 @@ void		here_doc(char **cmd)
 	char **swap;
 	char *text;
 	char *out;
+	char *help;
 
+	help = ft_strnew(1);
 	swap = cmd;
 	while (*(++swap) && !(ft_strequ(*swap, "<<")))
 		NULL;
 	word = ft_strdup(*(swap + 1));
-	text = get_txt(word, 1);
+	text = get_txt(word, 1, help);
 	out = converter_type_out(text);
 	redirection(out);
 	free(out);

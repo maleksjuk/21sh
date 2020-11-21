@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "editor.h"
 
-void	check_esca(t_reader *rdr)
+void		check_esca(t_reader *rdr)
 {
 	int	i;
 
@@ -34,7 +34,7 @@ void	check_esca(t_reader *rdr)
 		return ;
 }
 
-void	move_cursor_2(struct winsize ws, int pos)
+void		move_cursor_2(struct winsize ws, int pos)
 {
 	int	i;
 
@@ -48,7 +48,7 @@ void	move_cursor_2(struct winsize ws, int pos)
 	ft_printf("\r");
 }
 
-void	clear_line_2(t_reader *rdr)
+void		clear_line_2(t_reader *rdr)
 {
 	ssize_t	i;
 
@@ -61,7 +61,7 @@ void	clear_line_2(t_reader *rdr)
 	move_cursor_2(rdr->ws, rdr->len - 2);
 }
 
-void	print_buffer_actual_2(t_reader *rdr)
+void		print_buffer_actual_2(t_reader *rdr)
 {
 	ssize_t	i;
 
@@ -125,17 +125,16 @@ char		*mega_read(int fd)
 		if (specials(rdr, 1) > 0)
 			break ;
 	}
+	ft_printf("\n");
 	return (unset_reader(rdr));
 }
 
-char		*get_txt(char *word, int i)
+char		*get_txt(char *word, int i, char *help)
 {
 	char	*bufer;
 	char	*res;
-	char	*help;
 
 	res = ft_strnew(1);
-	help = ft_strnew(1);
 	while (1)
 	{
 		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
@@ -145,7 +144,6 @@ char		*get_txt(char *word, int i)
 			free(bufer);
 			break ;
 		}
-		ft_printf("\n");
 		if (i == 0)
 			help = ft_strjoin(res, "\n");
 		else

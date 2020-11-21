@@ -32,7 +32,7 @@ t_reader	*set_reader(int fd, t_history *current)
 	if (current)
 		rdr->buff = current->buff;
 	else
-		rdr->buff = ft_strnew(HIST_BUFF_LEN * 4);
+		rdr->buff = ft_strnew(1024);
 	return (rdr);
 }
 
