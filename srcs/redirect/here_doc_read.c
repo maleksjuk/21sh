@@ -48,27 +48,37 @@ void		move_cursor_2(struct winsize ws, int pos)
 	ft_printf("\r");
 }
 
-void		clear_line_2(t_reader *rdr)
+void		clear_line_2(t_reader *rdr, int identi)
 {
 	ssize_t	i;
 
 	move_cursor_2(rdr->ws, rdr->len - 2);
 	ft_printf("\r");
-	ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	if (identi == 3)
+		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	else if (identi == 2)
+		ft_printf("%sdquotes> %s", CLR_RED, CLR_RESET);
+	else if (identi == 1)
+		ft_printf("%suquotes> %s", CLR_RED, CLR_RESET);
 	i = 0;
 	while (++i < rdr->len)
 		write(1, " ", 1);
 	move_cursor_2(rdr->ws, rdr->len - 2);
 }
 
-void		print_buffer_actual_2(t_reader *rdr)
+void		print_buffer_actual_2(t_reader *rdr, int identi)
 {
 	ssize_t	i;
 
-	clear_line_2(rdr);
+	clear_line_2(rdr, identi);
 	ft_printf("\r");
 	i = 0;
-	ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	if (identi == 3)
+		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	else if (identi == 2)
+		ft_printf("%sdquotes> %s", CLR_RED, CLR_RESET);
+	else if (identi == 1)
+		ft_printf("%suquotes> %s", CLR_RED, CLR_RESET);
 	while (i < rdr->len)
 		ft_printf("%c", rdr->buff[i++]);
 	i = rdr->len;
@@ -76,11 +86,12 @@ void		print_buffer_actual_2(t_reader *rdr)
 		ft_printf("%s", ESC_LEFT);
 }
 
-int			specials(t_reader *rdr, int i)
+int			specials(t_reader *rdr, int i, int identi)
 {
 	if (rdr->c == CTRL_D && ft_strlen(rdr->buff) == 0)
 		ft_strcpy(rdr->buff, "\x04");
-	// else if (rdr->c == CTRL_C)
+	else if (rdr->c == CTRL_C)
+		ft_strcpy(rdr->buff, "\x03");
 	else if (rdr->c == CTRL_A || rdr->c == CTRL_E)
 	{
 		ft_strcpy(rdr->esc, rdr->c == CTRL_A ? ESC_CTRL_UP : ESC_CTRL_DOWN);
@@ -91,7 +102,7 @@ int			specials(t_reader *rdr, int i)
 	else if (rdr->c == DEL)
 	{
 		backspace(rdr);
-		print_buffer_actual_2(rdr);
+		print_buffer_actual_2(rdr, identi);
 		i = 0;
 	}
 	else
@@ -106,7 +117,7 @@ int			check_n(t_reader *rdr)
 	return (1);
 }
 
-char		*mega_read(int fd)
+char		*mega_read(int fd, int identi)
 {
 	t_reader	*rdr;
 
@@ -120,13 +131,14 @@ char		*mega_read(int fd)
 		else if (ft_isprint(rdr->c))
 		{
 			update_buffer(rdr);
-			print_buffer_actual_2(rdr);
+			print_buffer_actual_2(rdr, identi);
 		}
-		if (specials(rdr, 1) > 0)
+		if (specials(rdr, 1, identi) > 0)
 			break ;
 	}
 	ft_printf("\n");
 	return (unset_reader(rdr));
+	(void)identi;
 }
 
 char		*get_txt(char *word, int i, char *help)
@@ -138,7 +150,7 @@ char		*get_txt(char *word, int i, char *help)
 	while (1)
 	{
 		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
-		bufer = mega_read(0);
+		bufer = mega_read(0, 3);
 		if (ft_strequ(bufer, word) || ft_strequ(bufer, "\x04"))
 		{
 			free(bufer);

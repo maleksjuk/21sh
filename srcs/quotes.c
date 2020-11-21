@@ -31,13 +31,20 @@ char	*get_from_wait_quotes(t_env *env, int quote[2])
 	char	*bufer;
 	char	*continue_cmd;
 
+	bufer = NULL;
 	if (quote[0])
-		ft_printf("\033[31mquote> \033[0m");
+	{
+		ft_printf("\033[31muquotes> \033[0m");
+		bufer = mega_read(0, 1);
+	}
 	else if (quote[1])
-		ft_printf("\033[31mdquote> \033[0m");
-	bufer = mega_read(0);
+	{
+		ft_printf("\033[31mdquotes> \033[0m");
+		bufer = mega_read(0, 2);
+	}
 	continue_cmd = check_symbols(env, bufer, quote);
-	free(bufer);
+	if (bufer)
+		free(bufer);
 	return (continue_cmd);
 }
 

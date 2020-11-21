@@ -54,7 +54,7 @@ char	*check_symbols(t_env *env, char *cmd, int quote_rec[2])
 	str = ft_strnew(LEN_PATH);
 	i[0] = -1;
 	i[1] = -1;
-	while (cmd[++i[0]])
+	while (cmd && cmd[++i[0]])
 	{
 		i[1]++;
 		check_quote_position(cmd, str, i, quote);
