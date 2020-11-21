@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 17:56:48 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 11:27:46 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ void	clear_line(int pos, ssize_t len, struct winsize *ws)
 	// move_cursor(ws, pos);
 }
 
-void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws)
+void    print_buffer_actual(t_reader *rdr)
+// char *buff, ssize_t len, int pos, 
 {
 	ssize_t	i;
 	
-	clear_line(pos, len + 1, ws);
+	clear_line(rdr->pos, rdr->len + 1, &rdr->ws);
 
 	// i = pos - 2;
 	// while (++i < len && buff[i])
@@ -59,31 +60,34 @@ void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws
 	ft_printf("\r");
 	i = 0;
 	print_prompt();
-	while (i < len)
-		ft_printf("%c", buff[i++]);
-	while (--len >= pos && len >= 0)
+	while (i < rdr->len)
+		ft_printf("%c", rdr->buff[i++]);
+	i = rdr->len;
+	while (--i >= rdr->pos && i >= 0)
 		ft_printf("%s", ESC_LEFT);
 }
 
-void	update_buffer(char c, char *buff, int *pos, ssize_t *len)
+// char c, char *buff, int *pos, ssize_t *len
+void	update_buffer(t_reader *rdr)
 {
 	int i;
 
-	i = ++(*len);
-	while (--i > *pos)
-		buff[i] = buff[i - 1];
-	buff[(*pos)++] = c;
+	i = ++(rdr->len);
+	while (--i > rdr->pos)
+		rdr->buff[i] = rdr->buff[i - 1];
+	rdr->buff[(rdr->pos)++] = rdr->c;
 }
 
-void	backspace(char *buff, int *pos, ssize_t *len)
+void	backspace(t_reader *rdr)
+	// char *buff, int *pos, ssize_t *len)
 {
 	int	i;
 
-	if (*pos == 0 || *len == 0)
+	if (rdr->pos == 0 || rdr->len == 0)
 		return ;
-	i = *pos - 1;
-	while (++i <= *len)
-		buff[i - 1] = buff[i];
-	buff[--(*len)] = '\0';
-	(*pos)--;
+	i = rdr->pos - 1;
+	while (++i <= rdr->len)
+		rdr->buff[i - 1] = rdr->buff[i];
+	rdr->buff[--(rdr->len)] = '\0';
+	(rdr->pos)--;
 }

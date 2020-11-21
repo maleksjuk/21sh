@@ -6,25 +6,26 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 16:43:17 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 11:29:33 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "editor.h"
 
-int		check_escape_ctrl_horizont(char *escape, char *buff, int *i, struct winsize *ws)
+// char *escape, char *buff, int *i
+int		check_escape_ctrl_horizont(t_reader *rdr, struct winsize *ws)
 {
 	int	height;
 	int	pos[2];
 
-	height = (ft_strlen(buff) + 7) / ws->ws_col;
-	pos[0] = (*i + 7) % ws->ws_col;
-	pos[1] = (*i + 7) / ws->ws_col;
-	if (ft_strnequ(escape, ESC_CTRL_LEFT, 6))
+	height = (ft_strlen(rdr->buff) + 7) / ws->ws_col;
+	pos[0] = (rdr->pos + 7) % ws->ws_col;
+	pos[1] = (rdr->pos + 7) / ws->ws_col;
+	if (ft_strnequ(rdr->esc, ESC_CTRL_LEFT, 6))
 	{
-		while (buff && *i > 0)
+		while (rdr->buff && rdr->pos > 0)
 		{	
-			(*i)--;
+			(rdr->pos)--;
 			pos[0]--;
 			ft_printf("%s", ESC_LEFT);
 			
@@ -38,16 +39,16 @@ int		check_escape_ctrl_horizont(char *escape, char *buff, int *i, struct winsize
 				}
 				pos[1]--;
 			}
-			if (!(*i == ft_strlen(buff) || buff[*i] != ' '))
+			if (!(rdr->pos == ft_strlen(rdr->buff) || rdr->buff[rdr->pos] != ' '))
 				break ;
 		}
 		return (1);
 	}
-	else if (ft_strnequ(escape, ESC_CTRL_RIGHT, 6))
+	else if (ft_strnequ(rdr->esc, ESC_CTRL_RIGHT, 6))
 	{
-		while (buff && *i < ft_strlen(buff))
+		while (rdr->buff && rdr->pos < ft_strlen(rdr->buff))
 		{
-			(*i)++;
+			(rdr->pos)++;
 			ft_printf("%s", ESC_RIGHT);
 			if (pos[0] == ws->ws_col - 1 && pos[1] < height)
 			{
@@ -55,7 +56,7 @@ int		check_escape_ctrl_horizont(char *escape, char *buff, int *i, struct winsize
 				pos[1]++;
 			}
 			pos[0]++;
-			if (!buff[*i] || buff[*i] == ' ')
+			if (!rdr->buff[rdr->pos] || rdr->buff[rdr->pos] == ' ')
 				break ;
 		}
 		return (1);
@@ -63,32 +64,33 @@ int		check_escape_ctrl_horizont(char *escape, char *buff, int *i, struct winsize
 	return (0);
 }
 
-int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize *ws)
+// char *escape, char *buff, int *i
+int		check_escape_ctrl_vertical(t_reader *rdr, struct winsize *ws)
 {
 	int	height;
 	int	swap;
 	int	pos[2];
 
-	height = (ft_strlen(buff) + 7) / ws->ws_col;
-	pos[0] = (*i + 7) % ws->ws_col;
-	pos[1] = (*i + 7) / ws->ws_col;
+	height = (ft_strlen(rdr->buff) + 7) / ws->ws_col;
+	pos[0] = (rdr->pos + 7) % ws->ws_col;
+	pos[1] = (rdr->pos + 7) / ws->ws_col;
 	swap = 0;
-	if (ft_strnequ(escape, ESC_CTRL_UP, 6))
+	if (ft_strnequ(rdr->esc, ESC_CTRL_UP, 6))
 	{
 		if (height > 0 && pos[1] > 0)
 		{
-			while (*i > 0 && swap < ws->ws_col)
+			while (rdr->pos > 0 && swap < ws->ws_col)
 			{
 				swap++;
-				(*i)--;
+				(rdr->pos)--;
 			}
 			ft_printf("%s", ESC_UP);
 		}
 		else
 		{
-			while (*i > 0)
+			while (rdr->pos > 0)
 			{
-				(*i)--;
+				(rdr->pos)--;
 				ft_printf("%s", ESC_LEFT);
 			}
 		}
@@ -99,29 +101,29 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 		}
 		return (1);
 	}
-	else if (ft_strnequ(escape, ESC_CTRL_DOWN, 6))
+	else if (ft_strnequ(rdr->esc, ESC_CTRL_DOWN, 6))
 	{
 		if (height > 0 && pos[1] < height)
 		{
-			while (buff[*i] && swap < ws->ws_col)
+			while (rdr->buff[rdr->pos] && swap < ws->ws_col)
 			{
 				swap++;
-				(*i)++;
+				(rdr->pos)++;
 			}
 			ft_printf("%s", ESC_DOWN);
 		}
 		else
 		{
-			while (buff[*i])
+			while (rdr->buff[rdr->pos])
 			{
-				(*i)++;
+				(rdr->pos)++;
 				ft_printf("%s", ESC_RIGHT);
 			}
 		}
 		if (pos[1] == height - 1 || pos[1] == height)
 		{
 			ft_printf("\r");
-			pos[0] = (ft_strlen(buff) + 7) % ws->ws_col;
+			pos[0] = (ft_strlen(rdr->buff) + 7) % ws->ws_col;
 			while (pos[0]--)
 				ft_printf("%s", ESC_RIGHT);
 		}
@@ -130,33 +132,34 @@ int		check_escape_ctrl_vertical(char *escape, char *buff, int *i, struct winsize
 	return (0);
 }
 
-int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws)
+int		check_escape_ctrl(t_reader *rdr)
 {
-	if (check_escape_ctrl_horizont(escape, buff, i, ws))
+	if (check_escape_ctrl_horizont(rdr, &rdr->ws))
 		return (1);
-	if (check_escape_ctrl_vertical(escape, buff, i, ws))
+	if (check_escape_ctrl_vertical(rdr, &rdr->ws))
 		return (1);
 	return (0);
 }
 
-int		check_escape_line(char *escape, char *buff, int *i, struct winsize *ws)
+// char *escape, char *buff, int *i
+int		check_escape_line(t_reader *rdr)
 {
 	int	height;
 	int	pos[2];
 
-	height = (ft_strlen(buff) + 7) / ws->ws_col;
-	pos[0] = (*i + 7) % ws->ws_col;
+	height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
+	pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
 	// pos[1] = (*i + 7) / ws->ws_col;
-	if (ft_strnequ(escape, ESC_LEFT, 3) && *i > 0)
+	if (ft_strnequ(rdr->esc, ESC_LEFT, 3) && rdr->pos > 0)
 	{
-		(*i)--;
+		(rdr->pos)--;
 		ft_printf("%s", ESC_LEFT);
 		return (1);
 	}
-	else if (ft_strnequ(escape, ESC_RIGHT, 3) && buff[*i] != '\0')
+	else if (ft_strnequ(rdr->esc, ESC_RIGHT, 3) && rdr->buff[rdr->pos] != '\0')
 	{
-		(*i)++;
-		if (pos[0] == ws->ws_col - 1)
+		(rdr->pos)++;
+		if (pos[0] == rdr->ws.ws_col - 1)
 			ft_printf("%s\r", ESC_DOWN);
 		else
 			ft_printf("%s", ESC_RIGHT);
@@ -165,23 +168,24 @@ int		check_escape_line(char *escape, char *buff, int *i, struct winsize *ws)
 	return (0);
 }
 
-t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current)
+// char *escape, char *buff, int *i
+t_history	*check_escape_history(t_reader *rdr, t_history *current)
 {
-	if (current && ft_strnequ(escape, ESC_UP, 3) && current->prev)
+	if (current && ft_strnequ(rdr->esc, ESC_UP, 3) && current->prev)
 		current = current->prev;
-	else if (current && ft_strnequ(escape, ESC_DOWN, 3) && current->next)
+	else if (current && ft_strnequ(rdr->esc, ESC_DOWN, 3) && current->next)
 		current = current->next;
 	else
 		return (current);
 
 	ft_printf("\r");
 	print_prompt();
-	*i = -1;
-	while (buff[++(*i)])
+	rdr->pos = -1;
+	while (rdr->buff[++(rdr->pos)])
 		write(1, " ", 1);
 	ft_printf("\r");
 	print_prompt();
-	*i = ft_strlen(current->buff);
+	rdr->pos = ft_strlen(current->buff);
 	ft_printf("%s", current->buff);
 
 	return (current);

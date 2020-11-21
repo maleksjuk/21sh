@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/15 15:17:53 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 09:54:23 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	returno(char **av)
 	return ;
 }
 
-void		free_history()
+void		free_history(void)
 {
 	while (g_hist->prev)
 		g_hist = g_hist->prev;
@@ -75,7 +75,6 @@ void		free_history()
 			free(g_hist);
 			g_hist = NULL;
 		}
-		
 	}
 }
 

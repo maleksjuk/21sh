@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/18 14:21:01 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 11:33:00 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,22 +138,22 @@ char	*get_cmd_2(int fd)
 			ft_printf("\n");
 			break ;
 		}
-		else if (c == DEL)
-		{
-			backspace(buff, &pos, &len);
-			print_buffer_actual_2(buff, len, pos, &ws);
-		}
-		else if (c == ESC)
-		{
-			read(1, &esc[1], 2);
-			// check_escape_ctrl(esc);
-			check_escape_line(esc, buff, &pos, &ws);
-		}
-		else if (ft_isprint(c))
-		{
-			update_buffer(c, buff, &pos, &len);
-			print_buffer_actual_2(buff, len, pos, &ws);
-		}
+		// else if (c == DEL)
+		// {
+		// 	backspace(buff, &pos, &len);
+		// 	print_buffer_actual_2(buff, len, pos, &ws);
+		// }
+		// else if (c == ESC)
+		// {
+		// 	read(1, &esc[1], 2);
+		// 	// check_escape_ctrl(esc);
+		// 	check_escape_line(esc, buff, &pos, &ws);
+		// }
+		// else if (ft_isprint(c))
+		// {
+		// 	update_buffer(c, buff, &pos, &len);
+		// 	print_buffer_actual_2(buff, len, pos, &ws);
+		// }
 		// check_length_buffer(current);
 		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
 			ft_printf("\n");
@@ -178,8 +178,8 @@ char		*get_txt(char *word, int i)
 	while (1)
 	{
 		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
-		bufer = get_cmd_2(0);
-		// bufer = get_cm(0, 0, 1, 1024);
+		// bufer = get_cmd_2(0);
+		bufer = get_cm(0, 0, 1, 1024);
 		if (ft_strequ(bufer, word) || iseof_in_line(bufer))
 		{
 			free(bufer);

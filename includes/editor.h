@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 19:17:08 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 12:59:27 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,15 @@
 # define HISTORY_LIMIT 50
 # define HIST_BUFF_LEN 256
 
-# define DEL 127
+/*
+**	ASCII codes
+*/
+# define CTRL_A 1
+# define CTRL_C 3
+# define CTRL_D 4
+# define CTRL_E 5
 # define ESC 27
+# define DEL 127
 
 # define DEBUG 0
 
@@ -72,6 +79,19 @@
 # define CLR_BLUE    "\033[34m"
 # define CLR_MAGENTA "\033[35m"
 # define CLR_CYAN    "\033[36m"
+
+typedef struct	s_reader
+{
+	struct termios	*oldt;
+	struct termios	*newt;
+	int				fd;
+	int				pos;
+	ssize_t			len;
+	char			c;
+	char			esc[32];
+	char			*buff;
+	struct winsize	ws;
+}				t_reader;
 
 
 typedef struct 	s_history
@@ -90,8 +110,8 @@ t_history	*g_hist;
 */
 void	move_cursor(struct winsize *ws, int pos);
 void	clear_line(int pos, ssize_t len, struct winsize *ws);
-void    print_buffer_actual(char *buff, ssize_t len, int pos, struct winsize *ws);
-void	update_buffer(char c, char *buff, int *pos, ssize_t *len);
+void    print_buffer_actual(t_reader *rdr);
+void	update_buffer(t_reader *rdr);
 void	reset_history(t_history *hist);
 
 /*
@@ -103,10 +123,12 @@ void	check_length_buffer(t_history *hist);
 /*
 **  ready.c
 */
-int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
-int		check_escape_line(char *escape, char *buff, int *i, struct winsize *ws);
-t_history	*check_escape_history(char *escape, char *buff, int *i, t_history *current);
-void	backspace(char *buff, int *pos, ssize_t *len);
+// int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
+int		check_escape_ctrl(t_reader *rdr);
+int		check_escape_line(t_reader *rdr);
+t_history	*check_escape_history(t_reader *rdr, t_history *current);
+void	backspace(t_reader *rdr);
+// void	backspace(char *buff, int *pos, ssize_t *len);
 
 void	init_term(struct termios *oldt);
 struct termios	init_term_2(struct termios *oldt);

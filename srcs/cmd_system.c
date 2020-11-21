@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 10:35:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 19:53:55 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 09:55:51 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,9 @@ char	**cmd_arguments(char *cmd)
 
 int		cmd_system(char *prgm, char **argv, t_env *env)
 {
-	// pid_t	pid;
 	int		status;
 	char	**envp;
 
-	// g_pid = 0;
 	g_pid = fork();
 	signal(SIGINT, cmd_listener);
 	if (g_pid == -1)
@@ -126,13 +124,11 @@ int		cmd_system(char *prgm, char **argv, t_env *env)
 	}
 	else if (g_pid == 0)
 	{
-		// kill(g_pid, SIGINT);
 		envp = create_env_array(env);
 		execve(prgm, argv, envp);
 		delete_env_array(envp);
 		exit(-1);
 	}
-	// signal(SIGINT, cmd_listener);
 	if (waitpid(g_pid, &status, 0))
 		return (-1);
 	else if (WIFEXITED(status))
