@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 14:31:25 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 16:35:35 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ typedef struct			s_reader
 	char				esc[32];
 	char				*buff;
 	struct winsize		ws;
+	int					curs_pos[2];
+	int					height;
+	int					flag_break;
 }						t_reader;
 
 typedef struct			s_history
@@ -90,8 +93,8 @@ t_history				*g_hist;
 /*
 **  update.c
 */
-void					move_cursor(struct winsize *ws, int pos);
-void					clear_line(int pos, ssize_t len, struct winsize *ws);
+void					move_cursor(struct winsize ws, int pos);
+void					clear_line(t_reader *rdr);
 void					print_buffer_actual(t_reader *rdr);
 void					update_buffer(t_reader *rdr);
 void					reset_history(t_history *hist);

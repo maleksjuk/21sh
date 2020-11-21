@@ -6,189 +6,21 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 11:29:33 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 16:12:55 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "editor.h"
 
-// char *escape, char *buff, int *i
-int		check_escape_ctrl_horizont(t_reader *rdr, struct winsize *ws)
+t_history	*init_new_history(void)
 {
-	int	height;
-	int	pos[2];
+	t_history	*new;
 
-	height = (ft_strlen(rdr->buff) + 7) / ws->ws_col;
-	pos[0] = (rdr->pos + 7) % ws->ws_col;
-	pos[1] = (rdr->pos + 7) / ws->ws_col;
-	if (ft_strnequ(rdr->esc, ESC_CTRL_LEFT, 6))
-	{
-		while (rdr->buff && rdr->pos > 0)
-		{	
-			(rdr->pos)--;
-			pos[0]--;
-			ft_printf("%s", ESC_LEFT);
-			
-			if (pos[0] < 0 && pos[1] > 0)
-			{
-				// ft_printf("%s", ESC_UP);
-				while (pos[0] < ws->ws_col - 1)
-				{
-					pos[0]++;
-					ft_printf("%s", ESC_RIGHT);
-				}
-				pos[1]--;
-			}
-			if (!(rdr->pos == ft_strlen(rdr->buff) || rdr->buff[rdr->pos] != ' '))
-				break ;
-		}
-		return (1);
-	}
-	else if (ft_strnequ(rdr->esc, ESC_CTRL_RIGHT, 6))
-	{
-		while (rdr->buff && rdr->pos < ft_strlen(rdr->buff))
-		{
-			(rdr->pos)++;
-			ft_printf("%s", ESC_RIGHT);
-			if (pos[0] == ws->ws_col - 1 && pos[1] < height)
-			{
-				ft_printf("%s\r", ESC_DOWN);
-				pos[1]++;
-			}
-			pos[0]++;
-			if (!rdr->buff[rdr->pos] || rdr->buff[rdr->pos] == ' ')
-				break ;
-		}
-		return (1);
-	}
-	return (0);
-}
-
-// char *escape, char *buff, int *i
-int		check_escape_ctrl_vertical(t_reader *rdr, struct winsize *ws)
-{
-	int	height;
-	int	swap;
-	int	pos[2];
-
-	height = (ft_strlen(rdr->buff) + 7) / ws->ws_col;
-	pos[0] = (rdr->pos + 7) % ws->ws_col;
-	pos[1] = (rdr->pos + 7) / ws->ws_col;
-	swap = 0;
-	if (ft_strnequ(rdr->esc, ESC_CTRL_UP, 6))
-	{
-		if (height > 0 && pos[1] > 0)
-		{
-			while (rdr->pos > 0 && swap < ws->ws_col)
-			{
-				swap++;
-				(rdr->pos)--;
-			}
-			ft_printf("%s", ESC_UP);
-		}
-		else
-		{
-			while (rdr->pos > 0)
-			{
-				(rdr->pos)--;
-				ft_printf("%s", ESC_LEFT);
-			}
-		}
-		if (pos[1] == 0 || pos[1] == 1)
-		{
-			ft_printf("\r");
-			print_prompt();
-		}
-		return (1);
-	}
-	else if (ft_strnequ(rdr->esc, ESC_CTRL_DOWN, 6))
-	{
-		if (height > 0 && pos[1] < height)
-		{
-			while (rdr->buff[rdr->pos] && swap < ws->ws_col)
-			{
-				swap++;
-				(rdr->pos)++;
-			}
-			ft_printf("%s", ESC_DOWN);
-		}
-		else
-		{
-			while (rdr->buff[rdr->pos])
-			{
-				(rdr->pos)++;
-				ft_printf("%s", ESC_RIGHT);
-			}
-		}
-		if (pos[1] == height - 1 || pos[1] == height)
-		{
-			ft_printf("\r");
-			pos[0] = (ft_strlen(rdr->buff) + 7) % ws->ws_col;
-			while (pos[0]--)
-				ft_printf("%s", ESC_RIGHT);
-		}
-		return (1);
-	}
-	return (0);
-}
-
-int		check_escape_ctrl(t_reader *rdr)
-{
-	if (check_escape_ctrl_horizont(rdr, &rdr->ws))
-		return (1);
-	if (check_escape_ctrl_vertical(rdr, &rdr->ws))
-		return (1);
-	return (0);
-}
-
-// char *escape, char *buff, int *i
-int		check_escape_line(t_reader *rdr)
-{
-	int	height;
-	int	pos[2];
-
-	height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
-	pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
-	// pos[1] = (*i + 7) / ws->ws_col;
-	if (ft_strnequ(rdr->esc, ESC_LEFT, 3) && rdr->pos > 0)
-	{
-		(rdr->pos)--;
-		ft_printf("%s", ESC_LEFT);
-		return (1);
-	}
-	else if (ft_strnequ(rdr->esc, ESC_RIGHT, 3) && rdr->buff[rdr->pos] != '\0')
-	{
-		(rdr->pos)++;
-		if (pos[0] == rdr->ws.ws_col - 1)
-			ft_printf("%s\r", ESC_DOWN);
-		else
-			ft_printf("%s", ESC_RIGHT);
-		return (1);
-	}
-	return (0);
-}
-
-// char *escape, char *buff, int *i
-t_history	*check_escape_history(t_reader *rdr, t_history *current)
-{
-	if (current && ft_strnequ(rdr->esc, ESC_UP, 3) && current->prev)
-		current = current->prev;
-	else if (current && ft_strnequ(rdr->esc, ESC_DOWN, 3) && current->next)
-		current = current->next;
-	else
-		return (current);
-
-	ft_printf("\r");
-	print_prompt();
-	rdr->pos = -1;
-	while (rdr->buff[++(rdr->pos)])
-		write(1, " ", 1);
-	ft_printf("\r");
-	print_prompt();
-	rdr->pos = ft_strlen(current->buff);
-	ft_printf("%s", current->buff);
-
-	return (current);
+	new = (t_history *)malloc(sizeof(t_history));
+	new->count = 1;
+	new->buff = ft_strnew(HIST_BUFF_LEN);
+	new->save = NULL;
+	return (new);
 }
 
 t_history	*new_history(t_history *current, t_history *last)
@@ -199,25 +31,15 @@ t_history	*new_history(t_history *current, t_history *last)
 	{
 		last->save = ft_strnew(ft_strlen(current->buff) + 1);
 		ft_strcpy(last->save, current->buff);
-
 		if (last != current)
 		{
 			last->buff = ft_strnew(ft_strlen(current->buff) + 10);
 			ft_strcpy(last->buff, current->buff);
 		}
 	}
-
-	if (DEBUG && current)
-		ft_printf("\n%swrite to history: |%s|%s", CLR_CYAN, current->buff, CLR_RESET);
-	
 	while (current && current->next)
 		current = current->next;
-
-	new = (t_history *)malloc(sizeof(t_history));
-	new->count = 1;
-	new->buff = ft_strnew(HIST_BUFF_LEN);
-	new->save = NULL;
-
+	new = init_new_history();
 	if (current)
 	{
 		new->prev = current;
@@ -226,16 +48,12 @@ t_history	*new_history(t_history *current, t_history *last)
 	else
 		new->prev = NULL;
 	new->next = NULL;
-	
 	return (new);
 }
 
-void	check_length_buffer(t_history *hist)
-// , struct winsize *ws_curr)
+void		check_length_buffer(t_history *hist)
 {
 	char	*tmp;
-
-	// ws_curr->ws_col = ft_strlen(hist->)
 
 	if (hist->count * HIST_BUFF_LEN - ft_strlen(hist->buff) > 10)
 		return ;
@@ -246,7 +64,7 @@ void	check_length_buffer(t_history *hist)
 	hist->buff = tmp;
 }
 
-void	reset_history(t_history *hist)
+void		reset_history(t_history *hist)
 {
 	while (hist && hist->prev)
 		hist = hist->prev;
@@ -257,9 +75,6 @@ void	reset_history(t_history *hist)
 			if (hist->buff)
 				free(hist->buff);
 			hist->buff = ft_strnew(HIST_BUFF_LEN * hist->count);
-			// if (!hist->buff)
-			// 	hist->buff = ft_strnew(HIST_BUFF_LEN * hist->count);
-			// ft_memset(hist->buff, 0, sizeof(hist->buff));
 			ft_strcpy(hist->buff, hist->save);
 		}
 		hist = hist->next;

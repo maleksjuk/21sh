@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/21 13:43:42 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 15:06:46 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,46 +63,46 @@ static char	*get_cm(int fd, int i, int n, int buf_size)
 	return (bufer);
 }
 
-void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
-{
-	ssize_t	i;
+// void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
+// {
+// 	ssize_t	i;
 
-	move_cursor(ws, len - 2);
+// 	move_cursor(ws, len - 2);
 
-	// i = pos;
-	// ft_printf("%s", ESC_LEFT);
-	// while (i++ <= len)
-	// 	write(1, " ", 1);
-	ft_printf("\r");
-	i = 9;
-	while (i--)
-		ft_printf("%s", ESC_RIGHT);
-	i = -1;
-	while (++i < len)
-		write(1, " ", 1);
+// 	// i = pos;
+// 	// ft_printf("%s", ESC_LEFT);
+// 	// while (i++ <= len)
+// 	// 	write(1, " ", 1);
+// 	ft_printf("\r");
+// 	i = 9;
+// 	while (i--)
+// 		ft_printf("%s", ESC_RIGHT);
+// 	i = -1;
+// 	while (++i < len)
+// 		write(1, " ", 1);
 
-	move_cursor(ws, len - 3);
-}
+// 	move_cursor(ws, len - 3);
+// }
 
-void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
-{
-	ssize_t	i;
+// void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
+// {
+// 	ssize_t	i;
 	
-	clear_line_2(pos, len + 1, ws);
+// 	clear_line_2(pos, len + 1, ws);
 
-	// i = pos - 2;
-	// while (++i < len && buff[i])
-	// 	ft_printf("%c", buff[i]);
-	ft_printf("\r");
-	i = -1;
-	i = 9;
-	while (i--)
-		ft_printf("%s", ESC_RIGHT);
-	while (++i < len)
-		ft_printf("%c", buff[i]);
-	while (--len >= pos && len >= 0)
-		ft_printf("%s", ESC_LEFT);
-}
+// 	// i = pos - 2;
+// 	// while (++i < len && buff[i])
+// 	// 	ft_printf("%c", buff[i]);
+// 	ft_printf("\r");
+// 	i = -1;
+// 	i = 9;
+// 	while (i--)
+// 		ft_printf("%s", ESC_RIGHT);
+// 	while (++i < len)
+// 		ft_printf("%c", buff[i]);
+// 	while (--len >= pos && len >= 0)
+// 		ft_printf("%s", ESC_LEFT);
+// }
 
 // char	*get_cmd_2(int fd)
 // {

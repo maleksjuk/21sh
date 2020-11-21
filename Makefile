@@ -6,13 +6,13 @@
 #    By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/24 18:49:21 by obanshee          #+#    #+#              #
-#    Updated: 2020/11/14 21:12:00 by obanshee         ###   ########.fr        #
+#    Updated: 2020/11/21 16:28:19 by obanshee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = 21sh
 
-FLAGS = -g3 #-Wall -Wextra -Werror
+FLAGS = -g3 -Wall -Wextra -Werror
 
 LIBFTPRINTF_PATH = libftprintf/
 LIBFTPRINTF = libftprintf/libftprintf.a
@@ -25,7 +25,7 @@ SRCS_NAME = builtins/cmd_base.c builtins/cmd_cd.c builtins/cmd_setenv.c \
 	signal.c get_tilda_or_dollar.c check_symbols.c quotes.c helpers.c \
 	redirect/redirection.c redirect/pipe.c redirect/dup_fd.c redirect/here_doc.c redirect/here_doc_read.c \
 	redirect/input_redirect.c redirect/output_redirect.c redirect/main_redirect.c \
-	editor/history.c editor/update.c
+	editor/history.c editor/update.c editor/escape_ctrl.c editor/escape_simple.c editor/reader.c get_cmd.c
 
 SRCS_PATH = srcs/
 OBJ_PATH  = obj/
@@ -37,7 +37,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFTPRINTF_PATH)
-	@gcc -o $(NAME) $(FLAGS) $(INC) $(OBJ) $(LIBFTPRINTF)
+	@gcc -o $(NAME) $(FLAGS) $(INC) $(OBJ) $(LIBFTPRINTF) -ltermcap
 	@echo "\033[32mBinary \033[1;32m$(NAME)\033[1;0m\033[32m created.\033[0m"
 
 $(OBJ_PATH)%.o: $(SRCS_PATH)%.c

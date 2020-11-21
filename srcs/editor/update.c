@@ -6,19 +6,19 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 14:05:45 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 14:51:51 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "editor.h"
 
-void	move_cursor(struct winsize *ws, int pos)
+void	move_cursor(struct winsize ws, int pos)
 {
 	int	i;
 
-	if (!ws->ws_col)
+	if (!ws.ws_col)
 		return ;
-	i = (pos + 7) / ws->ws_col;
+	i = (pos + 7) / ws.ws_col;
 	if (!i)
 		return ;
 	while (i-- > 0)
@@ -26,37 +26,24 @@ void	move_cursor(struct winsize *ws, int pos)
 	ft_printf("\r");
 }
 
-void	clear_line(int pos, ssize_t len, struct winsize *ws)
+void	clear_line(t_reader *rdr)
 {
 	ssize_t	i;
 
-	move_cursor(ws, len - 2);
-	// move_cursor(ws, pos - 1);
-
-	// i = pos;
-	// ft_printf("%s", ESC_LEFT);
-	// while (i++ <= len)
-	// 	write(1, " ", 1);
+	move_cursor(rdr->ws, rdr->len - 2);
 	ft_printf("\r");
 	print_prompt();
 	i = 0;
-	while (++i < len)
+	while (++i < rdr->len)
 		write(1, " ", 1);
-
-	move_cursor(ws, len - 2);
-	// move_cursor(ws, pos);
+	move_cursor(rdr->ws, rdr->len - 2);
 }
 
-void    print_buffer_actual(t_reader *rdr)
-// char *buff, ssize_t len, int pos, 
+void	print_buffer_actual(t_reader *rdr)
 {
 	ssize_t	i;
-	
-	clear_line(rdr->pos, rdr->len + 1, &rdr->ws);
 
-	// i = pos - 2;
-	// while (++i < len && buff[i])
-	// 	ft_printf("%c", buff[i]);
+	clear_line(rdr);
 	ft_printf("\r");
 	i = 0;
 	print_prompt();
@@ -67,7 +54,6 @@ void    print_buffer_actual(t_reader *rdr)
 		ft_printf("%s", ESC_LEFT);
 }
 
-// char c, char *buff, int *pos, ssize_t *len
 void	update_buffer(t_reader *rdr)
 {
 	int i;
@@ -79,7 +65,6 @@ void	update_buffer(t_reader *rdr)
 }
 
 void	backspace(t_reader *rdr)
-	// char *buff, int *pos, ssize_t *len)
 {
 	int	i;
 
