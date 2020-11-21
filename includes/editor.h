@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:43:47 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 16:45:08 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct			s_reader
 	struct winsize		ws;
 	int					curs_pos[2];
 	int					height;
-	int					flag_break;
 }						t_reader;
 
 typedef struct			s_history

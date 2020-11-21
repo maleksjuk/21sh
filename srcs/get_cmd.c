@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:36:28 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 16:46:18 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,19 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	return (i);
 }
 
+int			check_newline(t_reader *rdr, t_history *current)
+{
+	if (rdr->c != '\n')
+		return (0);
+	if (ft_strlen(rdr->buff) != 0)
+	{
+		g_hist = new_history(current, g_hist);
+		rdr->buff = g_hist->prev->buff;
+		reset_history(current);
+	}
+	return (1);
+}
+
 char		*get_cmd(int fd)
 {
 	t_history	*current;
@@ -74,16 +87,8 @@ char		*get_cmd(int fd)
 	rdr = set_reader(fd, current);
 	while (read(rdr->fd, &rdr->c, 1) > 0)
 	{
-		if (rdr->c == '\n')
-		{
-			if (ft_strlen(rdr->buff) != 0)
-			{
-				g_hist = new_history(current, g_hist);
-				rdr->buff = g_hist->prev->buff;
-				reset_history(current);
-			}
+		if (check_newline(rdr, current))
 			break ;
-		}
 		else if (rdr->c == ESC)
 			current = check_escape_main(rdr, current);
 		else if (ft_isprint(rdr->c))
