@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:35:35 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 16:43:47 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,31 @@ void					move_cursor(struct winsize ws, int pos);
 void					clear_line(t_reader *rdr);
 void					print_buffer_actual(t_reader *rdr);
 void					update_buffer(t_reader *rdr);
-void					reset_history(t_history *hist);
+void					backspace(t_reader *rdr);
 
 /*
 **  history.c
 */
 t_history				*new_history(t_history *current, t_history *last);
 void					check_length_buffer(t_history *hist);
+void					reset_history(t_history *hist);
 
 /*
-**  ready.c
+**  escape_ctrl.c
 */
 int						check_escape_ctrl(t_reader *rdr);
+
+/*
+**  escape_simple.c
+*/
 int						check_escape_line(t_reader *rdr);
 t_history				*check_escape_history(t_reader *rdr, \
 											t_history *current);
-void					backspace(t_reader *rdr);
 
-void					init_term(struct termios *oldt);
-struct termios			init_term_2(struct termios *oldt);
+/*
+**	reader.c
+*/
+t_reader				*set_reader(int fd, t_history *current);
+char					*unset_reader(t_reader *rdr);
 
 #endif
