@@ -13,159 +13,120 @@
 #include "minishell.h"
 #include "editor.h"
 
-static int	iseof_in_line(char *line)
+void	check_esca(t_reader *rdr)
 {
-	while (*line)
+	int	i;
+
+	i = 1;
+	rdr->height = (ft_strlen(rdr->buff) + 9) / rdr->ws.ws_col;
+	rdr->curs_pos[0] = (rdr->pos + 9) % rdr->ws.ws_col;
+	rdr->curs_pos[1] = (rdr->pos + 9) / rdr->ws.ws_col;
+	while (!ft_isalpha(rdr->esc[i - 1]))
+		read(rdr->fd, &rdr->esc[i++], 1);
+	rdr->esc[i] = '\0';
+	if (ft_strnequ(rdr->esc, ESC_HOME, 3))
+		rdr->c = CTRL_A;
+	else if (ft_strnequ(rdr->esc, ESC_END, 3))
+		rdr->c = CTRL_E;
+	else if (check_escape_ctrl(rdr))
+		return ;
+	else if (check_escape_line(rdr))
+		return ;
+}
+
+void	move_cursor_2(struct winsize ws, int pos)
+{
+	int	i;
+
+	if (!ws.ws_col)
+		return ;
+	i = (pos + 9) / ws.ws_col;
+	if (!i)
+		return ;
+	while (i-- > 0)
+		ft_printf("%s", ESC_UP);
+	ft_printf("\r");
+}
+
+void	clear_line_2(t_reader *rdr)
+{
+	ssize_t	i;
+
+	move_cursor_2(rdr->ws, rdr->len - 2);
+	ft_printf("\r");
+	ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	i = 0;
+	while (++i < rdr->len)
+		write(1, " ", 1);
+	move_cursor_2(rdr->ws, rdr->len - 2);
+}
+
+void	print_buffer_actual_2(t_reader *rdr)
+{
+	ssize_t	i;
+
+	clear_line_2(rdr);
+	ft_printf("\r");
+	i = 0;
+	ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+	while (i < rdr->len)
+		ft_printf("%c", rdr->buff[i++]);
+	i = rdr->len;
+	while (--i >= rdr->pos && i >= 0)
+		ft_printf("%s", ESC_LEFT);
+}
+
+int			specials(t_reader *rdr, int i)
+{
+	if (rdr->c == CTRL_D && ft_strlen(rdr->buff) == 0)
+		ft_strcpy(rdr->buff, "\x04");
+	// else if (rdr->c == CTRL_C)
+	else if (rdr->c == CTRL_A || rdr->c == CTRL_E)
 	{
-		if (*line == 4)
-			return (1);
-		++line;
+		ft_strcpy(rdr->esc, rdr->c == CTRL_A ? ESC_CTRL_UP : ESC_CTRL_DOWN);
+		i = rdr->len / rdr->ws.ws_col + 1;
+		while (i--)
+			check_escape_ctrl(rdr);
 	}
-	return (0);
-}
-
-static char	*tweak(int i, char *bufer, int buf_size)
-{
-	char *overflow;
-
-	overflow = ft_strnew(buf_size);
-	ft_strncpy(overflow, bufer, i);
-	free(bufer);
-	return (overflow);
-}
-
-static char	*get_cm(int fd, int i, int n, int buf_size)
-{
-	char	*bufer;
-	char	smbl[1];
-	char	*overflow;
-
-	bufer = ft_strnew(buf_size);
-	while (n > 0)
+	else if (rdr->c == DEL)
 	{
-		n = read(fd, smbl, 1);
-		if (n == 0)
-		{
-			bufer[0] = 4;
-			bufer[1] = 0;
-			break ;
-		}
-		if (*smbl == '\n')
-			break ;
-		bufer[i++] = smbl[0];
-		if (i == buf_size)
-		{
-			buf_size *= 2;
-			overflow = tweak(i, bufer, buf_size);
-			bufer = overflow;
-		}
+		backspace(rdr);
+		print_buffer_actual_2(rdr);
+		i = 0;
 	}
-	return (bufer);
+	else
+		i = 0;
+	return (i);
 }
 
-// void	clear_line_2(int pos, ssize_t len, struct winsize *ws)
-// {
-// 	ssize_t	i;
+int			check_n(t_reader *rdr)
+{
+	if (rdr->c != '\n')
+		return (0);
+	return (1);
+}
 
-// 	move_cursor(ws, len - 2);
+char		*mega_read(int fd)
+{
+	t_reader	*rdr;
 
-// 	// i = pos;
-// 	// ft_printf("%s", ESC_LEFT);
-// 	// while (i++ <= len)
-// 	// 	write(1, " ", 1);
-// 	ft_printf("\r");
-// 	i = 9;
-// 	while (i--)
-// 		ft_printf("%s", ESC_RIGHT);
-// 	i = -1;
-// 	while (++i < len)
-// 		write(1, " ", 1);
-
-// 	move_cursor(ws, len - 3);
-// }
-
-// void    print_buffer_actual_2(char *buff, ssize_t len, int pos, struct winsize *ws)
-// {
-// 	ssize_t	i;
-	
-// 	clear_line_2(pos, len + 1, ws);
-
-// 	// i = pos - 2;
-// 	// while (++i < len && buff[i])
-// 	// 	ft_printf("%c", buff[i]);
-// 	ft_printf("\r");
-// 	i = -1;
-// 	i = 9;
-// 	while (i--)
-// 		ft_printf("%s", ESC_RIGHT);
-// 	while (++i < len)
-// 		ft_printf("%c", buff[i]);
-// 	while (--len >= pos && len >= 0)
-// 		ft_printf("%s", ESC_LEFT);
-// }
-
-// char	*get_cmd_2(int fd)
-// {
-// 	static struct termios oldt;
-
-// 	init_term(&oldt);
-
-// 	char c;
-// 	char esc[3];
-// 	char *buff;
-// 	int pos;
-// 	ssize_t len;
-
-// 	struct winsize ws;
-// 	ioctl(1, TIOCGSIZE, &ws);
-
-// 	buff = ft_strnew(HIST_BUFF_LEN);
-
-// 	pos = 0;
-// 	len = 0;
-// 	esc[0] = ESC;
-
-// 	while (read(fd, &c, 1) > 0)
-// 	{
-// 		if (c == 4 && ft_strlen(buff) == 0)
-// 		{
-// 			buff[0] = '\x04';
-// 			buff[1] = '\0';
-// 			break ;
-// 		}
-// 		else if (c == '\n')
-// 		{
-// 			ft_printf("\n");
-// 			break ;
-// 		}
-// 		// else if (c == DEL)
-// 		// {
-// 		// 	backspace(buff, &pos, &len);
-// 		// 	print_buffer_actual_2(buff, len, pos, &ws);
-// 		// }
-// 		// else if (c == ESC)
-// 		// {
-// 		// 	read(1, &esc[1], 2);
-// 		// 	// check_escape_ctrl(esc);
-// 		// 	check_escape_line(esc, buff, &pos, &ws);
-// 		// }
-// 		// else if (ft_isprint(c))
-// 		// {
-// 		// 	update_buffer(c, buff, &pos, &len);
-// 		// 	print_buffer_actual_2(buff, len, pos, &ws);
-// 		// }
-// 		// check_length_buffer(current);
-// 		if ((ft_strlen(buff) + 7) % ws.ws_col == 0)
-// 			ft_printf("\n");
-// 		if (DEBUG)
-// 			if (c == '\t')
-// 				exit(1);
-// 	}
-
-	
-// 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-// 	return (buff);
-// }
+	rdr = set_reader(fd, NULL);
+	while (read(rdr->fd, &rdr->c, 1) > 0)
+	{
+		if (check_n(rdr))
+			break ;
+		else if (rdr->c == ESC)
+			check_esca(rdr);
+		else if (ft_isprint(rdr->c))
+		{
+			update_buffer(rdr);
+			print_buffer_actual_2(rdr);
+		}
+		if (specials(rdr, 1) > 0)
+			break ;
+	}
+	return (unset_reader(rdr));
+}
 
 char		*get_txt(char *word, int i)
 {
@@ -178,13 +139,13 @@ char		*get_txt(char *word, int i)
 	while (1)
 	{
 		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
-		// bufer = get_cmd_2(0);
-		bufer = get_cm(0, 0, 1, 1024);
-		if (ft_strequ(bufer, word) || iseof_in_line(bufer))
+		bufer = mega_read(0);
+		if (ft_strequ(bufer, word) || ft_strequ(bufer, "\x04"))
 		{
 			free(bufer);
 			break ;
 		}
+		ft_printf("\n");
 		if (i == 0)
 			help = ft_strjoin(res, "\n");
 		else

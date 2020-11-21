@@ -29,7 +29,10 @@ t_reader	*set_reader(int fd, t_history *current)
 	rdr->len = 0;
 	rdr->esc[0] = ESC;
 	rdr->fd = fd;
-	rdr->buff = current->buff;
+	if (current)
+		rdr->buff = current->buff;
+	else
+		rdr->buff = ft_strnew(HIST_BUFF_LEN * 4);
 	return (rdr);
 }
 

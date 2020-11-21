@@ -35,7 +35,7 @@ char	*get_from_wait_quotes(t_env *env, int quote[2])
 		ft_printf("\033[31mquote> \033[0m");
 	else if (quote[1])
 		ft_printf("\033[31mdquote> \033[0m");
-	bufer = get_cmd(0);
+	bufer = mega_read(0);
 	continue_cmd = check_symbols(env, bufer, quote);
 	free(bufer);
 	return (continue_cmd);
