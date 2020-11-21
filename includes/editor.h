@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 12:59:27 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 14:05:20 by vdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,6 @@
 # define ESC_HOME "\033[H"
 # define ESC_END  "\033[F"
 
-// # define ESC_CTRL_UP    "\033[[A"
-// # define ESC_CTRL_DOWN  "\033[[B"
-
-# define K_CTRL_U		"\x15\x0\x0\x0\x0\x0"
-
-// # define K_CTRL_UP		"\x1b\x5b\x31\x3b\x35\x41"
-
-// # define K_CTRL_UP		"\x1b\x5b\x38\x3b\x35\x41"
-// # define K_CTRL_DOWN		"\x1b\x5b\x38\x3b\x35\x42"
-// # define K_CTRL_RIGHT	"\x1b\x5b\x38\x3b\x35\x43"
-// # define K_CTRL_LEFT		"\x1b\x5b\x38\x3b\x35\x44"
-
-// # define K_UP			"\x1b\x5b\x41\x0\x0\x0"
-// # define K_DOWN			"\x1b\x5b\x42\x0\x0\x0"
-// # define K_RIGHT			"\x1b\x5b\x43\x0\x0\x0"
-// # define K_LEFT			"\x1b\x5b\x44\x0\x0\x0"
-
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
 # define HIST_BUFF_LEN 256
@@ -80,57 +63,55 @@
 # define CLR_MAGENTA "\033[35m"
 # define CLR_CYAN    "\033[36m"
 
-typedef struct	s_reader
+typedef struct			s_reader
 {
-	struct termios	*oldt;
-	struct termios	*newt;
-	int				fd;
-	int				pos;
-	ssize_t			len;
-	char			c;
-	char			esc[32];
-	char			*buff;
-	struct winsize	ws;
-}				t_reader;
+	struct termios		*oldt;
+	struct termios		*newt;
+	int					fd;
+	int					pos;
+	ssize_t				len;
+	char				c;
+	char				esc[32];
+	char				*buff;
+	struct winsize		ws;
+}						t_reader;
 
-
-typedef struct 	s_history
+typedef struct			s_history
 {
 	char				*buff;
 	char				*save;
 	struct s_history	*next;
 	struct s_history	*prev;
 	char				count;
-}				t_history;
+}						t_history;
 
-t_history	*g_hist;
+t_history				*g_hist;
 
 /*
 **  update.c
 */
-void	move_cursor(struct winsize *ws, int pos);
-void	clear_line(int pos, ssize_t len, struct winsize *ws);
-void    print_buffer_actual(t_reader *rdr);
-void	update_buffer(t_reader *rdr);
-void	reset_history(t_history *hist);
+void					move_cursor(struct winsize *ws, int pos);
+void					clear_line(int pos, ssize_t len, struct winsize *ws);
+void					print_buffer_actual(t_reader *rdr);
+void					update_buffer(t_reader *rdr);
+void					reset_history(t_history *hist);
 
 /*
 **  history.c
 */
-t_history	*new_history(t_history *current, t_history *last);
-void	check_length_buffer(t_history *hist);
+t_history				*new_history(t_history *current, t_history *last);
+void					check_length_buffer(t_history *hist);
 
 /*
 **  ready.c
 */
-// int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
-int		check_escape_ctrl(t_reader *rdr);
-int		check_escape_line(t_reader *rdr);
-t_history	*check_escape_history(t_reader *rdr, t_history *current);
-void	backspace(t_reader *rdr);
-// void	backspace(char *buff, int *pos, ssize_t *len);
+int						check_escape_ctrl(t_reader *rdr);
+int						check_escape_line(t_reader *rdr);
+t_history				*check_escape_history(t_reader *rdr, \
+											t_history *current);
+void					backspace(t_reader *rdr);
 
-void	init_term(struct termios *oldt);
-struct termios	init_term_2(struct termios *oldt);
+void					init_term(struct termios *oldt);
+struct termios			init_term_2(struct termios *oldt);
 
 #endif
