@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdaemoni <vdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/11/21 13:43:12 by obanshee         ###   ########.fr       */
-=======
-/*   Updated: 2020/11/21 14:05:20 by vdaemoni         ###   ########.fr       */
->>>>>>> f03fad1d2654f2a4f266f4bd53bf1b4e2c4e9d22
+/*   Updated: 2020/11/21 14:31:25 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +105,6 @@ void					check_length_buffer(t_history *hist);
 /*
 **  ready.c
 */
-<<<<<<< HEAD
-// int		check_escape_ctrl(char *escape, char *buff, int *i, struct winsize *ws);
-int		check_escape_ctrl(t_reader *rdr);
-int		check_escape_line(t_reader *rdr);
-t_history	*check_escape_history(t_reader *rdr, t_history *current);
-void	backspace(t_reader *rdr);
-// void	backspace(char *buff, int *pos, ssize_t *len);
-
-// void	init_term(struct termios *oldt);
-// struct termios	init_term_2(struct termios *oldt);
-=======
 int						check_escape_ctrl(t_reader *rdr);
 int						check_escape_line(t_reader *rdr);
 t_history				*check_escape_history(t_reader *rdr, \
@@ -128,6 +113,5 @@ void					backspace(t_reader *rdr);
 
 void					init_term(struct termios *oldt);
 struct termios			init_term_2(struct termios *oldt);
->>>>>>> f03fad1d2654f2a4f266f4bd53bf1b4e2c4e9d22
 
 #endif
