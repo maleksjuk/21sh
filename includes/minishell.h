@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/18 18:18:07 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/21 20:01:49 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <signal.h>
+# include <termios.h>
+# include <term.h>
+# include <curses.h>
 
 # define LEN_PATH 1024
 
@@ -43,8 +46,16 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-t_env				*g_env;
+typedef struct		s_term
+{
+	int				fd;
+	struct termios	oldt;
+	struct termios	newt;
+}					t_term;
 
+
+t_env				*g_env;
+t_term				*g_term;
 pid_t				g_pid;
 
 /*

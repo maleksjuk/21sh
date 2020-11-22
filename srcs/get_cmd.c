@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:46:18 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 02:13:43 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	}
 	else if (rdr->c == DEL)
 	{
-		backspace(rdr);
-		print_buffer_actual(rdr);
+		if (backspace(rdr))
+		{
+			ft_putstr_fd(tgetstr("kb", NULL), g_term->fd);
+			ft_putstr_fd(tgetstr("dc", NULL), g_term->fd);
+		}
 		i = 0;
 	}
 	else
@@ -63,7 +66,7 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	return (i);
 }
 
-int			check_newline(t_reader *rdr, t_history *current)
+int			check_enter(t_reader *rdr, t_history *current)
 {
 	if (rdr->c != '\n')
 		return (0);
@@ -71,8 +74,8 @@ int			check_newline(t_reader *rdr, t_history *current)
 	{
 		g_hist = new_history(current, g_hist);
 		rdr->buff = g_hist->prev->buff;
-		reset_history(current);
 	}
+	reset_history(current);
 	return (1);
 }
 
@@ -87,10 +90,14 @@ char		*get_cmd(int fd)
 	rdr = set_reader(fd, current);
 	while (read(rdr->fd, &rdr->c, 1) > 0)
 	{
-		if (check_newline(rdr, current))
+		if (check_enter(rdr, current))
 			break ;
 		else if (rdr->c == ESC)
 			current = check_escape_main(rdr, current);
+		else if (rdr->c == '\t')
+		{
+			ft_putstr_fd(tgetstr("al", NULL), g_term->fd);
+		}
 		else if (ft_isprint(rdr->c))
 		{
 			update_buffer(rdr);

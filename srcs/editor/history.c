@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:12:55 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 03:36:44 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		check_length_buffer(t_history *hist)
 {
 	char	*tmp;
 
-	if (hist->count * HIST_BUFF_LEN - ft_strlen(hist->buff) > 10)
+	if ((int)(hist->count * HIST_BUFF_LEN) - (int)ft_strlen(hist->buff) > 10)
 		return ;
 	hist->count++;
 	tmp = ft_strnew(HIST_BUFF_LEN * hist->count);

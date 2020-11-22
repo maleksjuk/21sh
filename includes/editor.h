@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 16:45:08 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 04:46:24 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
+/*
+**	Escape codes
+*/
 # define ESC_RIGHT "\033[C"
 # define ESC_LEFT  "\033[D"
 # define ESC_UP    "\033[A"
@@ -36,9 +39,16 @@
 # define ESC_HOME "\033[H"
 # define ESC_END  "\033[F"
 
-# define MSH_HISTORY ".msh_history"
-# define HISTORY_LIMIT 50
-# define HIST_BUFF_LEN 256
+/*
+**	Termcap codes
+*/
+# define TERM_RIGHT  "nd"
+# define TERM_LEFT   "le"
+# define TERM_UP     "up"
+# define TERM_DOWN   "do"
+
+# define TERM_CLEAR  "cd"
+# define TERM_CARRET "cr"
 
 /*
 **	ASCII codes
@@ -51,7 +61,13 @@
 # define DEL 127
 
 # define DEBUG 0
+# define MSH_HISTORY ".msh_history"
+# define HISTORY_LIMIT 50
+# define HIST_BUFF_LEN 256
 
+/*
+**	Colors
+*/
 # define CLR_RESET   "\033[0m"
 # define CLR_BOLD    "\033[1m"
 # define CLR_INVERSE "\033[7m"
@@ -96,7 +112,7 @@ void					move_cursor(struct winsize ws, int pos);
 void					clear_line(t_reader *rdr);
 void					print_buffer_actual(t_reader *rdr);
 void					update_buffer(t_reader *rdr);
-void					backspace(t_reader *rdr);
+int						backspace(t_reader *rdr);
 
 /*
 **  history.c
