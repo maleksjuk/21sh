@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 03:53:10 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 19:31:51 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	term_init(void)
 		error_message("error with function", "tgetent()");
 	g_term = (t_term *)malloc(sizeof(t_term));
 	g_term->fd = STDOUT_FILENO;
+	g_term->clip = NULL;
 	tcgetattr(g_term->fd, &g_term->oldt);
 	ft_memcpy(&g_term->newt, &g_term->oldt, sizeof(g_term->oldt));
 	g_term->newt.c_lflag &= ~(ICANON | ECHO | ECHONL | IEXTEN);
@@ -52,6 +53,14 @@ void	term_init(void)
 	ft_putstr_fd(tgetstr("cl", NULL), g_term->fd);
 	ft_putstr_fd(tgetstr("ti", NULL), g_term->fd);
 	ft_putstr_fd(tgetstr("vs", NULL), g_term->fd);
+}
+
+void	term_reset(void)
+{
+	ft_putstr_fd(tgetstr("te", NULL), g_term->fd);
+	ft_putstr_fd(tgetstr("ve", NULL), g_term->fd);
+	g_term->oldt.c_lflag &= 0x200005cb;
+	tcsetattr(g_term->fd, TCSANOW, &g_term->oldt);
 }
 
 int		main(int argc, char **argv, char **envp)

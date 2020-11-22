@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 20:01:49 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 19:32:19 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct		s_term
 	int				fd;
 	struct termios	oldt;
 	struct termios	newt;
+	char			*clip;
 }					t_term;
 
 
@@ -62,6 +63,8 @@ pid_t				g_pid;
 **	main.c
 */
 char				*get_cmd(int fd);
+void				term_init(void);
+void				term_reset(void);
 
 /*
 **	main_functions.c

@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 06:31:57 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 18:19:05 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ t_history	*check_escape_main(t_reader *rdr, t_history *current)
 	rdr->height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
 	rdr->curs_pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
 	rdr->curs_pos[1] = (rdr->pos + 7) / rdr->ws.ws_col;
-	while (!ft_isalpha(rdr->esc[i - 1]))
+	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]))
 		read(rdr->fd, &rdr->esc[i++], 1);
 	rdr->esc[i] = '\0';
 	if (ft_strnequ(rdr->esc, ESC_HOME, 3))
 		rdr->c = CTRL_A;
 	else if (ft_strnequ(rdr->esc, ESC_END, 3))
 		rdr->c = CTRL_E;
-	// else if (cut_copy_paste(rdr))
-	// 	(void)NULL;
+	else if (cut_copy_paste(rdr, current))
+		(void)NULL;
 	else if (!check_escape_ctrl(rdr))
 		if (!check_escape_line(rdr))
 			current = check_escape_history(rdr, current);
@@ -112,7 +112,7 @@ char		*get_cmd(int fd)
 	{
 		if (check_enter(rdr, current))
 			break ;
-		else if (rdr->c == ESC)
+		else if (rdr->c == ESC || rdr->c == '\xe2')
 			current = check_escape_main(rdr, current);
 		// else if (rdr->c == '\t')
 		// {

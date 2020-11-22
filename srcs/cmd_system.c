@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 10:35:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/21 09:55:51 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 19:36:00 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ int		cmd_system(char *prgm, char **argv, t_env *env)
 	}
 	else if (g_pid == 0)
 	{
+		g_term->oldt.c_lflag &= 0x200005cb;
+		tcsetattr(g_term->fd, TCSANOW, &g_term->oldt);
 		envp = create_env_array(env);
 		execve(prgm, argv, envp);
 		delete_env_array(envp);

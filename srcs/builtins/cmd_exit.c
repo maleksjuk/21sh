@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/22 05:21:30 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 19:32:30 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static int	do_exit(int code)
 	ft_printf("exit code %d\n", r);
 	ft_printf("%s%s%s* * * 21SH [exit] * * *%s\n",
 		CLR_BOLD, CLR_GREEN, CLR_INVERSE, CLR_RESET);
-	ft_putstr_fd(tgetstr("te", NULL), g_term->fd);
-	ft_putstr_fd(tgetstr("ve", NULL), g_term->fd);
-	g_term->oldt.c_lflag &= 0x200005cb;
-	tcsetattr(g_term->fd, TCSANOW, &g_term->oldt);
+	term_reset();
+	if (g_term->clip)
+		free(g_term->clip);
+	free(g_term);
 	exit(code);
 }
 
