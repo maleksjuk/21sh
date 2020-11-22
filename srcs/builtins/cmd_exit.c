@@ -6,11 +6,33 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 20:11:55 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/22 19:32:30 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:22:56 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		free_history(void)
+{
+	while (g_hist->prev)
+		g_hist = g_hist->prev;
+	while (g_hist)
+	{
+		if (g_hist->prev)
+			free(g_hist->prev);
+		if (g_hist->buff)
+			free(g_hist->buff);
+		if (g_hist->save)
+			free(g_hist->save);
+		if (g_hist->next)
+			g_hist = g_hist->next;
+		else
+		{
+			free(g_hist);
+			g_hist = NULL;
+		}
+	}
+}
 
 static int	do_exit(int code)
 {
@@ -24,6 +46,7 @@ static int	do_exit(int code)
 	ft_printf("exit code %d\n", r);
 	ft_printf("%s%s%s* * * 21SH [exit] * * *%s\n",
 		CLR_BOLD, CLR_GREEN, CLR_INVERSE, CLR_RESET);
+	free_history();
 	term_reset();
 	if (g_term->clip)
 		free(g_term->clip);
@@ -62,34 +85,11 @@ static void	returno(char **av)
 	return ;
 }
 
-void		free_history(void)
-{
-	while (g_hist->prev)
-		g_hist = g_hist->prev;
-	while (g_hist)
-	{
-		if (g_hist->prev)
-			free(g_hist->prev);
-		if (g_hist->buff)
-			free(g_hist->buff);
-		if (g_hist->save)
-			free(g_hist->save);
-		if (g_hist->next)
-			g_hist = g_hist->next;
-		else
-		{
-			free(g_hist);
-			g_hist = NULL;
-		}
-	}
-}
-
 void		cmd_exit(char *str)
 {
 	int		n;
 	char	**av;
 
-	free_history();
 	av = ft_strtok(str, " \t\n\r\a");
 	n = ft_tablen(av);
 	if (n == 1)

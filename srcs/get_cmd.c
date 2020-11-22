@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 18:19:05 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:43:18 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	}
 	else if (rdr->c == CTRL_A || rdr->c == CTRL_E)
 	{
-		ft_strcpy(rdr->esc, rdr->c == CTRL_A ? ESC_CTRL_UP : ESC_CTRL_DOWN);
+		ft_strcpy(rdr->esc, (rdr->c == CTRL_A) ? ESC_CTRL_UP : ESC_CTRL_DOWN);
 		i = rdr->len / rdr->ws.ws_col + 1;
 		while (i--)
 			check_escape_ctrl(rdr);

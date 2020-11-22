@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 19:31:51 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 20:12:55 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ void	term_init(void)
 	extern t_term	*g_term;
 	char			*buff;
 
+	buff = NULL;
 	if ((getenv("TERM") == NULL) ||
 		(buff = ft_strdup(getenv("TERM"))) == NULL)
 		error_message("error with environment", "TERM");
 	if (tgetent(NULL, buff) <= 0)
 		error_message("error with function", "tgetent()");
+	free(buff);
 	g_term = (t_term *)malloc(sizeof(t_term));
 	g_term->fd = STDOUT_FILENO;
 	g_term->clip = NULL;
