@@ -68,14 +68,32 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	return (i);
 }
 
+int			ft_isspace_str(char *s)
+{
+	int i;
+
+	i = -1;
+	while (ft_isspace(s[++i]))
+		NULL;
+	if (s[i])
+		return (0);
+	return (1);
+}
+
 int			check_enter(t_reader *rdr, t_history *current)
 {
 	if (rdr->c != '\n')
 		return (0);
 	if (ft_strlen(rdr->buff) != 0)
 	{
-		g_hist = new_history(current, g_hist);
-		rdr->buff = g_hist->prev->buff;
+		if (!ft_isspace_str(rdr->buff))
+		{
+			g_hist = new_history(current, g_hist);
+			rdr->buff = g_hist->prev->buff;
+		}
+		else
+			rdr->buff = "";
+		
 	}
 	reset_history(current);
 	return (1);
