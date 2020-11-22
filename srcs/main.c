@@ -58,10 +58,10 @@ int		main(int argc, char **argv, char **envp)
 {
 	char	*buff;
 
-	term_init();
 	g_env = get_env(envp);
 	if (!g_env)
 		return (error_message("error", "null env"));
+	term_init();
 	g_hist = NULL;
 	update_lvl();
 	ft_printf("%s%s%s* * * 21SH [start] * * *%s\n",
