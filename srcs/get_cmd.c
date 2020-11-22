@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 02:13:43 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 06:31:57 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_history	*check_escape_main(t_reader *rdr, t_history *current)
 		rdr->c = CTRL_A;
 	else if (ft_strnequ(rdr->esc, ESC_END, 3))
 		rdr->c = CTRL_E;
+	// else if (cut_copy_paste(rdr))
+	// 	(void)NULL;
 	else if (!check_escape_ctrl(rdr))
 		if (!check_escape_line(rdr))
 			current = check_escape_history(rdr, current);
@@ -94,10 +96,10 @@ char		*get_cmd(int fd)
 			break ;
 		else if (rdr->c == ESC)
 			current = check_escape_main(rdr, current);
-		else if (rdr->c == '\t')
-		{
-			ft_putstr_fd(tgetstr("al", NULL), g_term->fd);
-		}
+		// else if (rdr->c == '\t')
+		// {
+		// 	ft_putstr_fd(tgetstr("al", NULL), g_term->fd);
+		// }
 		else if (ft_isprint(rdr->c))
 		{
 			update_buffer(rdr);

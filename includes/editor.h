@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 04:46:24 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/22 06:30:17 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@
 # define CTRL_E 5
 # define ESC 27
 # define DEL 127
+
+/*
+**	Option codes (cut, copy, paste)
+*/
+# define OPT_C "\xa7\xc3"
+# define OPT_V "\x9a\x88\xe2"
+# define OPT_X "\x88\x89\xe2"
 
 # define DEBUG 0
 # define MSH_HISTORY ".msh_history"
@@ -138,5 +145,10 @@ t_history				*check_escape_history(t_reader *rdr, \
 */
 t_reader				*set_reader(int fd, t_history *current);
 char					*unset_reader(t_reader *rdr);
+
+/*
+**	cut_copy_paste.c
+*/
+int						cut_copy_paste(t_reader *rdr);
 
 #endif
