@@ -6,7 +6,7 @@
 #    By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/24 18:49:21 by obanshee          #+#    #+#              #
-#    Updated: 2020/11/22 06:21:10 by obanshee         ###   ########.fr        #
+#    Updated: 2020/11/23 23:44:20 by obanshee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS_NAME = builtins/cmd_base.c builtins/cmd_cd.c builtins/cmd_setenv.c \
 	redirect/input_redirect.c redirect/output_redirect.c redirect/main_redirect.c \
 	editor/reader.c editor/history.c editor/update.c \
 	editor/escape_ctrl.c editor/escape_simple.c editor/cut_copy_paste.c \
-	get_cmd.c
+	editor/home_end.c get_cmd.c
 
 SRCS_PATH = srcs/
 OBJ_PATH  = obj/

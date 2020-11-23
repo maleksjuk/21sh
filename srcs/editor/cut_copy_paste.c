@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 06:17:35 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 19:15:04 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/23 20:25:14 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void		sh_cut(t_reader *rdr)
 		free(g_term->clip);
 	g_term->clip = ft_strdup(&rdr->buff[rdr->pos]);
 	ft_strclr(&rdr->buff[rdr->pos]);
+	rdr->len = rdr->pos;
 	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
 }
 
@@ -30,7 +31,7 @@ void		sh_copy(t_reader *rdr)
 
 void		sh_paste(t_reader *rdr, t_history *current)
 {
-	char	*tmp;
+	char	*new_buff;
 	char	*paste;
 
 	if (!g_term->clip)
@@ -41,17 +42,18 @@ void		sh_paste(t_reader *rdr, t_history *current)
 		(size_t)(current->count * HIST_BUFF_LEN))
 	{
 		current->count++;
-		tmp = ft_strnew(ft_strlen(rdr->buff) + ft_strlen(paste) + 10);
-		ft_strcpy(tmp, rdr->buff);
-		ft_strcpy(&tmp[ft_strlen(tmp)], paste);
-		free(paste);
+		new_buff = ft_strnew(ft_strlen(rdr->buff) + ft_strlen(paste) + 10);
+		ft_strcpy(new_buff, rdr->buff);
+		ft_strcpy(&new_buff[ft_strlen(new_buff)], paste);
 		free(current->buff);
-		current->buff = tmp;
+		current->buff = new_buff;
 		rdr->buff = current->buff;
 	}
 	else
 		ft_strcpy(&rdr->buff[rdr->pos], paste);
-	ft_putstr_fd(tgetstr(TERM_LEFT, NULL), g_term->fd);
+	free(paste);
+	if (rdr->pos)
+		ft_putstr_fd(tgetstr(TERM_LEFT, NULL), g_term->fd);
 	rdr->len += ft_strlen(g_term->clip);
 	print_buffer_actual(rdr);
 }

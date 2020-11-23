@@ -6,22 +6,27 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 20:43:18 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/23 23:43:20 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "editor.h"
 
+void		update_cursor_position(t_reader *rdr)
+{
+	rdr->height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
+	rdr->curs_pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
+	rdr->curs_pos[1] = (rdr->pos + 7) / rdr->ws.ws_col;
+}
+
 t_history	*check_escape_main(t_reader *rdr, t_history *current)
 {
 	int	i;
 
 	i = 1;
-	rdr->height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
-	rdr->curs_pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
-	rdr->curs_pos[1] = (rdr->pos + 7) / rdr->ws.ws_col;
-	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]))
+	update_cursor_position(rdr);
+	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]) && rdr->esc[i - 1] != '~')
 		read(rdr->fd, &rdr->esc[i++], 1);
 	rdr->esc[i] = '\0';
 	if (ft_strnequ(rdr->esc, ESC_HOME, 3))
@@ -48,12 +53,7 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 		rdr->buff = g_hist->buff;
 	}
 	else if (rdr->c == CTRL_A || rdr->c == CTRL_E)
-	{
-		ft_strcpy(rdr->esc, (rdr->c == CTRL_A) ? ESC_CTRL_UP : ESC_CTRL_DOWN);
-		i = rdr->len / rdr->ws.ws_col + 1;
-		while (i--)
-			check_escape_ctrl(rdr);
-	}
+		i = rdr->c == CTRL_A ? spec_symbol_home(rdr) : spec_symbol_end(rdr);
 	else if (rdr->c == DEL)
 	{
 		if (backspace(rdr))
@@ -94,6 +94,14 @@ int			check_enter(t_reader *rdr, t_history *current)
 		else
 			rdr->buff = "";
 	}
+	update_cursor_position(rdr);
+	while (rdr->curs_pos[1]++ < rdr->height)
+	{
+		ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
+		rdr->pos += rdr->ws.ws_col;
+	}
+	while (rdr->pos++ < rdr->len)
+		ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 	reset_history(current);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 18:19:14 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/23 23:45:58 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,10 @@
 */
 # define OPT_C "\xc3\xa7"
 # define OPT_X "\xe2\x89\x88"
+# define OPT_D "\xe2\x88\x82"
 # define OPT_V "\xe2\x88\x9a"
 # define OPT_B "\xe2\x88\xab"
-# define OPT_D "\xe2\x88\x82"
 
-# define DEBUG 0
 # define MSH_HISTORY ".msh_history"
 # define HISTORY_LIMIT 50
 # define HIST_BUFF_LEN 256
@@ -152,5 +151,13 @@ char					*unset_reader(t_reader *rdr);
 **	cut_copy_paste.c
 */
 int						cut_copy_paste(t_reader *rdr, t_history *current);
+
+/*
+**	home_end.c
+*/
+int						spec_symbol_home(t_reader *rdr);
+int						spec_symbol_end(t_reader *rdr);
+
+void					update_cursor_position(t_reader *rdr);
 
 #endif
