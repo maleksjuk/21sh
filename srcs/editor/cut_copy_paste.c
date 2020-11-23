@@ -12,7 +12,7 @@
 
 #include "editor.h"
 
-void	sh_cut(t_reader *rdr)
+void		sh_cut(t_reader *rdr)
 {
 	if (g_term->clip)
 		free(g_term->clip);
@@ -21,14 +21,14 @@ void	sh_cut(t_reader *rdr)
 	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
 }
 
-void	sh_copy(t_reader *rdr)
+void		sh_copy(t_reader *rdr)
 {
 	if (g_term->clip)
 		free(g_term->clip);
 	g_term->clip = ft_strdup(&rdr->buff[rdr->pos]);
 }
 
-void	sh_paste(t_reader *rdr, t_history *current)
+void		sh_paste(t_reader *rdr, t_history *current)
 {
 	char	*tmp;
 	char	*paste;
@@ -69,13 +69,10 @@ int			cut_copy_paste(t_reader *rdr, t_history *current)
 	read(rdr->fd, &opt[2], 1);
 	if (ft_strnequ(opt, OPT_V, 3))
 		sh_copy(rdr);
-		// ft_printf("opt_v\n");
 	else if (ft_strnequ(opt, OPT_D, 3))
 		sh_cut(rdr);
-		// ft_printf("opt_d\n");
 	else if (ft_strnequ(opt, OPT_B, 3))
 		sh_paste(rdr, current);
-		// ft_printf("opt_b\n");
 	else
 		return (0);
 	return (1);

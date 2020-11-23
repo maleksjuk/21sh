@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+static char	*get_txt(char *word, int i, char *help)
+{
+	char	*bufer;
+	char	*res;
+
+	res = ft_strnew(1);
+	while (1)
+	{
+		ft_printf("%sheredoc> %s", CLR_RED, CLR_RESET);
+		bufer = mega_read(0);
+		if (ft_strequ(bufer, word) || ft_strequ(bufer, "\x04"))
+		{
+			free(bufer);
+			break ;
+		}
+		if (i == 0)
+			help = ft_strjoin(res, "\n");
+		else
+			i = 0;
+		free(res);
+		res = ft_strjoin(help, bufer);
+		free(help);
+		free(bufer);
+	}
+	return (res);
+}
+
 static char	*converter_type_out(char *txt)
 {
 	char *res;

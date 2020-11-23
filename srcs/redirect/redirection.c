@@ -88,7 +88,7 @@ static int	get_index(char **cmd)
 	return (0);
 }
 
-char		*for_dup(char *arr)
+static char	*for_dup(char *arr)
 {
 	char	*cpy;
 	size_t	i;

@@ -35,12 +35,12 @@ char	*get_from_wait_quotes(t_env *env, int quote[2])
 	if (quote[0])
 	{
 		ft_printf("\033[31muquotes> \033[0m");
-		bufer = mega_read(0, 1);
+		bufer = mega_read(0);
 	}
 	else if (quote[1])
 	{
 		ft_printf("\033[31mdquotes> \033[0m");
-		bufer = mega_read(0, 2);
+		bufer = mega_read(0);
 	}
 	continue_cmd = check_symbols(env, bufer, quote);
 	if (bufer)

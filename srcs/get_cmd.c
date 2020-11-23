@@ -93,7 +93,6 @@ int			check_enter(t_reader *rdr, t_history *current)
 		}
 		else
 			rdr->buff = "";
-		
 	}
 	reset_history(current);
 	return (1);

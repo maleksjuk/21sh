@@ -54,7 +54,6 @@ typedef struct		s_term
 	char			*clip;
 }					t_term;
 
-
 t_env				*g_env;
 t_term				*g_term;
 pid_t				g_pid;
@@ -204,8 +203,8 @@ void				here_doc(char **cmd);
 /*
 **	redirect/here_doc_read.c
 */
-char				*get_txt(char *word, int i, char *help);
-char				*mega_read(int fd, int identi);
+char				*mega_read(int fd);
+
 /*
 **	redirect/main_redirect.c
 */
