@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:57:57 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 20:12:55 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 22:15:22 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	cmd_input(char *bufer, t_env *env)
 	free(cmd_list);
 }
 
-void	term_init(void)
+int		term_init(void)
 {
 	extern t_term	*g_term;
 	char			*buff;
@@ -38,9 +38,9 @@ void	term_init(void)
 	buff = NULL;
 	if ((getenv("TERM") == NULL) ||
 		(buff = ft_strdup(getenv("TERM"))) == NULL)
-		error_message("error with environment", "TERM");
+		return (error_message("error with environment", "TERM"));
 	if (tgetent(NULL, buff) <= 0)
-		error_message("error with function", "tgetent()");
+		return (error_message("error with function", "tgetent()"));
 	free(buff);
 	g_term = (t_term *)malloc(sizeof(t_term));
 	g_term->fd = STDOUT_FILENO;
@@ -55,6 +55,7 @@ void	term_init(void)
 	ft_putstr_fd(tgetstr("cl", NULL), g_term->fd);
 	ft_putstr_fd(tgetstr("ti", NULL), g_term->fd);
 	ft_putstr_fd(tgetstr("vs", NULL), g_term->fd);
+	return (1);
 }
 
 void	term_reset(void)
@@ -72,7 +73,8 @@ int		main(int argc, char **argv, char **envp)
 	g_env = get_env(envp);
 	if (!g_env)
 		return (error_message("error", "null env"));
-	term_init();
+	if (!term_init())
+		return (0);
 	g_hist = NULL;
 	update_lvl();
 	ft_printf("%s%s%s* * * 21SH [start] * * *%s\n",

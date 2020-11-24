@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 15:48:38 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 04:35:26 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 21:57:45 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,25 @@ int			check_escape_line(t_reader *rdr)
 	if (ft_strnequ(rdr->esc, ESC_LEFT, 3) && rdr->pos > 0)
 	{
 		(rdr->pos)--;
-		ft_putstr_fd(tgetstr(TERM_LEFT, NULL), g_term->fd);
 		if (rdr->curs_pos[0] == 0)
 		{
 			ft_putstr_fd(tgetstr(TERM_UP, NULL), g_term->fd);
 			i = 0;
-			while (i++ <= rdr->ws.ws_col)
+			while (i++ < rdr->ws.ws_col)
 				ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 		}
+		else
+			ft_putstr_fd(tgetstr(TERM_LEFT, NULL), g_term->fd);
 		return (1);
 	}
 	else if (ft_strnequ(rdr->esc, ESC_RIGHT, 3) && rdr->buff[rdr->pos] != '\0')
 	{
 		(rdr->pos)++;
 		if (rdr->curs_pos[0] == rdr->ws.ws_col - 1)
+		{
 			ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
+			ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
+		}
 		else
 			ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 		return (1);
@@ -49,9 +53,7 @@ t_history	*check_escape_history(t_reader *rdr, t_history *current)
 		current = current->next;
 	else
 		return (current);
-	clear_line(rdr);
-	ft_printf("\r");
-	print_prompt();
+	spec_symbol_home(rdr);
 	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
 	rdr->pos = ft_strlen(current->buff);
 	rdr->len = rdr->pos;

@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:53:05 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 19:32:19 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 22:14:19 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ pid_t				g_pid;
 **	main.c
 */
 char				*get_cmd(int fd);
-void				term_init(void);
+int					term_init(void);
 void				term_reset(void);
 
 /*
