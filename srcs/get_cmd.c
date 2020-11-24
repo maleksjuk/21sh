@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/23 23:43:20 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 20:24:50 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 		i = rdr->c == CTRL_A ? spec_symbol_home(rdr) : spec_symbol_end(rdr);
 	else if (rdr->c == DEL)
 	{
-		if (backspace(rdr))
-		{
-			ft_putstr_fd(tgetstr("kb", NULL), g_term->fd);
-			ft_putstr_fd(tgetstr("dc", NULL), g_term->fd);
-		}
+		backspace(rdr);
 		i = 0;
 	}
 	else

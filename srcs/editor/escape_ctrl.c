@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:52:51 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/24 00:00:41 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 21:28:47 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	check_escape_ctrl_up(t_reader *rdr)
 	{
 		rdr->pos -= rdr->ws.ws_col;
 		ft_putstr_fd(tgetstr(TERM_UP, NULL), g_term->fd);
-		if (rdr->curs_pos[1] == 0 && rdr->curs_pos[0] < 7)
+		if (rdr->curs_pos[1] == 1 && rdr->curs_pos[0] < 7)
 		{
 			ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
 			i = 7;
@@ -91,22 +91,22 @@ int	check_escape_ctrl_up(t_reader *rdr)
 	return (1);
 }
 
-int	check_escape_ctrl_down(t_reader *rdr, int swap)
+int	check_escape_ctrl_down(t_reader *rdr)
 {
 	int	last;
-
 
 	if (!ft_strnequ(rdr->esc, ESC_CTRL_DOWN, 6))
 		return (0);
 	if (rdr->height > 0 && rdr->curs_pos[1] < rdr->height)
 	{
-		while (rdr->buff[rdr->pos] && swap++ < rdr->ws.ws_col)
-			(rdr->pos)++;
+		rdr->pos = rdr->pos > rdr->len ? rdr->len : rdr->pos + rdr->ws.ws_col;
 		ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
-		if (rdr->curs_pos[1] == rdr->height)
+		ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
+		ft_printf("\033[%dC", rdr->curs_pos[0]);
+		last = (rdr->len + 7) % rdr->ws.ws_col;
+		if (rdr->curs_pos[1] + 1 == rdr->height && last < rdr->curs_pos[0])
 		{
 			ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
-			last = (rdr->len + 7) % rdr->ws.ws_col;
 			while (last-- > 0)
 				ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 		}
@@ -119,7 +119,7 @@ int	check_escape_ctrl_down(t_reader *rdr, int swap)
 int	check_escape_ctrl(t_reader *rdr)
 {
 	if (check_escape_ctrl_left(rdr) || check_escape_ctrl_right(rdr) ||
-		check_escape_ctrl_up(rdr) || check_escape_ctrl_down(rdr, 0))
+		check_escape_ctrl_up(rdr) || check_escape_ctrl_down(rdr))
 		return (1);
 	return (0);
 }

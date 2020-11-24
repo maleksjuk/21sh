@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:57:13 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/22 03:47:35 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 21:29:29 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,8 @@ void	print_buffer_actual(t_reader *rdr)
 {
 	ssize_t	i;
 
-	// clear_line(rdr);
-	// ft_printf("\r");
 	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
 	i = rdr->pos - 1;
-	// print_prompt();
 	while (i < rdr->len)
 		ft_printf("%c", rdr->buff[i++]);
 	if ((rdr->pos + 7) % rdr->ws.ws_col == 0)
@@ -78,5 +75,12 @@ int		backspace(t_reader *rdr)
 		rdr->buff[i - 1] = rdr->buff[i];
 	rdr->buff[--(rdr->len)] = '\0';
 	(rdr->pos)--;
+	ft_putstr_fd(tgetstr("kb", NULL), g_term->fd);
+	ft_putstr_fd(tgetstr("dc", NULL), g_term->fd);
+	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
+	ft_printf("%s", &rdr->buff[rdr->pos]);
+	i = rdr->len - rdr->pos;
+	while (i--)
+		ft_putstr_fd(tgetstr(TERM_LEFT, NULL), g_term->fd);
 	return (1);
 }
