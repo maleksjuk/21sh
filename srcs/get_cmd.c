@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/24 20:24:50 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 23:40:56 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,6 @@ char		*get_cmd(int fd)
 			break ;
 		else if (rdr->c == ESC || rdr->c == '\xe2')
 			current = check_escape_main(rdr, current);
-		// else if (rdr->c == '\t')
-		// {
-		// 	ft_putstr_fd(tgetstr("al", NULL), g_term->fd);
-		// }
 		else if (ft_isprint(rdr->c))
 		{
 			update_buffer(rdr);
@@ -131,18 +127,6 @@ char		*get_cmd(int fd)
 		check_length_buffer(current);
 		rdr->buff = current->buff;
 	}
-	/*
-	** if (DEBUG)
-	** {
-	** 	while (current->prev)
-	** 		current = current->prev;
-	** 	while (current->next)
-	** 	{
-	** 		ft_printf("\n%sHIST: |[%p] - b[%s] - s[%s]|%s", CLR_YELLOW, current->buff, current->buff, current->save, CLR_RESET);
-	** 		current = current->next;
-	** 	}
-	** }
-	*/
 	ft_printf("\n");
 	return (unset_reader(rdr));
 }

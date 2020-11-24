@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/23 21:35:50 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/24 23:40:31 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ t_history	*new_history(t_history *current, t_history *last)
 		ft_strcpy(last->save, current->buff);
 		if (last != current)
 		{
-			last->buff = ft_strnew(ft_strlen(current->buff) + 10);
+			if (last->count != current->count)
+			{
+				free(last->buff);
+				last->buff = ft_strnew(current->count * HIST_BUFF_LEN);
+			}
 			ft_strcpy(last->buff, current->buff);
 		}
 	}
@@ -72,11 +76,7 @@ void		reset_history(t_history *hist)
 	{
 		if (!ft_strequ(hist->buff, hist->save))
 		{
-			// if (hist->buff)
-			// 	free(hist->buff);
 			ft_memset(hist->buff, 0, HIST_BUFF_LEN * hist->count);
-			// ft_strclr(hist->buff);
-			// hist->buff = ft_strnew(HIST_BUFF_LEN * hist->count);
 			ft_strcpy(hist->buff, hist->save);
 		}
 		hist = hist->next;
