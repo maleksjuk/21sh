@@ -93,6 +93,7 @@ int					ft_islower(int c);
 size_t				ft_strnlen(const char *s, size_t maxlen);
 void				ft_tabfree(char **tab);
 int					ft_isspace(char c);
+int					ft_isspace_str(char *s);
 char				**ft_strtok(char *s, char *sep);
 int					ft_tablen(char **str);
 char				*double_to_single(char **s);

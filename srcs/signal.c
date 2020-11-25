@@ -16,7 +16,6 @@ void	cmd_listener(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("Here!");
 		ft_printf("\n");
 	}
 }

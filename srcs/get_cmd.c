@@ -26,7 +26,8 @@ t_history	*check_escape_main(t_reader *rdr, t_history *current)
 
 	i = 1;
 	update_cursor_position(rdr);
-	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]) && rdr->esc[i - 1] != '~')
+	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]) &&
+		rdr->esc[i - 1] != '~')
 		read(rdr->fd, &rdr->esc[i++], 1);
 	rdr->esc[i] = '\0';
 	if (ft_strnequ(rdr->esc, ESC_HOME, 3))
@@ -62,18 +63,6 @@ int			spec_symbol(t_reader *rdr, t_history *current, int i)
 	else
 		i = 0;
 	return (i);
-}
-
-int			ft_isspace_str(char *s)
-{
-	int i;
-
-	i = -1;
-	while (ft_isspace(s[++i]))
-		NULL;
-	if (s[i])
-		return (0);
-	return (1);
 }
 
 int			check_enter(t_reader *rdr, t_history *current)
