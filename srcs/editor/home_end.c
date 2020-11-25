@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 23:42:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/23 23:43:28 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 21:46:16 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	spec_symbol_home(t_reader *rdr)
 	while (rdr->curs_pos[1]-- > 0)
 		ft_putstr_fd(tgetstr(TERM_UP, NULL), g_term->fd);
 	ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
-	i = 7;
+	i = rdr->prompt_len;
 	while (i--)
 		ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 	rdr->pos = 0;
@@ -35,7 +35,7 @@ int	spec_symbol_end(t_reader *rdr)
 	while (rdr->curs_pos[1]++ < rdr->height)
 		ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
 	ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
-	i = (rdr->len + 7) % rdr->ws.ws_col;
+	i = (rdr->len + rdr->prompt_len) % rdr->ws.ws_col;
 	while (i-- > 0)
 		ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 	rdr->pos = rdr->len;

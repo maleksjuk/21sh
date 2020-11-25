@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/25 20:21:27 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 21:35:57 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 void		update_cursor_position(t_reader *rdr)
 {
-	rdr->height = (ft_strlen(rdr->buff) + 7) / rdr->ws.ws_col;
-	rdr->curs_pos[0] = (rdr->pos + 7) % rdr->ws.ws_col;
-	rdr->curs_pos[1] = (rdr->pos + 7) / rdr->ws.ws_col;
+	rdr->height = (ft_strlen(rdr->buff) + rdr->prompt_len) / rdr->ws.ws_col;
+	rdr->curs_pos[0] = (rdr->pos + rdr->prompt_len) % rdr->ws.ws_col;
+	rdr->curs_pos[1] = (rdr->pos + rdr->prompt_len) / rdr->ws.ws_col;
 }
 
 t_history	*check_escape_main(t_reader *rdr, t_history *current)
@@ -100,6 +100,7 @@ char		*get_cmd(int fd)
 		g_hist = new_history(NULL, NULL);
 	current = g_hist;
 	rdr = set_reader(fd, current);
+	rdr->prompt_len = 7;
 	while (read(rdr->fd, &rdr->c, 1) > 0)
 	{
 		if (check_enter(rdr, current))

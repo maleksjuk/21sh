@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:52:45 by vdaemoni          #+#    #+#             */
-/*   Updated: 2020/11/22 19:45:16 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 21:49:51 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@ static void	check_esca(t_reader *rdr)
 	int	i;
 
 	i = 1;
-	rdr->height = (ft_strlen(rdr->buff) + 9) / rdr->ws.ws_col;
-	rdr->curs_pos[0] = (rdr->pos + 9) % rdr->ws.ws_col;
-	rdr->curs_pos[1] = (rdr->pos + 9) / rdr->ws.ws_col;
-	while (!ft_isalpha(rdr->esc[i - 1]))
+	update_cursor_position(rdr);
+	while (rdr->c != '\xe2' && !ft_isalpha(rdr->esc[i - 1]) &&
+		rdr->esc[i - 1] != '~')
 		read(rdr->fd, &rdr->esc[i++], 1);
 	rdr->esc[i] = '\0';
 	if (ft_strnequ(rdr->esc, ESC_HOME, 3))
 		rdr->c = CTRL_A;
 	else if (ft_strnequ(rdr->esc, ESC_END, 3))
 		rdr->c = CTRL_E;
+	else if (cut_copy_paste(rdr, NULL))
+		NULL;
 	else if (check_escape_ctrl(rdr))
 		return ;
 	else if (check_escape_line(rdr, 0))
@@ -57,19 +58,10 @@ static int	specials(t_reader *rdr, int i)
 	else if (rdr->c == CTRL_C)
 		ft_strcpy(rdr->buff, "\x03");
 	else if (rdr->c == CTRL_A || rdr->c == CTRL_E)
-	{
-		ft_strcpy(rdr->esc, rdr->c == CTRL_A ? ESC_CTRL_UP : ESC_CTRL_DOWN);
-		i = rdr->len / rdr->ws.ws_col + 1;
-		while (i--)
-			check_escape_ctrl(rdr);
-	}
+		i = rdr->c == CTRL_A ? spec_symbol_home(rdr) : spec_symbol_end(rdr);
 	else if (rdr->c == DEL)
 	{
-		if (backspace(rdr))
-		{
-			ft_putstr_fd(tgetstr("kb", NULL), g_term->fd);
-			ft_putstr_fd(tgetstr("dc", NULL), g_term->fd);
-		}
+		backspace(rdr);
 		i = 0;
 	}
 	else
@@ -81,6 +73,14 @@ static int	check_n(t_reader *rdr)
 {
 	if (rdr->c != '\n')
 		return (0);
+	update_cursor_position(rdr);
+	while (rdr->curs_pos[1]++ < rdr->height)
+	{
+		ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
+		rdr->pos += rdr->ws.ws_col;
+	}
+	while (rdr->pos++ < rdr->len)
+		ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 	return (1);
 }
 
@@ -89,11 +89,12 @@ char		*mega_read(int fd)
 	t_reader	*rdr;
 
 	rdr = set_reader(fd, NULL);
+	rdr->prompt_len = 9;
 	while (read(rdr->fd, &rdr->c, 1) > 0)
 	{
 		if (check_n(rdr))
 			break ;
-		else if (rdr->c == ESC)
+		else if (rdr->c == ESC || rdr->c == '\xe2')
 			check_esca(rdr);
 		else if (ft_isprint(rdr->c))
 		{
