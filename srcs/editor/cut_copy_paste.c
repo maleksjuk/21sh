@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 06:17:35 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/23 20:25:14 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 19:33:59 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void		sh_cut(t_reader *rdr)
 {
+	int	i;
+
 	if (g_term->clip)
 		free(g_term->clip);
 	g_term->clip = ft_strdup(&rdr->buff[rdr->pos]);
-	ft_strclr(&rdr->buff[rdr->pos]);
+	i = rdr->pos - 1;
+	while (++i < rdr->len)
+		rdr->buff[i] = 0;
 	rdr->len = rdr->pos;
 	ft_putstr_fd(tgetstr(TERM_CLEAR, NULL), g_term->fd);
 }

@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:48:11 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/24 23:40:31 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 20:35:18 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ t_history	*new_history(t_history *current, t_history *last)
 			if (last->count != current->count)
 			{
 				free(last->buff);
-				last->buff = ft_strnew(current->count * HIST_BUFF_LEN);
+				last->buff = ft_strnew((size_t)current->count * HIST_BUFF_LEN);
+				last->count = current->count;
 			}
 			ft_strcpy(last->buff, current->buff);
 		}
@@ -55,17 +56,17 @@ t_history	*new_history(t_history *current, t_history *last)
 	return (new);
 }
 
-void		check_length_buffer(t_history *hist)
+void		check_length_buffer(t_history *hist, ssize_t len)
 {
-	char	*tmp;
+	char	*new_buff;
 
-	if ((int)(hist->count * HIST_BUFF_LEN) - (int)ft_strlen(hist->buff) > 10)
+	if (hist->count * HIST_BUFF_LEN > len + 10)
 		return ;
 	hist->count++;
-	tmp = ft_strnew(HIST_BUFF_LEN * hist->count);
-	ft_strcpy(tmp, hist->buff);
+	new_buff = ft_strnew(HIST_BUFF_LEN * hist->count);
+	ft_strcpy(new_buff, hist->buff);
 	free(hist->buff);
-	hist->buff = tmp;
+	hist->buff = new_buff;
 }
 
 void		reset_history(t_history *hist)

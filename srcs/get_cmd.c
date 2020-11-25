@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/24 23:40:56 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 20:21:27 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char		*get_cmd(int fd)
 		}
 		if (spec_symbol(rdr, current, 1) > 0)
 			break ;
-		check_length_buffer(current);
+		check_length_buffer(current, rdr->len);
 		rdr->buff = current->buff;
 	}
 	ft_printf("\n");

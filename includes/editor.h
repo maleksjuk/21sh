@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/09 21:49:50 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/23 23:45:58 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 20:20:55 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int						backspace(t_reader *rdr);
 **  history.c
 */
 t_history				*new_history(t_history *current, t_history *last);
-void					check_length_buffer(t_history *hist);
+void					check_length_buffer(t_history *hist, ssize_t len);
 void					reset_history(t_history *hist);
 
 /*
