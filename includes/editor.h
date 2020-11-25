@@ -137,7 +137,7 @@ int						check_escape_ctrl(t_reader *rdr);
 /*
 **  escape_simple.c
 */
-int						check_escape_line(t_reader *rdr);
+int						check_escape_line(t_reader *rdr, int i);
 t_history				*check_escape_history(t_reader *rdr, \
 											t_history *current);
 

@@ -30,7 +30,7 @@ static void	check_esca(t_reader *rdr)
 		rdr->c = CTRL_E;
 	else if (check_escape_ctrl(rdr))
 		return ;
-	else if (check_escape_line(rdr))
+	else if (check_escape_line(rdr, 0))
 		return ;
 }
 

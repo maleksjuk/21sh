@@ -37,7 +37,7 @@ t_history	*check_escape_main(t_reader *rdr, t_history *current)
 	else if (cut_copy_paste(rdr, current))
 		(void)NULL;
 	else if (!check_escape_ctrl(rdr))
-		if (!check_escape_line(rdr))
+		if (!check_escape_line(rdr, 0))
 			current = check_escape_history(rdr, current);
 	rdr->buff = current->buff;
 	return (current);

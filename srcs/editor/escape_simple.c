@@ -12,10 +12,14 @@
 
 #include "editor.h"
 
-int			check_escape_line(t_reader *rdr)
+void		term_down_and_carret(void)
 {
-	int	i;
+	ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
+	ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
+}
 
+int			check_escape_line(t_reader *rdr, int i)
+{
 	if (ft_strnequ(rdr->esc, ESC_LEFT, 3) && rdr->pos > 0)
 	{
 		(rdr->pos)--;
@@ -34,10 +38,7 @@ int			check_escape_line(t_reader *rdr)
 	{
 		(rdr->pos)++;
 		if (rdr->curs_pos[0] == rdr->ws.ws_col - 1)
-		{
-			ft_putstr_fd(tgetstr(TERM_DOWN, NULL), g_term->fd);
-			ft_putstr_fd(tgetstr(TERM_CARRET, NULL), g_term->fd);
-		}
+			term_down_and_carret();
 		else
 			ft_putstr_fd(tgetstr(TERM_RIGHT, NULL), g_term->fd);
 		return (1);
