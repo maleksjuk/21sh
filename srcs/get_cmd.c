@@ -100,7 +100,6 @@ char		*get_cmd(int fd)
 		g_hist = new_history(NULL, NULL);
 	current = g_hist;
 	rdr = set_reader(fd, current);
-	rdr->prompt_len = 7;
 	while (read(rdr->fd, &rdr->c, 1) > 0)
 	{
 		if (check_enter(rdr, current))

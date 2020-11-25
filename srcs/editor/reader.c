@@ -27,6 +27,7 @@ t_reader	*set_reader(int fd, t_history *current)
 	ioctl(1, TIOCGSIZE, &rdr->ws);
 	rdr->pos = 0;
 	rdr->len = 0;
+	rdr->prompt_len = 7;
 	rdr->esc[0] = ESC;
 	rdr->fd = fd;
 	if (current)

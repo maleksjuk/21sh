@@ -23,25 +23,28 @@ t_history	*init_new_history(void)
 	return (new);
 }
 
+void		last_history(t_history *current, t_history *last)
+{
+	last->save = ft_strnew(ft_strlen(current->buff) + 1);
+	ft_strcpy(last->save, current->buff);
+	if (last != current)
+	{
+		if (last->count != current->count)
+		{
+			free(last->buff);
+			last->buff = ft_strnew((size_t)current->count * HIST_BUFF_LEN);
+			last->count = current->count;
+		}
+		ft_strcpy(last->buff, current->buff);
+	}
+}
+
 t_history	*new_history(t_history *current, t_history *last)
 {
 	t_history	*new;
 
 	if (last)
-	{
-		last->save = ft_strnew(ft_strlen(current->buff) + 1);
-		ft_strcpy(last->save, current->buff);
-		if (last != current)
-		{
-			if (last->count != current->count)
-			{
-				free(last->buff);
-				last->buff = ft_strnew((size_t)current->count * HIST_BUFF_LEN);
-				last->count = current->count;
-			}
-			ft_strcpy(last->buff, current->buff);
-		}
-	}
+		last_history(current, last);
 	while (current && current->next)
 		current = current->next;
 	new = init_new_history();
