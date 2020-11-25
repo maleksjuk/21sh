@@ -6,7 +6,7 @@
 /*   By: obanshee <obanshee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:43:15 by obanshee          #+#    #+#             */
-/*   Updated: 2020/11/25 21:35:57 by obanshee         ###   ########.fr       */
+/*   Updated: 2020/11/25 22:46:28 by obanshee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int			check_enter(t_reader *rdr, t_history *current)
 		else
 			rdr->buff = "";
 	}
+	else
+		rdr->buff = g_hist->buff;
 	update_cursor_position(rdr);
 	while (rdr->curs_pos[1]++ < rdr->height)
 	{
